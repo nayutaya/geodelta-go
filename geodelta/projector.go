@@ -34,20 +34,14 @@ func NormalizeM(m float64) float64 {
 //    -1.0 <= my  <=  +1.0
 //   -90.0 <= lat <= +90.0
 func MyToLat(my float64) float64 {
-	return math.Asin(math.Tanh(my*math.Pi)) * RAD2DEG
+	return math.Asin(math.Tanh(NormalizeM(my)*math.Pi)) * RAD2DEG
 }
 
 // メルカトルX座標を経度に変換する
 //     -1.0 <= mx  <=   +1.0
 //   -180.0 <= lng <= +180.0
 func MxToLng(mx float64) float64 {
-	if mx < -1.0 {
-		mx += 2.0
-	}
-	if mx > +1.0 {
-		mx -= 2.0
-	}
-	return mx * 180.0
+	return NormalizeM(mx) * 180.0
 }
 
 /* Ruby
