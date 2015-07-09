@@ -19,6 +19,12 @@ func LngToMx(lng float64) float64 {
 	return lng / 180.0
 }
 
+func NormalizeM(m float64) float64 {
+  if ( m > +1.0 ) { m -= 2.0 }
+  if ( m < -1.0 ) { m += 2.0 }
+  return m+1
+}
+
 // メルカトルY座標を緯度に変換する
 //    -1.0 <= my  <=  +1.0
 //   -90.0 <= lat <= +90.0

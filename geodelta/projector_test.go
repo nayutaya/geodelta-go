@@ -29,6 +29,16 @@ func TestLngToMx(t *testing.T) {
 	AssertEqual(t, -1.0, LngToMx(-180.0))
 }
 
+func TestNormalizeM(t *testing.T) {
+  if e,a,d:=-0.5,NormalizeM(+1.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:=+1.0,NormalizeM(+1.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:=+0.5,NormalizeM(+0.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:= 0.0,NormalizeM( 0.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:=-0.5,NormalizeM(-0.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:=-1.0,NormalizeM(-1.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+  if e,a,d:=+0.5,NormalizeM(-1.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+}
+
 func TestMyToLat(t *testing.T) {
 	AssertInDelta(t, +85.0511, MyToLat(+1.0), 1.0e-4)
 	AssertEqual(t, 0.0, MyToLat(0.0))
