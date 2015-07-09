@@ -29,6 +29,28 @@ func TestLngToMx(t *testing.T) {
 	AssertEqual(t, -1.0, LngToMx(-180.0))
 }
 
+func TestNormalizeM(t *testing.T) {
+	table := [...][3]float64{
+		{-0.5, NormalizeM(+3.5), 1e-15},
+		{+0.5, NormalizeM(+2.5), 1e-15},
+		{-0.5, NormalizeM(+1.5), 1e-15},
+		{+1.0, NormalizeM(+1.0), 1e-15},
+		{+0.5, NormalizeM(+0.5), 1e-15},
+		{0.0, NormalizeM(0.0), 1e-15},
+		{-0.5, NormalizeM(-0.5), 1e-15},
+		{-1.0, NormalizeM(-1.0), 1e-15},
+		{+0.5, NormalizeM(-1.5), 1e-15},
+		{-0.5, NormalizeM(-2.5), 1e-15},
+		{+0.5, NormalizeM(-3.5), 1e-15},
+	}
+	for i := 0; i < len(table); i++ {
+		expected, actual, tolerance := table[i][0], table[i][1], table[i][2]
+		if math.Abs(expected-actual) > tolerance {
+			t.Errorf("i=%d, expected=%e, actual=%e, delta=%e", i, expected, actual, (expected - actual))
+		}
+	}
+}
+
 func TestMyToLat(t *testing.T) {
 	AssertInDelta(t, +85.0511, MyToLat(+1.0), 1.0e-4)
 	AssertEqual(t, 0.0, MyToLat(0.0))
