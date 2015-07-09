@@ -17,7 +17,7 @@ func AssertInDelta(t *testing.T, expected float64, actual float64, delta float64
 
 func TestLatToMy(t *testing.T) {
 	AssertInDelta(t, +1.0, LatToMy(+85.0511), 1.0e-5)
-	AssertInDelta(t, 0.0, LatToMy(0.0), 1.0e-5)
+	AssertEqual(t, 0.0, LatToMy(0.0))
 	AssertInDelta(t, -1.0, LatToMy(-85.0511), 1.0e-5)
 }
 
@@ -29,29 +29,24 @@ func TestLngToMx(t *testing.T) {
 	AssertEqual(t, -1.0, LngToMx(-180.0))
 }
 
+func TestMyToLat(t *testing.T) {
+	AssertInDelta(t, +85.0511, MyToLat(+1.0), 1.0e-4)
+	AssertEqual(t, 0.0, MyToLat(0.0))
+	AssertInDelta(t, -85.0511, MyToLat(-1.0), 1.0e-4)
+}
+
+func TestMxToLng(t *testing.T) {
+	AssertEqual(t, -90.0, MxToLng(+1.5))
+	AssertEqual(t, +180.0, MxToLng(+1.0))
+	AssertEqual(t, +90.0, MxToLng(+0.5))
+	AssertEqual(t, 0.0, MxToLng(0.0))
+	AssertEqual(t, -90.0, MxToLng(-0.5))
+	AssertEqual(t, -180.0, MxToLng(-1.0))
+	AssertEqual(t, +90.0, MxToLng(-1.5))
+}
+
 /* Ruby
 class GeoDeltaProjectorTest < Minitest::Test
-  def setup
-    @mod = GeoDelta::Projector
-  end
-
-
-  def test_my_to_lat
-    assert_in_delta(+85.0511, @mod.my_to_lat(+1.0), 1.0E-4)
-    assert_equal(0.0, @mod.my_to_lat(0.0))
-    assert_in_delta(-85.0511, @mod.my_to_lat(-1.0), 1.0E-4)
-  end
-
-  def test_mx_to_lng
-    assert_equal( -90.0, @mod.mx_to_lng(+1.5))
-    assert_equal(-180.0, @mod.mx_to_lng(+1.0))
-    assert_equal( +90.0, @mod.mx_to_lng(+0.5))
-    assert_equal(   0.0, @mod.mx_to_lng( 0.0))
-    assert_equal( -90.0, @mod.mx_to_lng(-0.5))
-    assert_equal(-180.0, @mod.mx_to_lng(-1.0))
-    assert_equal( +90.0, @mod.mx_to_lng(-1.5))
-  end
-
   def test_my_to_ny
     max = @mod::DELTA_HEIGHT
     assert_equal(+12.0, @mod.my_to_ny(+max))
