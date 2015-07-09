@@ -31,6 +31,8 @@ func TestLngToMx(t *testing.T) {
 
 func TestNormalizeM(t *testing.T) {
 	table := [...][3]float64{
+		{-0.5, NormalizeM(+3.5), 1e-15},
+		{+0.5, NormalizeM(+2.5), 1e-15},
 		{-0.5, NormalizeM(+1.5), 1e-15},
 		{+1.0, NormalizeM(+1.0), 1e-15},
 		{+0.5, NormalizeM(+0.5), 1e-15},
@@ -38,6 +40,8 @@ func TestNormalizeM(t *testing.T) {
 		{-0.5, NormalizeM(-0.5), 1e-15},
 		{-1.0, NormalizeM(-1.0), 1e-15},
 		{+0.5, NormalizeM(-1.5), 1e-15},
+		{-0.5, NormalizeM(-2.5), 1e-15},
+		{+0.5, NormalizeM(-3.5), 1e-15},
 	}
 	for i := 0; i < len(table); i++ {
 		expected, actual, tolerance := table[i][0], table[i][1], table[i][2]

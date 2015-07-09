@@ -19,14 +19,15 @@ func LngToMx(lng float64) float64 {
 	return lng / 180.0
 }
 
+// メルカトルX座標/Y座標を正規化する
 func NormalizeM(m float64) float64 {
 	if m > +1.0 {
-		m -= 2.0
+		return m - math.Ceil((m-1)/+2.0)*2.0
+	} else if m < -1.0 {
+		return m + math.Ceil((m+1)/-2.0)*2.0
+	} else {
+		return m
 	}
-	if m < -1.0 {
-		m += 2.0
-	}
-	return m
 }
 
 // メルカトルY座標を緯度に変換する
