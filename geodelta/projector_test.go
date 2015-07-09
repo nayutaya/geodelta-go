@@ -3,6 +3,12 @@ package geodelta
 import "testing"
 import "math"
 
+func AssertEqual(t *testing.T, expected float64, actual float64) {
+	if expected != actual {
+		t.Errorf("expected %f but %f", expected, actual)
+	}
+}
+
 func AssertInDelta(t *testing.T, expected float64, actual float64, delta float64) {
 	if math.Abs(expected-actual) > delta {
 		t.Errorf("expected %f but %f", expected, actual)
@@ -15,19 +21,20 @@ func TestLatToMy(t *testing.T) {
 	AssertInDelta(t, -1.0, LatToMy(-85.0511), 1.0e-5)
 }
 
+func TestLngToMx(t *testing.T) {
+	AssertEqual(t, +1.0, LngToMx(+180.0))
+	AssertEqual(t, +0.5, LngToMx(+90.0))
+	AssertEqual(t, 0.0, LngToMx(0.0))
+	AssertEqual(t, -0.5, LngToMx(-90.0))
+	AssertEqual(t, -1.0, LngToMx(-180.0))
+}
+
 /* Ruby
 class GeoDeltaProjectorTest < Minitest::Test
   def setup
     @mod = GeoDelta::Projector
   end
 
-  def test_lng_to_mx
-    assert_equal(+1.0, @mod.lng_to_mx(+180.0))
-    assert_equal(+0.5, @mod.lng_to_mx( +90.0))
-    assert_equal( 0.0, @mod.lng_to_mx(   0.0))
-    assert_equal(-0.5, @mod.lng_to_mx( -90.0))
-    assert_equal(-1.0, @mod.lng_to_mx(-180.0))
-  end
 
   def test_my_to_lat
     assert_in_delta(+85.0511, @mod.my_to_lat(+1.0), 1.0E-4)

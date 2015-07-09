@@ -11,18 +11,19 @@ func LatToMy(lat float64) float64 {
 	return math.Atanh(math.Sin(lat*DEG2RAD)) / math.Pi
 }
 
+// 経度をメルカトルX座標に変換する
+//   -180.0 <= lng <= +180.0
+//     -1.0 <= mx  <=   +1.0
+func LngToMx(lng float64) float64 {
+	return lng / 180.0
+}
+
 /* Ruby
 module GeoDelta
   module Projector
     RAD2DEG      = 180.0 / Math::PI # ラジアンを度に変換するための係数
     DELTA_HEIGHT = Math.sqrt(0.75)  # 一辺を1.0とする正三角形の高さ
 
-    # 経度をメルカトルX座標に変換する
-    #   -180.0 <= lng <= +180.0
-    #     -1.0 <= mx  <=   +1.0
-    def self.lng_to_mx(lng)
-      return lng / 180.0
-    end
 
     # メルカトルY座標を緯度に変換する
     #    -1.0 <= my  <=  +1.0
