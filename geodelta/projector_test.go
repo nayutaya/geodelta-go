@@ -30,13 +30,21 @@ func TestLngToMx(t *testing.T) {
 }
 
 func TestNormalizeM(t *testing.T) {
-  if e,a,d:=-0.5,NormalizeM(+1.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:=+1.0,NormalizeM(+1.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:=+0.5,NormalizeM(+0.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:= 0.0,NormalizeM( 0.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:=-0.5,NormalizeM(-0.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:=-1.0,NormalizeM(-1.0),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
-  if e,a,d:=+0.5,NormalizeM(-1.5),1e-15; math.Abs(e-a) > d { t.Errorf("e=%e, a=%e, d=%e", e, a, (e-a)) }
+	table := [...][3]float64{
+		{-0.5, NormalizeM(+1.5), 1e-15},
+		{+1.0, NormalizeM(+1.0), 1e-15},
+		{+0.5, NormalizeM(+0.5), 1e-15},
+		{0.0, NormalizeM(0.0), 1e-15},
+		{-0.5, NormalizeM(-0.5), 1e-15},
+		{-1.0, NormalizeM(-1.0), 1e-15},
+		{+0.5, NormalizeM(-1.5), 1e-15},
+	}
+	for i := 0; i < len(table); i++ {
+		expected, actual, tolerance := table[i][0], table[i][1], table[i][2]
+		if math.Abs(expected-actual) > tolerance {
+			t.Errorf("i=%d, expected=%e, actual=%e, delta=%e", i, expected, actual, (expected - actual))
+		}
+	}
 }
 
 func TestMyToLat(t *testing.T) {
