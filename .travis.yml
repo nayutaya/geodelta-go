@@ -1,3 +1,5 @@
 language: go
+before_install:
+  - go get golang.org/x/tools/cmd/cover
 script:
-  - cd geodelta && go test -v .
+  - go test -v -covermode=count -coverprofile=coverage.out ./geodelta
