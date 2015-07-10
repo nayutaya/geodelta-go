@@ -1,7 +1,10 @@
 package geodelta
 
-import "testing"
-import "math"
+import (
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"math"
+)
 
 func AssertEqual(t *testing.T, expected float64, actual float64) {
 	if expected != actual {
@@ -16,9 +19,10 @@ func AssertInDelta(t *testing.T, expected float64, actual float64, delta float64
 }
 
 func TestLatToMy(t *testing.T) {
-	AssertInDelta(t, +1.0, LatToMy(+85.0511), 1.0e-5)
-	AssertEqual(t, 0.0, LatToMy(0.0))
-	AssertInDelta(t, -1.0, LatToMy(-85.0511), 1.0e-5)
+	assert := assert.New(t)
+	assert.InDelta(+1.0, LatToMy(+85.0511), 1.0e-5)
+	assert.Equal(0.0, LatToMy(0.0))
+	assert.InDelta(-1.0, LatToMy(-85.0511), 1.0e-5)
 }
 
 func TestLngToMx(t *testing.T) {
