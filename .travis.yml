@@ -1,6 +1,7 @@
 language: go
 before_install:
   - go get golang.org/x/tools/cmd/cover
+  - go get github.com/stretchr/testify
 script:
   - go test -v -covermode=count -coverprofile=coverage.txt ./geodelta
 after_success:
