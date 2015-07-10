@@ -2,8 +2,8 @@ package geodelta
 
 import "math"
 
-const DEG2RAD float64 = math.Pi / 180.0 // 度をラジアンに変換するための係数
-const RAD2DEG float64 = 180.0 / math.Pi // ラジアンを度に変換するための係数
+const DEG2RAD = math.Pi / 180.0 // 度をラジアンに変換するための係数
+const RAD2DEG = 180.0 / math.Pi // ラジアンを度に変換するための係数
 
 // 緯度をメルカトルY座標に変換する
 //   -90.0 <= lat <= +90.0
