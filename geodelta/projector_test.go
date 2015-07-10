@@ -71,22 +71,23 @@ func TestMxToNx(t *testing.T) {
 	assert.Equal(-12.0, MxToNx(-1.0))
 }
 
-/* Ruby
 func TestNyToMy(t *testing.T) {
-  max = @mod::DELTA_HEIGHT
+	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
+	max := DELTA_HEIGHT
 	assert := assert.New(t)
-  assert.Equal(+max, NyToMy(+12.0))
-  assert.Equal( 0.0, NyToMy(  0.0))
-  assert.Equal(-max, NyToMy(-12.0))
+	assert.Equal(+max, NyToMy(+12.0))
+	assert.Equal(0.0, NyToMy(0.0))
+	assert.Equal(-max, NyToMy(-12.0))
 }
 
 func TestNxToMx(t *testing.T) {
 	assert := assert.New(t)
-  assert.Equal(+1.0, NxToMx(+12.0))
-  assert.Equal( 0.0, NxToMx(  0.0))
-  assert.Equal(-1.0, NxToMx(-12.0))
+	assert.Equal(+1.0, NxToMx(+12.0))
+	assert.Equal(0.0, NxToMx(0.0))
+	assert.Equal(-1.0, NxToMx(-12.0))
 }
 
+/* Ruby
 func TestLatToNy(t *testing.T) {
 	assert := assert.New(t)
   assert.Equal(0.0, LatToNy(0.0))

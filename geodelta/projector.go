@@ -59,21 +59,22 @@ func MxToNx(mx float64) float64 {
 	return mx * 12.0
 }
 
-/* Ruby
 // 正規化Y座標からメルカトルY座標に変換する
 //   -12.0 <= ny <= +12.0
 //    -1.0 <= my <=  +1.0
-func NyToMy(my) {
-  return my / 12.0 * DELTA_HEIGHT
+func NyToMy(my float64) float64 {
+	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
+	return my / 12.0 * DELTA_HEIGHT
 }
 
 // 正規化X座標からメルカトルX座標に変換する
 //   -12.0 <= ny <= +12.0
 //    -1.0 <= my <=  +1.0
-func NxToMx(ny) {
-  return ny / 12.0
+func NxToMx(ny float64) float64 {
+	return ny / 12.0
 }
 
+/* Ruby
 func LatToNy(lat) {
   return self.my_to_ny(self.lat_to_my(lat))
 }
