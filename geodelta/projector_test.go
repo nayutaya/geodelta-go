@@ -2,21 +2,8 @@ package geodelta
 
 import (
 	"github.com/stretchr/testify/assert"
-	"math"
 	"testing"
 )
-
-func AssertEqual(t *testing.T, expected float64, actual float64) {
-	if expected != actual {
-		t.Errorf("expected %f but %f", expected, actual)
-	}
-}
-
-func AssertInDelta(t *testing.T, expected float64, actual float64, delta float64) {
-	if math.Abs(expected-actual) > delta {
-		t.Errorf("expected %f but %f", expected, actual)
-	}
-}
 
 func TestLatToMy(t *testing.T) {
 	assert := assert.New(t)
@@ -26,49 +13,45 @@ func TestLatToMy(t *testing.T) {
 }
 
 func TestLngToMx(t *testing.T) {
-	AssertEqual(t, +1.0, LngToMx(+180.0))
-	AssertEqual(t, +0.5, LngToMx(+90.0))
-	AssertEqual(t, 0.0, LngToMx(0.0))
-	AssertEqual(t, -0.5, LngToMx(-90.0))
-	AssertEqual(t, -1.0, LngToMx(-180.0))
+	assert := assert.New(t)
+	assert.Equal(+1.0, LngToMx(+180.0))
+	assert.Equal(+0.5, LngToMx(+90.0))
+	assert.Equal(0.0, LngToMx(0.0))
+	assert.Equal(-0.5, LngToMx(-90.0))
+	assert.Equal(-1.0, LngToMx(-180.0))
 }
 
 func TestNormalizeM(t *testing.T) {
-	table := [...][3]float64{
-		{-0.5, NormalizeM(+3.5), 1e-15},
-		{+0.5, NormalizeM(+2.5), 1e-15},
-		{-0.5, NormalizeM(+1.5), 1e-15},
-		{+1.0, NormalizeM(+1.0), 1e-15},
-		{+0.5, NormalizeM(+0.5), 1e-15},
-		{0.0, NormalizeM(0.0), 1e-15},
-		{-0.5, NormalizeM(-0.5), 1e-15},
-		{-1.0, NormalizeM(-1.0), 1e-15},
-		{+0.5, NormalizeM(-1.5), 1e-15},
-		{-0.5, NormalizeM(-2.5), 1e-15},
-		{+0.5, NormalizeM(-3.5), 1e-15},
-	}
-	for i := 0; i < len(table); i++ {
-		expected, actual, tolerance := table[i][0], table[i][1], table[i][2]
-		if math.Abs(expected-actual) > tolerance {
-			t.Errorf("i=%d, expected=%e, actual=%e, delta=%e", i, expected, actual, (expected - actual))
-		}
-	}
+	assert := assert.New(t)
+	assert.InDelta(-0.5, NormalizeM(+3.5), 1e-15)
+	assert.InDelta(+0.5, NormalizeM(+2.5), 1e-15)
+	assert.InDelta(-0.5, NormalizeM(+1.5), 1e-15)
+	assert.InDelta(+1.0, NormalizeM(+1.0), 1e-15)
+	assert.InDelta(+0.5, NormalizeM(+0.5), 1e-15)
+	assert.InDelta(0.0, NormalizeM(0.0), 1e-15)
+	assert.InDelta(-0.5, NormalizeM(-0.5), 1e-15)
+	assert.InDelta(-1.0, NormalizeM(-1.0), 1e-15)
+	assert.InDelta(+0.5, NormalizeM(-1.5), 1e-15)
+	assert.InDelta(-0.5, NormalizeM(-2.5), 1e-15)
+	assert.InDelta(+0.5, NormalizeM(-3.5), 1e-15)
 }
 
 func TestMyToLat(t *testing.T) {
-	AssertInDelta(t, +85.0511, MyToLat(+1.0), 1.0e-4)
-	AssertEqual(t, 0.0, MyToLat(0.0))
-	AssertInDelta(t, -85.0511, MyToLat(-1.0), 1.0e-4)
+	assert := assert.New(t)
+	assert.InDelta(+85.0511, MyToLat(+1.0), 1.0e-4)
+	assert.Equal(0.0, MyToLat(0.0))
+	assert.InDelta(-85.0511, MyToLat(-1.0), 1.0e-4)
 }
 
 func TestMxToLng(t *testing.T) {
-	AssertEqual(t, -90.0, MxToLng(+1.5))
-	AssertEqual(t, +180.0, MxToLng(+1.0))
-	AssertEqual(t, +90.0, MxToLng(+0.5))
-	AssertEqual(t, 0.0, MxToLng(0.0))
-	AssertEqual(t, -90.0, MxToLng(-0.5))
-	AssertEqual(t, -180.0, MxToLng(-1.0))
-	AssertEqual(t, +90.0, MxToLng(-1.5))
+	assert := assert.New(t)
+	assert.Equal(-90.0, MxToLng(+1.5))
+	assert.Equal(+180.0, MxToLng(+1.0))
+	assert.Equal(+90.0, MxToLng(+0.5))
+	assert.Equal(0.0, MxToLng(0.0))
+	assert.Equal(-90.0, MxToLng(-0.5))
+	assert.Equal(-180.0, MxToLng(-1.0))
+	assert.Equal(+90.0, MxToLng(-1.5))
 }
 
 /* Ruby
