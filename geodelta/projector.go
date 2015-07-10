@@ -80,6 +80,10 @@ func (nx Nx) ToLng() Lng {
 	return nx.ToMx().ToLng()
 }
 
+func LatLngToNxNy(lat Lat, lng Lng) (Nx, Ny) {
+	return lng.ToNx(), lat.ToNy()
+}
+
 /* Ruby
 func LatlngToNxy(lat, lng) {
   return [
