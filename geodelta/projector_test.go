@@ -1,9 +1,9 @@
 package geodelta
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
 	"math"
+	"testing"
 )
 
 func AssertEqual(t *testing.T, expected float64, actual float64) {
