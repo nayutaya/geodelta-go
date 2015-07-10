@@ -74,15 +74,15 @@ func NxToMx(ny float64) float64 {
 	return ny / 12.0
 }
 
+func LatToNy(lat float64) float64 {
+	return MyToNy(LatToMy(lat))
+}
+
+func LngToNx(lng float64) float64 {
+	return MxToNx(LngToMx(lng))
+}
+
 /* Ruby
-func LatToNy(lat) {
-  return self.my_to_ny(self.lat_to_my(lat))
-}
-
-func LngToNx(lng) {
-  return self.mx_to_nx(self.lng_to_mx(lng))
-}
-
 func NyToLat(ny) {
   return self.my_to_lat(self.ny_to_my(ny))
 }
