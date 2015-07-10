@@ -131,18 +131,26 @@ func TestLatLngToNxNy(t *testing.T) {
 	}
 }
 
-/* Ruby
-func TestNxyToLatlng(t *testing.T) {
+func TestNxNyToLatLng(t *testing.T) {
 	assert := assert.New(t)
-  assert.Equal([0.0, 0.0], @mod.nxy_to_latlng(0.0, 0.0))
-  assert.Equal(
-    [NyToLat(+12.0), NxToLng(+12.0)],
-    @mod.nxy_to_latlng(+12.0, +12.0))
-  assert.Equal(
-    [NyToLat(-12.0), NxToLng(-12.0)],
-    @mod.nxy_to_latlng(-12.0, -12.0))
+	{
+		lat, lng := NxNyToLatLng(Nx(0.0), Ny(0.0))
+		assert.Equal(Lat(0.0), lat)
+		assert.Equal(Lng(0.0), lng)
+	}
+	{
+		lat, lng := NxNyToLatLng(Nx(+12.0), Ny(+12.0))
+		assert.Equal(Ny(+12.0).ToLat(), lat)
+		assert.Equal(Nx(+12.0).ToLng(), lng)
+	}
+	{
+		lat, lng := NxNyToLatLng(Nx(-12.0), Ny(-12.0))
+		assert.Equal(Ny(-12.0).ToLat(), lat)
+		assert.Equal(Nx(-12.0).ToLng(), lng)
+	}
 }
 
+/* Ruby
 func TestRushLatlngNxy(t *testing.T) {
 	assert := assert.New(t)
   1000.times {

@@ -84,18 +84,6 @@ func LatLngToNxNy(lat Lat, lng Lng) (Nx, Ny) {
 	return lng.ToNx(), lat.ToNy()
 }
 
-/* Ruby
-func LatlngToNxy(lat, lng) {
-  return [
-    self.lng_to_nx(lng),
-    self.lat_to_ny(lat),
-  ]
+func NxNyToLatLng(nx Nx, ny Ny) (Lat, Lng) {
+	return ny.ToLat(), nx.ToLng()
 }
-
-func NxyToLatlng(nx, ny) {
-  return [
-    self.ny_to_lat(ny),
-    self.nx_to_lng(nx),
-  ]
-}
-*/
