@@ -2,6 +2,11 @@ package geodelta
 
 import "math"
 
+type Lat float64
+type Lng float64
+type Ny float64
+type Nx float64
+
 const DEG2RAD = math.Pi / 180.0         // 度をラジアンに変換するための係数
 const RAD2DEG = 180.0 / math.Pi         // ラジアンを度に変換するための係数
 const DELTA_HEIGHT = 0.8660254037844386 // 一辺を1.0とする正三角形の高さ math.Sqrt((1*1)-(0.5*0.5))
@@ -73,20 +78,20 @@ func NxToMx(ny float64) float64 {
 	return ny / 12.0
 }
 
-func LatToNy(lat float64) float64 {
-	return MyToNy(LatToMy(lat))
+func LatToNy(lat Lat) Ny {
+	return Ny(MyToNy(LatToMy(float64(lat))))
 }
 
-func LngToNx(lng float64) float64 {
-	return MxToNx(LngToMx(lng))
+func LngToNx(lng Lng) Nx {
+	return Nx(MxToNx(LngToMx(float64(lng))))
 }
 
-func NyToLat(ny float64) float64 {
-	return MyToLat(NyToMy(ny))
+func NyToLat(ny Ny) Lat {
+	return Lat(MyToLat(NyToMy(float64(ny))))
 }
 
-func NxToLng(nx float64) float64 {
-	return MxToLng(NxToMx(nx))
+func NxToLng(nx Nx) Lng {
+	return Lng(MxToLng(NxToMx(float64(nx))))
 }
 
 /* Ruby
