@@ -2,21 +2,25 @@ package geodelta
 
 import "math"
 
-const DEG2RAD float64 = math.Pi / 180.0 // 度をラジアンに変換するための係数
-const RAD2DEG float64 = 180.0 / math.Pi // ラジアンを度に変換するための係数
+type Lat float64 //  -90.0 <= lat <=  +90.0
+type Lng float64 // -180.0 <= lng <= +180.0
+type My float64  //   -1.0 <= my  <=   +1.0
+type Mx float64  //   -1.0 <= mx  <=   +1.0
+type Ny float64  //  -12.0 <= ny  <=  +12.0
+type Nx float64  //  -12.0 <= nx  <=  +12.0
+
+const DEG2RAD = math.Pi / 180.0         // 度をラジアンに変換するための係数
+const RAD2DEG = 180.0 / math.Pi         // ラジアンを度に変換するための係数
+const DELTA_HEIGHT = 0.8660254037844386 // 一辺を1.0とする正三角形の高さ math.Sqrt((1*1)-(0.5*0.5))
 
 // 緯度をメルカトルY座標に変換する
-//   -90.0 <= lat <= +90.0
-//    -1.0 <= my  <=  +1.0
-func LatToMy(lat float64) float64 {
-	return math.Atanh(math.Sin(lat*DEG2RAD)) / math.Pi
+func (lat Lat) ToMy() My {
+	return My(math.Atanh(math.Sin(float64(lat)*DEG2RAD)) / math.Pi)
 }
 
 // 経度をメルカトルX座標に変換する
-//   -180.0 <= lng <= +180.0
-//     -1.0 <= mx  <=   +1.0
-func LngToMx(lng float64) float64 {
-	return lng / 180.0
+func (lng Lng) ToMx() Mx {
+	return Mx(float64(lng) / 180.0)
 }
 
 // メルカトルX座標/Y座標を正規化する
@@ -31,81 +35,55 @@ func NormalizeM(m float64) float64 {
 }
 
 // メルカトルY座標を緯度に変換する
-//    -1.0 <= my  <=  +1.0
-//   -90.0 <= lat <= +90.0
-func MyToLat(my float64) float64 {
-	return math.Asin(math.Tanh(NormalizeM(my)*math.Pi)) * RAD2DEG
+func (my My) ToLat() Lat {
+	return Lat(math.Asin(math.Tanh(NormalizeM(float64(my))*math.Pi)) * RAD2DEG)
 }
 
 // メルカトルX座標を経度に変換する
-//     -1.0 <= mx  <=   +1.0
-//   -180.0 <= lng <= +180.0
-func MxToLng(mx float64) float64 {
-	return NormalizeM(mx) * 180.0
+func (mx Mx) ToLng() Lng {
+	return Lng(NormalizeM(float64(mx)) * 180.0)
 }
 
-/* Ruby
-module GeoDelta
-  module Projector
-    DELTA_HEIGHT = Math.sqrt(0.75)  # 一辺を1.0とする正三角形の高さ
+// メルカトルY座標から正規化Y座標に変換する
+func (my My) ToNy() Ny {
+	return Ny(float64(my) / DELTA_HEIGHT * 12.0)
+}
 
-    # メルカトルY座標から正規化Y座標に変換する
-    #    -1.0 <= my <=  +1.0
-    #   -12.0 <= ny <= +12.0
-    def self.my_to_ny(my)
-      return my / DELTA_HEIGHT * 12.0
-    end
+// メルカトルX座標から正規化X座標に変換する
+func (mx Mx) ToNx() Nx {
+	return Nx(float64(mx) * 12.0)
+}
 
-    # メルカトルX座標から正規化X座標に変換する
-    #    -1.0 <= my <=  +1.0
-    #   -12.0 <= ny <= +12.0
-    def self.mx_to_nx(mx)
-      return mx * 12.0
-    end
+// 正規化Y座標からメルカトルY座標に変換する
+func (ny Ny) ToMy() My {
+	return My(float64(ny) / 12.0 * DELTA_HEIGHT)
+}
 
-    # 正規化Y座標からメルカトルY座標に変換する
-    #   -12.0 <= ny <= +12.0
-    #    -1.0 <= my <=  +1.0
-    def self.ny_to_my(my)
-      return my / 12.0 * DELTA_HEIGHT
-    end
+// 正規化X座標からメルカトルX座標に変換する
+func (nx Nx) ToMx() Mx {
+	return Mx(float64(nx) / 12.0)
+}
 
-    # 正規化X座標からメルカトルX座標に変換する
-    #   -12.0 <= ny <= +12.0
-    #    -1.0 <= my <=  +1.0
-    def self.nx_to_mx(ny)
-      return ny / 12.0
-    end
+func (lat Lat) ToNy() Ny {
+	return lat.ToMy().ToNy()
+}
 
-    def self.lat_to_ny(lat)
-      return self.my_to_ny(self.lat_to_my(lat))
-    end
+func (lng Lng) ToNx() Nx {
+	return lng.ToMx().ToNx()
+}
 
-    def self.lng_to_nx(lng)
-      return self.mx_to_nx(self.lng_to_mx(lng))
-    end
+func (ny Ny) ToLat() Lat {
+	return ny.ToMy().ToLat()
+}
 
-    def self.ny_to_lat(ny)
-      return self.my_to_lat(self.ny_to_my(ny))
-    end
+func (nx Nx) ToLng() Lng {
+	return nx.ToMx().ToLng()
+}
 
-    def self.nx_to_lng(nx)
-      return self.mx_to_lng(self.nx_to_mx(nx))
-    end
+func LatLngToNxNy(lat Lat, lng Lng) (Nx, Ny) {
+	return lng.ToNx(), lat.ToNy()
+}
 
-    def self.latlng_to_nxy(lat, lng)
-      return [
-        self.lng_to_nx(lng),
-        self.lat_to_ny(lat),
-      ]
-    end
-
-    def self.nxy_to_latlng(nx, ny)
-      return [
-        self.ny_to_lat(ny),
-        self.nx_to_lng(nx),
-      ]
-    end
-  end
-end
-*/
+func NxNyToLatLng(nx Nx, ny Ny) (Lat, Lng) {
+	return ny.ToLat(), nx.ToLng()
+}

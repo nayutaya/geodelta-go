@@ -7,18 +7,18 @@ import (
 
 func TestLatToMy(t *testing.T) {
 	assert := assert.New(t)
-	assert.InDelta(+1.0, LatToMy(+85.0511), 1.0e-5)
-	assert.Equal(0.0, LatToMy(0.0))
-	assert.InDelta(-1.0, LatToMy(-85.0511), 1.0e-5)
+	assert.InDelta(+1.0, float64(Lat(+85.0511).ToMy()), 1.0e-5)
+	assert.InDelta(0.0, float64(Lat(0.0).ToMy()), 1.0e-5)
+	assert.InDelta(-1.0, float64(Lat(-85.0511).ToMy()), 1.0e-5)
 }
 
 func TestLngToMx(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(+1.0, LngToMx(+180.0))
-	assert.Equal(+0.5, LngToMx(+90.0))
-	assert.Equal(0.0, LngToMx(0.0))
-	assert.Equal(-0.5, LngToMx(-90.0))
-	assert.Equal(-1.0, LngToMx(-180.0))
+	assert.Equal(Mx(+1.0), Lng(+180.0).ToMx())
+	assert.Equal(Mx(+0.5), Lng(+90.0).ToMx())
+	assert.Equal(Mx(0.0), Lng(0.0).ToMx())
+	assert.Equal(Mx(-0.5), Lng(-90.0).ToMx())
+	assert.Equal(Mx(-1.0), Lng(-180.0).ToMx())
 }
 
 func TestNormalizeM(t *testing.T) {
@@ -38,118 +38,127 @@ func TestNormalizeM(t *testing.T) {
 
 func TestMyToLat(t *testing.T) {
 	assert := assert.New(t)
-	assert.InDelta(+85.0511, MyToLat(+1.0), 1.0e-4)
-	assert.Equal(0.0, MyToLat(0.0))
-	assert.InDelta(-85.0511, MyToLat(-1.0), 1.0e-4)
+	assert.InDelta(+85.0511, float64(My(+1.0).ToLat()), 1.0e-4)
+	assert.InDelta(0.0, float64(My(0.0).ToLat()), 1.0e-4)
+	assert.InDelta(-85.0511, float64(My(-1.0).ToLat()), 1.0e-4)
 }
 
 func TestMxToLng(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(-90.0, MxToLng(+1.5))
-	assert.Equal(+180.0, MxToLng(+1.0))
-	assert.Equal(+90.0, MxToLng(+0.5))
-	assert.Equal(0.0, MxToLng(0.0))
-	assert.Equal(-90.0, MxToLng(-0.5))
-	assert.Equal(-180.0, MxToLng(-1.0))
-	assert.Equal(+90.0, MxToLng(-1.5))
+	assert.Equal(Lng(-90.0), Mx(+1.5).ToLng())
+	assert.Equal(Lng(+180.0), Mx(+1.0).ToLng())
+	assert.Equal(Lng(+90.0), Mx(+0.5).ToLng())
+	assert.Equal(Lng(0.0), Mx(0.0).ToLng())
+	assert.Equal(Lng(-90.0), Mx(-0.5).ToLng())
+	assert.Equal(Lng(-180.0), Mx(-1.0).ToLng())
+	assert.Equal(Lng(+90.0), Mx(-1.5).ToLng())
+}
+
+func TestMyToNy(t *testing.T) {
+	max := DELTA_HEIGHT
+	assert := assert.New(t)
+	assert.Equal(Ny(+12.0), My(+max).ToNy())
+	assert.Equal(Ny(0.0), My(0.0).ToNy())
+	assert.Equal(Ny(-12.0), My(-max).ToNy())
+}
+
+func TestMxToNx(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Nx(+12.0), Mx(+1.0).ToNx())
+	assert.Equal(Nx(0.0), Mx(0.0).ToNx())
+	assert.Equal(Nx(-12.0), Mx(-1.0).ToNx())
+}
+
+func TestNyToMy(t *testing.T) {
+	max := DELTA_HEIGHT
+	assert := assert.New(t)
+	assert.Equal(My(+max), Ny(+12.0).ToMy())
+	assert.Equal(My(0.0), Ny(0.0).ToMy())
+	assert.Equal(My(-max), Ny(-12.0).ToMy())
+}
+
+func TestNxToMx(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Mx(+1.0), Nx(+12.0).ToMx())
+	assert.Equal(Mx(0.0), Nx(0.0).ToMx())
+	assert.Equal(Mx(-1.0), Nx(-12.0).ToMx())
+}
+
+func TestLatToNy(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Ny(0.0), Lat(0.0).ToNy())
+	assert.Equal(Lat(+82.4674).ToMy().ToNy(), Lat(+82.4674).ToNy())
+	assert.Equal(Lat(-82.4674).ToMy().ToNy(), Lat(-82.4674).ToNy())
+}
+
+func TestLngToNx(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Nx(0.0), Lng(0.0).ToNx())
+	assert.Equal(Lng(+180.0).ToMx().ToNx(), Lng(+180.0).ToNx())
+	assert.Equal(Lng(-180.0).ToMx().ToNx(), Lng(-180.0).ToNx())
+}
+
+func TestNyToLat(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Lat(0.0), Ny(0.0).ToLat())
+	assert.Equal(Ny(+12.0).ToMy().ToLat(), Ny(+12.0).ToLat())
+	assert.Equal(Ny(-12.0).ToMy().ToLat(), Ny(-12.0).ToLat())
+}
+
+func TestNxToLng(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(Lng(0.0), Nx(0.0).ToLng())
+	assert.Equal(Nx(+12.0).ToMx().ToLng(), Nx(+12.0).ToLng())
+	assert.Equal(Nx(-12.0).ToMx().ToLng(), Nx(-12.0).ToLng())
+}
+
+func TestLatLngToNxNy(t *testing.T) {
+	assert := assert.New(t)
+	{
+		nx, ny := LatLngToNxNy(Lat(0.0), Lng(0.0))
+		assert.Equal(Nx(0.0), nx)
+		assert.Equal(Ny(0.0), ny)
+	}
+	{
+		nx, ny := LatLngToNxNy(Lat(+82.4674), Lng(+180.0))
+		assert.Equal(Lng(+180.0).ToNx(), nx)
+		assert.Equal(Lat(+82.4674).ToNy(), ny)
+	}
+	{
+		nx, ny := LatLngToNxNy(Lat(-82.4674), Lng(-180.0))
+		assert.Equal(Lng(-180.0).ToNx(), nx)
+		assert.Equal(Lat(-82.4674).ToNy(), ny)
+	}
+}
+
+func TestNxNyToLatLng(t *testing.T) {
+	assert := assert.New(t)
+	{
+		lat, lng := NxNyToLatLng(Nx(0.0), Ny(0.0))
+		assert.Equal(Lat(0.0), lat)
+		assert.Equal(Lng(0.0), lng)
+	}
+	{
+		lat, lng := NxNyToLatLng(Nx(+12.0), Ny(+12.0))
+		assert.Equal(Ny(+12.0).ToLat(), lat)
+		assert.Equal(Nx(+12.0).ToLng(), lng)
+	}
+	{
+		lat, lng := NxNyToLatLng(Nx(-12.0), Ny(-12.0))
+		assert.Equal(Ny(-12.0).ToLat(), lat)
+		assert.Equal(Nx(-12.0).ToLng(), lng)
+	}
 }
 
 /* Ruby
-class GeoDeltaProjectorTest < Minitest::Test
-  def test_my_to_ny
-    max = @mod::DELTA_HEIGHT
-    assert_equal(+12.0, @mod.my_to_ny(+max))
-    assert_equal(  0.0, @mod.my_to_ny( 0.0))
-    assert_equal(-12.0, @mod.my_to_ny(-max))
-  end
-
-  def test_mx_to_nx
-    assert_equal(+12.0, @mod.mx_to_nx(+1.0))
-    assert_equal(  0.0, @mod.mx_to_nx( 0.0))
-    assert_equal(-12.0, @mod.mx_to_nx(-1.0))
-  end
-
-  def test_ny_to_my
-    max = @mod::DELTA_HEIGHT
-    assert_equal(+max, @mod.ny_to_my(+12.0))
-    assert_equal( 0.0, @mod.ny_to_my(  0.0))
-    assert_equal(-max, @mod.ny_to_my(-12.0))
-  end
-
-  def test_nx_to_mx
-    assert_equal(+1.0, @mod.nx_to_mx(+12.0))
-    assert_equal( 0.0, @mod.nx_to_mx(  0.0))
-    assert_equal(-1.0, @mod.nx_to_mx(-12.0))
-  end
-
-  def test_lat_to_ny
-    assert_equal(0.0, @mod.lat_to_ny(0.0))
-    assert_equal(
-      @mod.my_to_ny(@mod.lat_to_my(+82.4674)),
-      @mod.lat_to_ny(+82.4674))
-    assert_equal(
-      @mod.my_to_ny(@mod.lat_to_my(-82.4674)),
-      @mod.lat_to_ny(-82.4674))
-  end
-
-  def test_lng_to_nx
-    assert_equal(0.0, @mod.lng_to_nx(0.0))
-    assert_equal(
-      @mod.mx_to_nx(@mod.lng_to_mx(+180.0)),
-      @mod.lng_to_nx(+180.0))
-    assert_equal(
-      @mod.mx_to_nx(@mod.lng_to_mx(-180.0)),
-      @mod.lng_to_nx(-180.0))
-  end
-
-  def test_ny_to_lat
-    assert_equal(0.0, @mod.ny_to_lat(0.0))
-    assert_equal(
-      @mod.my_to_lat(@mod.ny_to_my(+12.0)),
-      @mod.ny_to_lat(+12.0))
-    assert_equal(
-      @mod.my_to_lat(@mod.ny_to_my(-12.0)),
-      @mod.ny_to_lat(-12.0))
-  end
-
-  def test_nx_to_lng
-    assert_equal(0.0, @mod.nx_to_lng(0.0))
-    assert_equal(
-      @mod.mx_to_lng(@mod.nx_to_mx(+12.0)),
-      @mod.nx_to_lng(+12.0))
-    assert_equal(
-      @mod.mx_to_lng(@mod.nx_to_mx(-12.0)),
-      @mod.nx_to_lng(-12.0))
-  end
-
-  def test_latlng_to_nxy
-    assert_equal([0.0, 0.0], @mod.latlng_to_nxy(0.0, 0.0))
-    assert_equal(
-      [@mod.lng_to_nx(+180.0), @mod.lat_to_ny(+82.4674)],
-      @mod.latlng_to_nxy(+82.4674, +180.0))
-    assert_equal(
-      [@mod.lng_to_nx(-180.0), @mod.lat_to_ny(-82.4674)],
-      @mod.latlng_to_nxy(-82.4674, -180.0))
-  end
-
-  def test_nxy_to_latlng
-    assert_equal([0.0, 0.0], @mod.nxy_to_latlng(0.0, 0.0))
-    assert_equal(
-      [@mod.ny_to_lat(+12.0), @mod.nx_to_lng(+12.0)],
-      @mod.nxy_to_latlng(+12.0, +12.0))
-    assert_equal(
-      [@mod.ny_to_lat(-12.0), @mod.nx_to_lng(-12.0)],
-      @mod.nxy_to_latlng(-12.0, -12.0))
-  end
-
-  def test_rush__latlng_nxy
-    1000.times {
-      lat1, lng1 = [(rand * 180.0) - 90.0, (rand * 360.0) - 180.0]
-      nx, ny     = @mod.latlng_to_nxy(lat1, lng1)
-      lat2, lng2 = @mod.nxy_to_latlng(nx, ny)
-      assert_in_delta(lat1, lat2, 1.0E-10)
-      assert_in_delta(lng1, lng2, 1.0E-13)
-    }
-  end
-end
+func TestRushLatlngNxy(t *testing.T) {
+	assert := assert.New(t)
+  1000.times {
+    lat1, lng1 = [(rand * 180.0) - 90.0, (rand * 360.0) - 180.0]
+    nx, ny     = @mod.latlng_to_nxy(lat1, lng1)
+    lat2, lng2 = @mod.nxy_to_latlng(nx, ny)
+    assert_in_delta(lat1, lat2, 1.0E-10)
+    assert_in_delta(lng1, lng2, 1.0E-13)
+  }
+}
 */
