@@ -82,15 +82,15 @@ func LngToNx(lng float64) float64 {
 	return MxToNx(LngToMx(lng))
 }
 
+func NyToLat(ny float64) float64 {
+	return MyToLat(NyToMy(ny))
+}
+
+func NxToLng(nx float64) float64 {
+	return MxToLng(NxToMx(nx))
+}
+
 /* Ruby
-func NyToLat(ny) {
-  return self.my_to_lat(self.ny_to_my(ny))
-}
-
-func NxToLng(nx) {
-  return self.mx_to_lng(self.nx_to_mx(nx))
-}
-
 func LatlngToNxy(lat, lng) {
   return [
     self.lng_to_nx(lng),
