@@ -2,6 +2,7 @@ package geodelta
 
 import (
 	"github.com/stretchr/testify/assert"
+	"math"
 	"testing"
 )
 
@@ -54,15 +55,16 @@ func TestMxToLng(t *testing.T) {
 	assert.Equal(+90.0, MxToLng(-1.5))
 }
 
-/* Ruby
 func TestMyToNy(t *testing.T) {
-  max = @mod::DELTA_HEIGHT
+	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
+	max := DELTA_HEIGHT
 	assert := assert.New(t)
-  assert.Equal(+12.0, MyToNy(+max))
-  assert.Equal(  0.0, MyToNy( 0.0))
-  assert.Equal(-12.0, MyToNy(-max))
+	assert.Equal(+12.0, MyToNy(+max))
+	assert.Equal(0.0, MyToNy(0.0))
+	assert.Equal(-12.0, MyToNy(-max))
 }
 
+/* Ruby
 func TestMxToNx(t *testing.T) {
 	assert := assert.New(t)
   assert.Equal(+12.0, MxToNx(+1.0))

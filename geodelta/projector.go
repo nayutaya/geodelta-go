@@ -44,68 +44,63 @@ func MxToLng(mx float64) float64 {
 	return NormalizeM(mx) * 180.0
 }
 
+// メルカトルY座標から正規化Y座標に変換する
+//    -1.0 <= my <=  +1.0
+//   -12.0 <= ny <= +12.0
+func MyToNy(my float64) float64 {
+	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
+	return my / DELTA_HEIGHT * 12.0
+}
+
 /* Ruby
-module GeoDelta
-  module Projector
-    DELTA_HEIGHT = Math.sqrt(0.75)  # 一辺を1.0とする正三角形の高さ
+// メルカトルX座標から正規化X座標に変換する
+//    -1.0 <= my <=  +1.0
+//   -12.0 <= ny <= +12.0
+func MxToNx(mx) {
+  return mx * 12.0
+}
 
-    # メルカトルY座標から正規化Y座標に変換する
-    #    -1.0 <= my <=  +1.0
-    #   -12.0 <= ny <= +12.0
-    def self.my_to_ny(my)
-      return my / DELTA_HEIGHT * 12.0
-    end
+// 正規化Y座標からメルカトルY座標に変換する
+//   -12.0 <= ny <= +12.0
+//    -1.0 <= my <=  +1.0
+func NyToMy(my) {
+  return my / 12.0 * DELTA_HEIGHT
+}
 
-    # メルカトルX座標から正規化X座標に変換する
-    #    -1.0 <= my <=  +1.0
-    #   -12.0 <= ny <= +12.0
-    def self.mx_to_nx(mx)
-      return mx * 12.0
-    end
+// 正規化X座標からメルカトルX座標に変換する
+//   -12.0 <= ny <= +12.0
+//    -1.0 <= my <=  +1.0
+func NxToMx(ny) {
+  return ny / 12.0
+}
 
-    # 正規化Y座標からメルカトルY座標に変換する
-    #   -12.0 <= ny <= +12.0
-    #    -1.0 <= my <=  +1.0
-    def self.ny_to_my(my)
-      return my / 12.0 * DELTA_HEIGHT
-    end
+func LatToNy(lat) {
+  return self.my_to_ny(self.lat_to_my(lat))
+}
 
-    # 正規化X座標からメルカトルX座標に変換する
-    #   -12.0 <= ny <= +12.0
-    #    -1.0 <= my <=  +1.0
-    def self.nx_to_mx(ny)
-      return ny / 12.0
-    end
+func LngToNx(lng) {
+  return self.mx_to_nx(self.lng_to_mx(lng))
+}
 
-    def self.lat_to_ny(lat)
-      return self.my_to_ny(self.lat_to_my(lat))
-    end
+func NyToLat(ny) {
+  return self.my_to_lat(self.ny_to_my(ny))
+}
 
-    def self.lng_to_nx(lng)
-      return self.mx_to_nx(self.lng_to_mx(lng))
-    end
+func NxToLng(nx) {
+  return self.mx_to_lng(self.nx_to_mx(nx))
+}
 
-    def self.ny_to_lat(ny)
-      return self.my_to_lat(self.ny_to_my(ny))
-    end
+func LatlngToNxy(lat, lng) {
+  return [
+    self.lng_to_nx(lng),
+    self.lat_to_ny(lat),
+  ]
+}
 
-    def self.nx_to_lng(nx)
-      return self.mx_to_lng(self.nx_to_mx(nx))
-    end
-
-    def self.latlng_to_nxy(lat, lng)
-      return [
-        self.lng_to_nx(lng),
-        self.lat_to_ny(lat),
-      ]
-    end
-
-    def self.nxy_to_latlng(nx, ny)
-      return [
-        self.ny_to_lat(ny),
-        self.nx_to_lng(nx),
-      ]
-    end
-  end
-end
+func NxyToLatlng(nx, ny) {
+  return [
+    self.ny_to_lat(ny),
+    self.nx_to_lng(nx),
+  ]
+}
 */
