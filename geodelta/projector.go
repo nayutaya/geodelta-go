@@ -67,15 +67,15 @@ func MxToNx(mx float64) float64 {
 // 正規化Y座標からメルカトルY座標に変換する
 //   -12.0 <= ny <= +12.0
 //    -1.0 <= my <=  +1.0
-func NyToMy(my float64) float64 {
-	return my / 12.0 * DELTA_HEIGHT
+func NyToMy(ny float64) float64 {
+	return ny / 12.0 * DELTA_HEIGHT
 }
 
 // 正規化X座標からメルカトルX座標に変換する
-//   -12.0 <= ny <= +12.0
-//    -1.0 <= my <=  +1.0
-func NxToMx(ny float64) float64 {
-	return ny / 12.0
+//   -12.0 <= nx <= +12.0
+//    -1.0 <= mx <=  +1.0
+func NxToMx(nx float64) float64 {
+	return nx / 12.0
 }
 
 func LatToNy(lat Lat) Ny {
