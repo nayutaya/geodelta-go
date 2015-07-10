@@ -52,14 +52,14 @@ func MyToNy(my float64) float64 {
 	return my / DELTA_HEIGHT * 12.0
 }
 
-/* Ruby
 // メルカトルX座標から正規化X座標に変換する
 //    -1.0 <= my <=  +1.0
 //   -12.0 <= ny <= +12.0
-func MxToNx(mx) {
-  return mx * 12.0
+func MxToNx(mx float64) float64 {
+	return mx * 12.0
 }
 
+/* Ruby
 // 正規化Y座標からメルカトルY座標に変換する
 //   -12.0 <= ny <= +12.0
 //    -1.0 <= my <=  +1.0

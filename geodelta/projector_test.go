@@ -64,14 +64,14 @@ func TestMyToNy(t *testing.T) {
 	assert.Equal(-12.0, MyToNy(-max))
 }
 
-/* Ruby
 func TestMxToNx(t *testing.T) {
 	assert := assert.New(t)
-  assert.Equal(+12.0, MxToNx(+1.0))
-  assert.Equal(  0.0, MxToNx( 0.0))
-  assert.Equal(-12.0, MxToNx(-1.0))
+	assert.Equal(+12.0, MxToNx(+1.0))
+	assert.Equal(0.0, MxToNx(0.0))
+	assert.Equal(-12.0, MxToNx(-1.0))
 }
 
+/* Ruby
 func TestNyToMy(t *testing.T) {
   max = @mod::DELTA_HEIGHT
 	assert := assert.New(t)
