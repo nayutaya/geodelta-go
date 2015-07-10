@@ -7,18 +7,18 @@ import (
 
 func TestLatToMy(t *testing.T) {
 	assert := assert.New(t)
-	assert.InDelta(+1.0, LatToMy(+85.0511), 1.0e-5)
-	assert.Equal(0.0, LatToMy(0.0))
-	assert.InDelta(-1.0, LatToMy(-85.0511), 1.0e-5)
+	assert.InDelta(+1.0, float64(LatToMy(+85.0511)), 1.0e-5)
+	assert.InDelta(0.0, float64(LatToMy(0.0)), 1.0e-5)
+	assert.InDelta(-1.0, float64(LatToMy(-85.0511)), 1.0e-5)
 }
 
 func TestLngToMx(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(+1.0, LngToMx(+180.0))
-	assert.Equal(+0.5, LngToMx(+90.0))
-	assert.Equal(0.0, LngToMx(0.0))
-	assert.Equal(-0.5, LngToMx(-90.0))
-	assert.Equal(-1.0, LngToMx(-180.0))
+	assert.Equal(Mx(+1.0), LngToMx(+180.0))
+	assert.Equal(Mx(+0.5), LngToMx(+90.0))
+	assert.Equal(Mx(0.0), LngToMx(0.0))
+	assert.Equal(Mx(-0.5), LngToMx(-90.0))
+	assert.Equal(Mx(-1.0), LngToMx(-180.0))
 }
 
 func TestNormalizeM(t *testing.T) {
@@ -38,50 +38,50 @@ func TestNormalizeM(t *testing.T) {
 
 func TestMyToLat(t *testing.T) {
 	assert := assert.New(t)
-	assert.InDelta(+85.0511, MyToLat(+1.0), 1.0e-4)
-	assert.Equal(0.0, MyToLat(0.0))
-	assert.InDelta(-85.0511, MyToLat(-1.0), 1.0e-4)
+	assert.InDelta(+85.0511, float64(MyToLat(+1.0)), 1.0e-4)
+	assert.InDelta(0.0, float64(MyToLat(0.0)), 1.0e-4)
+	assert.InDelta(-85.0511, float64(MyToLat(-1.0)), 1.0e-4)
 }
 
 func TestMxToLng(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(-90.0, MxToLng(+1.5))
-	assert.Equal(+180.0, MxToLng(+1.0))
-	assert.Equal(+90.0, MxToLng(+0.5))
-	assert.Equal(0.0, MxToLng(0.0))
-	assert.Equal(-90.0, MxToLng(-0.5))
-	assert.Equal(-180.0, MxToLng(-1.0))
-	assert.Equal(+90.0, MxToLng(-1.5))
+	assert.Equal(Lng(-90.0), MxToLng(+1.5))
+	assert.Equal(Lng(+180.0), MxToLng(+1.0))
+	assert.Equal(Lng(+90.0), MxToLng(+0.5))
+	assert.Equal(Lng(0.0), MxToLng(0.0))
+	assert.Equal(Lng(-90.0), MxToLng(-0.5))
+	assert.Equal(Lng(-180.0), MxToLng(-1.0))
+	assert.Equal(Lng(+90.0), MxToLng(-1.5))
 }
 
 func TestMyToNy(t *testing.T) {
 	max := DELTA_HEIGHT
 	assert := assert.New(t)
-	assert.Equal(+12.0, MyToNy(+max))
-	assert.Equal(0.0, MyToNy(0.0))
-	assert.Equal(-12.0, MyToNy(-max))
+	assert.Equal(Ny(+12.0), MyToNy(My(+max)))
+	assert.Equal(Ny(0.0), MyToNy(0.0))
+	assert.Equal(Ny(-12.0), MyToNy(My(-max)))
 }
 
 func TestMxToNx(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(+12.0, MxToNx(+1.0))
-	assert.Equal(0.0, MxToNx(0.0))
-	assert.Equal(-12.0, MxToNx(-1.0))
+	assert.Equal(Nx(+12.0), MxToNx(+1.0))
+	assert.Equal(Nx(0.0), MxToNx(0.0))
+	assert.Equal(Nx(-12.0), MxToNx(-1.0))
 }
 
 func TestNyToMy(t *testing.T) {
 	max := DELTA_HEIGHT
 	assert := assert.New(t)
-	assert.Equal(+max, NyToMy(+12.0))
-	assert.Equal(0.0, NyToMy(0.0))
-	assert.Equal(-max, NyToMy(-12.0))
+	assert.Equal(My(+max), NyToMy(+12.0))
+	assert.Equal(My(0.0), NyToMy(0.0))
+	assert.Equal(My(-max), NyToMy(-12.0))
 }
 
 func TestNxToMx(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(+1.0, NxToMx(+12.0))
-	assert.Equal(0.0, NxToMx(0.0))
-	assert.Equal(-1.0, NxToMx(-12.0))
+	assert.Equal(Mx(+1.0), NxToMx(+12.0))
+	assert.Equal(Mx(0.0), NxToMx(0.0))
+	assert.Equal(Mx(-1.0), NxToMx(-12.0))
 }
 
 func TestLatToNy(t *testing.T) {
@@ -107,9 +107,9 @@ func TestNyToLat(t *testing.T) {
 
 func TestNxToLng(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(Lng(0.0), NxToLng(0.0))
-	assert.Equal(Lng(MxToLng(NxToMx(+12.0))), NxToLng(+12.0))
-	assert.Equal(Lng(MxToLng(NxToMx(-12.0))), NxToLng(-12.0))
+	assert.Equal(Lng(0.0), NxToLng(Nx(0.0)))
+	assert.Equal(Lng(MxToLng(NxToMx(+12.0))), NxToLng(Nx(+12.0)))
+	assert.Equal(Lng(MxToLng(NxToMx(-12.0))), NxToLng(Nx(-12.0)))
 }
 
 /* Ruby
