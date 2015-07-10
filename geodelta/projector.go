@@ -2,8 +2,9 @@ package geodelta
 
 import "math"
 
-const DEG2RAD = math.Pi / 180.0 // 度をラジアンに変換するための係数
-const RAD2DEG = 180.0 / math.Pi // ラジアンを度に変換するための係数
+const DEG2RAD = math.Pi / 180.0         // 度をラジアンに変換するための係数
+const RAD2DEG = 180.0 / math.Pi         // ラジアンを度に変換するための係数
+const DELTA_HEIGHT = 0.8660254037844386 // 一辺を1.0とする正三角形の高さ math.Sqrt((1*1)-(0.5*0.5))
 
 // 緯度をメルカトルY座標に変換する
 //   -90.0 <= lat <= +90.0
@@ -48,7 +49,6 @@ func MxToLng(mx float64) float64 {
 //    -1.0 <= my <=  +1.0
 //   -12.0 <= ny <= +12.0
 func MyToNy(my float64) float64 {
-	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
 	return my / DELTA_HEIGHT * 12.0
 }
 
@@ -63,7 +63,6 @@ func MxToNx(mx float64) float64 {
 //   -12.0 <= ny <= +12.0
 //    -1.0 <= my <=  +1.0
 func NyToMy(my float64) float64 {
-	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
 	return my / 12.0 * DELTA_HEIGHT
 }
 

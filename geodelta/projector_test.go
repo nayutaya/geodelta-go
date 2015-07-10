@@ -2,7 +2,6 @@ package geodelta
 
 import (
 	"github.com/stretchr/testify/assert"
-	"math"
 	"testing"
 )
 
@@ -56,7 +55,6 @@ func TestMxToLng(t *testing.T) {
 }
 
 func TestMyToNy(t *testing.T) {
-	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
 	max := DELTA_HEIGHT
 	assert := assert.New(t)
 	assert.Equal(+12.0, MyToNy(+max))
@@ -72,7 +70,6 @@ func TestMxToNx(t *testing.T) {
 }
 
 func TestNyToMy(t *testing.T) {
-	DELTA_HEIGHT := math.Sqrt(0.75) // 一辺を1.0とする正三角形の高さ
 	max := DELTA_HEIGHT
 	assert := assert.New(t)
 	assert.Equal(+max, NyToMy(+12.0))
