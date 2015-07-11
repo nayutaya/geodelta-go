@@ -34,17 +34,18 @@ func TestDecodeWorldDelta(t *testing.T) {
 	// assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
 }
 
-/*
-  def test_encode_and_decode_world_delta
-    (0..7).each { |id|
-      encoded1 = @mod.encode_world_delta(id)
-      decoded1 = @mod.decode_world_delta(encoded1)
-      encoded2 = @mod.encode_world_delta(decoded1)
-      assert_equal(id, decoded1)
-      assert_equal(encoded1, encoded2)
-    }
-  end
+func TestEncodeAndDecodeWorldDelta(t *testing.T) {
+	assert := assert.New(t)
+	for id := uint8(0); id <= 7; id++ {
+		encoded1 := EncodeWorldDelta(id)
+		decoded1 := DecodeWorldDelta(encoded1)
+		encoded2 := EncodeWorldDelta(decoded1)
+		assert.Equal(id, decoded1)
+		assert.Equal(encoded1, encoded2)
+	}
+}
 
+/*
   def test_encode_sub_delta__1
     assert_equal("2", @mod.encode_sub_delta([0, 0]))
     assert_equal("3", @mod.encode_sub_delta([0, 1]))

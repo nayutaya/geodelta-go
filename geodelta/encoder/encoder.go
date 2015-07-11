@@ -41,7 +41,7 @@ func EncodeWorldDelta(id uint8) string {
 }
 
 func DecodeWorldDelta(code string) uint8 {
-  // TODO: mapにする
+	// TODO: mapにする
 	//    return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
 	switch code {
 	case "Z":
