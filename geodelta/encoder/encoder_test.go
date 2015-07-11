@@ -1,29 +1,27 @@
 package encoder
 
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
+
+func TestEncodeWorldDelta(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal("Z", EncodeWorldDelta(0))
+	assert.Equal("Y", EncodeWorldDelta(1))
+	assert.Equal("X", EncodeWorldDelta(2))
+	assert.Equal("W", EncodeWorldDelta(3))
+	assert.Equal("V", EncodeWorldDelta(4))
+	assert.Equal("T", EncodeWorldDelta(5))
+	assert.Equal("S", EncodeWorldDelta(6))
+	assert.Equal("R", EncodeWorldDelta(7))
+	// TODO:
+	// assert_raises(RuntimeError) { @mod.encode_world_delta(-1) }
+	// assert_raises(RuntimeError) { @mod.encode_world_delta(8) }
+
+}
+
 /*
-# encoding: utf-8
-
-require_relative "./minitest_helper"
-require_relative "../lib/geodelta/encoder"
-
-class GeoDeltaEncoderTest < Minitest::Test
-  def setup
-    @mod = GeoDelta::Encoder
-  end
-
-  def test_encode_world_delta
-    assert_equal("Z", @mod.encode_world_delta(0))
-    assert_equal("Y", @mod.encode_world_delta(1))
-    assert_equal("X", @mod.encode_world_delta(2))
-    assert_equal("W", @mod.encode_world_delta(3))
-    assert_equal("V", @mod.encode_world_delta(4))
-    assert_equal("T", @mod.encode_world_delta(5))
-    assert_equal("S", @mod.encode_world_delta(6))
-    assert_equal("R", @mod.encode_world_delta(7))
-    assert_raises(RuntimeError) { @mod.encode_world_delta(-1) }
-    assert_raises(RuntimeError) { @mod.encode_world_delta(8) }
-  end
-
   def test_decode_world_delta
     assert_equal(0, @mod.decode_world_delta("Z"))
     assert_equal(1, @mod.decode_world_delta("Y"))
@@ -183,5 +181,4 @@ class GeoDeltaEncoderTest < Minitest::Test
       assert_equal(encoded1, encoded2)
     }
   end
-end
 */
