@@ -40,6 +40,31 @@ func EncodeWorldDelta(id uint8) string {
 	}
 }
 
+func DecodeWorldDelta(code string) uint8 {
+  // TODO: mapにする
+	//    return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
+	switch code {
+	case "Z":
+		return 0
+	case "Y":
+		return 1
+	case "X":
+		return 2
+	case "W":
+		return 3
+	case "V":
+		return 4
+	case "T":
+		return 5
+	case "S":
+		return 6
+	case "R":
+		return 7
+	default:
+		return 8
+	}
+}
+
 /*
    SUB_DELTA_TABLE = [
      [[0, 0], "2"],
@@ -65,12 +90,9 @@ func EncodeWorldDelta(id uint8) string {
    ].each(&:freeze).freeze
    SUB_IDS_TO_CHAR = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[nums] = char; memo }.freeze
    SUB_CHAR_TO_IDS = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[char] = nums; memo }.freeze
+*/
 
-
-   def self.decode_world_delta(code)
-     return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
-   end
-
+/*
    def self.encode_sub_delta(ids)
      raise("sub delta ids is empty") if ids.empty?
      return ids.each_slice(2).map { |part|

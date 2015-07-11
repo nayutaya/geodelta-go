@@ -18,23 +18,23 @@ func TestEncodeWorldDelta(t *testing.T) {
 	// TODO:
 	// assert_raises(RuntimeError) { @mod.encode_world_delta(-1) }
 	// assert_raises(RuntimeError) { @mod.encode_world_delta(8) }
+}
 
+func TestDecodeWorldDelta(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(uint8(0), DecodeWorldDelta("Z"))
+	assert.Equal(uint8(1), DecodeWorldDelta("Y"))
+	assert.Equal(uint8(2), DecodeWorldDelta("X"))
+	assert.Equal(uint8(3), DecodeWorldDelta("W"))
+	assert.Equal(uint8(4), DecodeWorldDelta("V"))
+	assert.Equal(uint8(5), DecodeWorldDelta("T"))
+	assert.Equal(uint8(6), DecodeWorldDelta("S"))
+	assert.Equal(uint8(7), DecodeWorldDelta("R"))
+	// assert_raises(RuntimeError) { @mod.decode_world_delta("z") }
+	// assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
 }
 
 /*
-  def test_decode_world_delta
-    assert_equal(0, @mod.decode_world_delta("Z"))
-    assert_equal(1, @mod.decode_world_delta("Y"))
-    assert_equal(2, @mod.decode_world_delta("X"))
-    assert_equal(3, @mod.decode_world_delta("W"))
-    assert_equal(4, @mod.decode_world_delta("V"))
-    assert_equal(5, @mod.decode_world_delta("T"))
-    assert_equal(6, @mod.decode_world_delta("S"))
-    assert_equal(7, @mod.decode_world_delta("R"))
-    assert_raises(RuntimeError) { @mod.decode_world_delta("z") }
-    assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
-  end
-
   def test_encode_and_decode_world_delta
     (0..7).each { |id|
       encoded1 = @mod.encode_world_delta(id)
