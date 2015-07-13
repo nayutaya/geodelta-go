@@ -135,14 +135,18 @@ func TestDecodeSubDelta3(t *testing.T) {
 	assert.Equal([]byte{0, 1, 2, 3}, DecodeSubDelta("3E"))
 }
 
-/*
-  func test_decode_sub_delta__4(t *testing.T) {
+func TestDecodeSubDelta4(t *testing.T) {
 	assert := assert.New(t)
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("") }
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("a") }
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("Z") }
-  }
-*/
+	assert.Panics(func() {
+		DecodeSubDelta("")
+	})
+	assert.Panics(func() {
+		DecodeSubDelta("a")
+	})
+	assert.Panics(func() {
+		DecodeSubDelta("Z")
+	})
+}
 
 func TestEncodeAndDecodeSubDelta1(t *testing.T) {
 	assert := assert.New(t)

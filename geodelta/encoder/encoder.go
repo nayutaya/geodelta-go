@@ -160,7 +160,6 @@ func EncodeSubDelta(ids []byte) string {
 }
 
 func DecodeSubDelta(codes string) []byte {
-	//  raise("sub delta codes is empty") if codes.empty?
 	//  return codes.chars.inject([]) { |memo, char|
 	//    memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
 	//  }
@@ -175,7 +174,7 @@ func DecodeSubDeltaArray(codes []string) []byte {
 	} else if len(codes) == 1 {
 		return DecodeSubDeltaOne(codes[0])
 	} else {
-		return []byte{}
+		panic("sub delta codes is empty")
 	}
 }
 
@@ -223,7 +222,7 @@ func DecodeSubDeltaOne(code string) []byte {
 	case "P":
 		return []byte{3}
 	default:
-		return []byte{}
+		panic("invalid sub delta code")
 	}
 }
 
