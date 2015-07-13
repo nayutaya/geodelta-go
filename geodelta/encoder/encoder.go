@@ -238,11 +238,13 @@ func Encode(ids []byte) string {
 	}
 }
 
-/*
-   def self.decode(codes)
-     raise("delta codes is empty") if codes.empty?
-     result  = [self.decode_world_delta(codes[0])]
-     result += self.decode_sub_delta(codes[1..-1]) if codes.size >= 2
-     return result
-   end
-*/
+func Decode(codes string) []byte {
+	if len(codes) == 0 {
+		//  raise("delta codes is empty") if codes.empty?
+		return []byte{}
+	} else if len(codes) == 1 {
+		return []byte{DecodeWorldDelta(codes[0:1])}
+	} else {
+		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+	}
+}

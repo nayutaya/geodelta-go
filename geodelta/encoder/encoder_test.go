@@ -172,20 +172,21 @@ func TestEncode(t *testing.T) {
 	// assert_raises(RuntimeError) { @mod.encode([]) }
 }
 
-/*
-  func test_decode(t *testing.T) {
+func TestDecode(t *testing.T) {
 	assert := assert.New(t)
-    assert.Equal([0],          @mod.decode("Z"))
-    assert.Equal([0, 1],       @mod.decode("ZM"))
-    assert.Equal([0, 1, 2],    @mod.decode("Z8"))
-    assert.Equal([0, 1, 2, 3], @mod.decode("Z8P"))
-    assert.Equal([7],          @mod.decode("R"))
-    assert.Equal([7, 3],       @mod.decode("RP"))
-    assert.Equal([7, 3, 2],    @mod.decode("RH"))
-    assert.Equal([7, 3, 2, 1], @mod.decode("RHM"))
-    assert_raises(RuntimeError) { @mod.encode("") }
-  }
+	assert.Equal([]byte{0}, Decode("Z"))
+	assert.Equal([]byte{0, 1}, Decode("ZM"))
+	assert.Equal([]byte{0, 1, 2}, Decode("Z8"))
+	assert.Equal([]byte{0, 1, 2, 3}, Decode("Z8P"))
+	assert.Equal([]byte{7}, Decode("R"))
+	assert.Equal([]byte{7, 3}, Decode("RP"))
+	assert.Equal([]byte{7, 3, 2}, Decode("RH"))
+	assert.Equal([]byte{7, 3, 2, 1}, Decode("RHM"))
+	// TODO:
+	// assert_raises(RuntimeError) { @mod.encode("") }
+}
 
+/*
   func test_encode_and_decode__rush(t *testing.T) {
 	assert := assert.New(t)
     world = (0..7).to_a
