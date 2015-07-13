@@ -228,8 +228,7 @@ func DecodeSubDeltaOne(code string) []byte {
 
 func Encode(ids []byte) string {
 	if len(ids) == 0 {
-		//  raise("delta ids is empty") if ids.empty?
-		return ""
+		panic("delta ids is empty")
 	} else if len(ids) == 1 {
 		return EncodeWorldDelta(ids[0])
 	} else {
@@ -239,8 +238,7 @@ func Encode(ids []byte) string {
 
 func Decode(codes string) []byte {
 	if len(codes) == 0 {
-		//  raise("delta codes is empty") if codes.empty?
-		return []byte{}
+		panic("delta codes is empty")
 	} else if len(codes) == 1 {
 		return []byte{DecodeWorldDelta(codes[0:1])}
 	} else {

@@ -182,8 +182,9 @@ func TestEncode(t *testing.T) {
 	assert.Equal("RP", Encode([]byte{7, 3}))
 	assert.Equal("RH", Encode([]byte{7, 3, 2}))
 	assert.Equal("RHM", Encode([]byte{7, 3, 2, 1}))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode([]) }
+	assert.Panics(func() {
+		Encode([]byte{})
+	})
 }
 
 func TestDecode(t *testing.T) {
@@ -196,8 +197,9 @@ func TestDecode(t *testing.T) {
 	assert.Equal([]byte{7, 3}, Decode("RP"))
 	assert.Equal([]byte{7, 3, 2}, Decode("RH"))
 	assert.Equal([]byte{7, 3, 2, 1}, Decode("RHM"))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode("") }
+	assert.Panics(func() {
+		Decode("")
+	})
 }
 
 func TestEncodeAndDecodeRush(t *testing.T) {
