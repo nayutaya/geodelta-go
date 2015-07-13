@@ -19,7 +19,7 @@ import (
    WORLD_CHAR_TO_ID = WORLD_DELTA_TABLE.inject({}) { |memo, (num, char)| memo[char] = num; memo }.freeze
 */
 
-func EncodeWorldDelta(id uint8) string {
+func EncodeWorldDelta(id byte) string {
 	// return WORLD_ID_TO_CHAR[id] || raise("invalid world delta id -- #{id}")
 	// TODO: mapに変更する。
 	switch id {
@@ -44,7 +44,7 @@ func EncodeWorldDelta(id uint8) string {
 	}
 }
 
-func DecodeWorldDelta(code string) uint8 {
+func DecodeWorldDelta(code string) byte {
 	// TODO: mapにする
 	//    return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
 	switch code {
@@ -227,14 +227,18 @@ func DecodeSubDeltaOne(code string) []byte {
 	}
 }
 
-/*
-   def self.encode(ids)
-     raise("delta ids is empty") if ids.empty?
-     result  = self.encode_world_delta(ids[0])
-     result += self.encode_sub_delta(ids[1..-1]) if ids.size >= 2
-     return result
-   end
+func Encode(ids []byte) string {
+	if len(ids) == 0 {
+		//  raise("delta ids is empty") if ids.empty?
+		return ""
+	} else if len(ids) == 1 {
+		return EncodeWorldDelta(ids[0])
+	} else {
+		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+	}
+}
 
+/*
    def self.decode(codes)
      raise("delta codes is empty") if codes.empty?
      result  = [self.decode_world_delta(codes[0])]

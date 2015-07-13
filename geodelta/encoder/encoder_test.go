@@ -22,21 +22,21 @@ func TestEncodeWorldDelta(t *testing.T) {
 
 func TestDecodeWorldDelta(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(uint8(0), DecodeWorldDelta("Z"))
-	assert.Equal(uint8(1), DecodeWorldDelta("Y"))
-	assert.Equal(uint8(2), DecodeWorldDelta("X"))
-	assert.Equal(uint8(3), DecodeWorldDelta("W"))
-	assert.Equal(uint8(4), DecodeWorldDelta("V"))
-	assert.Equal(uint8(5), DecodeWorldDelta("T"))
-	assert.Equal(uint8(6), DecodeWorldDelta("S"))
-	assert.Equal(uint8(7), DecodeWorldDelta("R"))
+	assert.Equal(byte(0), DecodeWorldDelta("Z"))
+	assert.Equal(byte(1), DecodeWorldDelta("Y"))
+	assert.Equal(byte(2), DecodeWorldDelta("X"))
+	assert.Equal(byte(3), DecodeWorldDelta("W"))
+	assert.Equal(byte(4), DecodeWorldDelta("V"))
+	assert.Equal(byte(5), DecodeWorldDelta("T"))
+	assert.Equal(byte(6), DecodeWorldDelta("S"))
+	assert.Equal(byte(7), DecodeWorldDelta("R"))
 	// assert_raises(RuntimeError) { @mod.decode_world_delta("z") }
 	// assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
 }
 
 func TestEncodeAndDecodeWorldDelta(t *testing.T) {
 	assert := assert.New(t)
-	for id := uint8(0); id <= 7; id++ {
+	for id := byte(0); id <= 7; id++ {
 		encoded1 := EncodeWorldDelta(id)
 		decoded1 := DecodeWorldDelta(encoded1)
 		encoded2 := EncodeWorldDelta(decoded1)
@@ -158,20 +158,21 @@ func TestEncodeAndDecodeSubDelta2(t *testing.T) {
 	}
 }
 
-/*
-  func test_encode(t *testing.T) {
+func TestEncode(t *testing.T) {
 	assert := assert.New(t)
-    assert.Equal("Z",   @mod.encode([0]))
-    assert.Equal("ZM",  @mod.encode([0, 1]))
-    assert.Equal("Z8",  @mod.encode([0, 1, 2]))
-    assert.Equal("Z8P", @mod.encode([0, 1, 2, 3]))
-    assert.Equal("R",   @mod.encode([7]))
-    assert.Equal("RP",  @mod.encode([7, 3]))
-    assert.Equal("RH",  @mod.encode([7, 3, 2]))
-    assert.Equal("RHM", @mod.encode([7, 3, 2, 1]))
-    assert_raises(RuntimeError) { @mod.encode([]) }
-  }
+	assert.Equal("Z", Encode([]byte{0}))
+	assert.Equal("ZM", Encode([]byte{0, 1}))
+	assert.Equal("Z8", Encode([]byte{0, 1, 2}))
+	assert.Equal("Z8P", Encode([]byte{0, 1, 2, 3}))
+	assert.Equal("R", Encode([]byte{7}))
+	assert.Equal("RP", Encode([]byte{7, 3}))
+	assert.Equal("RH", Encode([]byte{7, 3, 2}))
+	assert.Equal("RHM", Encode([]byte{7, 3, 2, 1}))
+	// TODO:
+	// assert_raises(RuntimeError) { @mod.encode([]) }
+}
 
+/*
   func test_decode(t *testing.T) {
 	assert := assert.New(t)
     assert.Equal([0],          @mod.decode("Z"))
