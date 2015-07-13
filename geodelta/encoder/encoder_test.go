@@ -16,9 +16,9 @@ func TestEncodeWorldDelta(t *testing.T) {
 	assert.Equal("T", EncodeWorldDelta(5))
 	assert.Equal("S", EncodeWorldDelta(6))
 	assert.Equal("R", EncodeWorldDelta(7))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode_world_delta(-1) }
-	// assert_raises(RuntimeError) { @mod.encode_world_delta(8) }
+	assert.Panics(func() {
+		EncodeWorldDelta(8)
+	})
 }
 
 func TestDecodeWorldDelta(t *testing.T) {

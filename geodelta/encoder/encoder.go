@@ -40,7 +40,7 @@ func EncodeWorldDelta(id byte) string {
 	case 7:
 		return "R"
 	default:
-		return ""
+		panic("invalid world delta id")
 	}
 }
 
