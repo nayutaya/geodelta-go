@@ -4,42 +4,21 @@ import (
 	"strings"
 )
 
-/*
-   WORLD_DELTA_TABLE = [
-     [0, "Z"],
-     [1, "Y"],
-     [2, "X"],
-     [3, "W"],
-     [4, "V"],
-     [5, "T"],
-     [6, "S"],
-     [7, "R"],
-   ].each(&:freeze).freeze
-   WORLD_ID_TO_CHAR = WORLD_DELTA_TABLE.inject({}) { |memo, (num, char)| memo[num] = char; memo }.freeze
-   WORLD_CHAR_TO_ID = WORLD_DELTA_TABLE.inject({}) { |memo, (num, char)| memo[char] = num; memo }.freeze
-*/
+var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
+	0: "Z",
+	1: "Y",
+	2: "X",
+	3: "W",
+	4: "V",
+	5: "T",
+	6: "S",
+	7: "R",
+}
 
 func EncodeWorldDelta(id byte) string {
-	// return WORLD_ID_TO_CHAR[id] || raise("invalid world delta id -- #{id}")
-	// TODO: mapに変更する。
-	switch id {
-	case 0:
-		return "Z"
-	case 1:
-		return "Y"
-	case 2:
-		return "X"
-	case 3:
-		return "W"
-	case 4:
-		return "V"
-	case 5:
-		return "T"
-	case 6:
-		return "S"
-	case 7:
-		return "R"
-	default:
+	if code, ok := WORLD_ID_TO_CODE[id]; ok {
+		return code
+	} else {
 		panic("invalid world delta id")
 	}
 }
