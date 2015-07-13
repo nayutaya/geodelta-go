@@ -45,33 +45,35 @@ func TestEncodeAndDecodeWorldDelta(t *testing.T) {
 	}
 }
 
+func TestEncodeSubDelta1(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal("2", EncodeSubDelta([]byte{0, 0}))
+	assert.Equal("3", EncodeSubDelta([]byte{0, 1}))
+	assert.Equal("4", EncodeSubDelta([]byte{0, 2}))
+	assert.Equal("5", EncodeSubDelta([]byte{0, 3}))
+	assert.Equal("6", EncodeSubDelta([]byte{1, 0}))
+	assert.Equal("7", EncodeSubDelta([]byte{1, 1}))
+	assert.Equal("8", EncodeSubDelta([]byte{1, 2}))
+	assert.Equal("A", EncodeSubDelta([]byte{1, 3}))
+	assert.Equal("B", EncodeSubDelta([]byte{2, 0}))
+	assert.Equal("C", EncodeSubDelta([]byte{2, 1}))
+	assert.Equal("D", EncodeSubDelta([]byte{2, 2}))
+	assert.Equal("E", EncodeSubDelta([]byte{2, 3}))
+	assert.Equal("F", EncodeSubDelta([]byte{3, 0}))
+	assert.Equal("G", EncodeSubDelta([]byte{3, 1}))
+	assert.Equal("H", EncodeSubDelta([]byte{3, 2}))
+	assert.Equal("J", EncodeSubDelta([]byte{3, 3}))
+}
+
+func TestEncodeSubDelta2(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal("K", EncodeSubDelta([]byte{0}))
+	assert.Equal("M", EncodeSubDelta([]byte{1}))
+	assert.Equal("N", EncodeSubDelta([]byte{2}))
+	assert.Equal("P", EncodeSubDelta([]byte{3}))
+}
+
 /*
-  def test_encode_sub_delta__1
-    assert_equal("2", @mod.encode_sub_delta([0, 0]))
-    assert_equal("3", @mod.encode_sub_delta([0, 1]))
-    assert_equal("4", @mod.encode_sub_delta([0, 2]))
-    assert_equal("5", @mod.encode_sub_delta([0, 3]))
-    assert_equal("6", @mod.encode_sub_delta([1, 0]))
-    assert_equal("7", @mod.encode_sub_delta([1, 1]))
-    assert_equal("8", @mod.encode_sub_delta([1, 2]))
-    assert_equal("A", @mod.encode_sub_delta([1, 3]))
-    assert_equal("B", @mod.encode_sub_delta([2, 0]))
-    assert_equal("C", @mod.encode_sub_delta([2, 1]))
-    assert_equal("D", @mod.encode_sub_delta([2, 2]))
-    assert_equal("E", @mod.encode_sub_delta([2, 3]))
-    assert_equal("F", @mod.encode_sub_delta([3, 0]))
-    assert_equal("G", @mod.encode_sub_delta([3, 1]))
-    assert_equal("H", @mod.encode_sub_delta([3, 2]))
-    assert_equal("J", @mod.encode_sub_delta([3, 3]))
-  end
-
-  def test_encode_sub_delta__2
-    assert_equal("K", @mod.encode_sub_delta([0]))
-    assert_equal("M", @mod.encode_sub_delta([1]))
-    assert_equal("N", @mod.encode_sub_delta([2]))
-    assert_equal("P", @mod.encode_sub_delta([3]))
-  end
-
   def test_encode_sub_delta__3
     assert_equal("2K", @mod.encode_sub_delta([0, 0, 0]))
     assert_equal("22", @mod.encode_sub_delta([0, 0, 0, 0]))

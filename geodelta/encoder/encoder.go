@@ -92,14 +92,68 @@ func DecodeWorldDelta(code string) uint8 {
    SUB_CHAR_TO_IDS = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[char] = nums; memo }.freeze
 */
 
-/*
-   def self.encode_sub_delta(ids)
-     raise("sub delta ids is empty") if ids.empty?
-     return ids.each_slice(2).map { |part|
-       SUB_IDS_TO_CHAR[part] || raise("invalid sub delta ids -- #{part}")
-     }.join("")
-   end
+func EncodeSubDelta(ids []byte) string {
+  // TODO: mapを使う
+	// raise("sub delta ids is empty") if ids.empty?
+	// return ids.each_slice(2).map { |part|
+	//   SUB_IDS_TO_CHAR[part] || raise("invalid sub delta ids -- #{part}")
+	// }.join("")
+	if len(ids) == 2 {
+		switch {
+		case ids[0] == 0 && ids[1] == 0:
+			return "2"
+		case ids[0] == 0 && ids[1] == 1:
+			return "3"
+		case ids[0] == 0 && ids[1] == 2:
+			return "4"
+		case ids[0] == 0 && ids[1] == 3:
+			return "5"
+		case ids[0] == 1 && ids[1] == 0:
+			return "6"
+		case ids[0] == 1 && ids[1] == 1:
+			return "7"
+		case ids[0] == 1 && ids[1] == 2:
+			return "8"
+		case ids[0] == 1 && ids[1] == 3:
+			return "A"
+		case ids[0] == 2 && ids[1] == 0:
+			return "B"
+		case ids[0] == 2 && ids[1] == 1:
+			return "C"
+		case ids[0] == 2 && ids[1] == 2:
+			return "D"
+		case ids[0] == 2 && ids[1] == 3:
+			return "E"
+		case ids[0] == 3 && ids[1] == 0:
+			return "F"
+		case ids[0] == 3 && ids[1] == 1:
+			return "G"
+		case ids[0] == 3 && ids[1] == 2:
+			return "H"
+		case ids[0] == 3 && ids[1] == 3:
+			return "J"
+		default:
+			return ""
+		}
+	} else if len(ids) == 1 {
+		switch ids[0] {
+		case 0:
+			return "K"
+		case 1:
+			return "M"
+		case 2:
+			return "N"
+		case 3:
+			return "P"
+		default:
+			return ""
+		}
+	} else {
+		return ""
+	}
+}
 
+/*
    def self.decode_sub_delta(codes)
      raise("sub delta codes is empty") if codes.empty?
      return codes.chars.inject([]) { |memo, char|
