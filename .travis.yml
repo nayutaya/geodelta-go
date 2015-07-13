@@ -3,6 +3,10 @@ before_install:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/stretchr/testify
 script:
-  - go test -v -covermode=count -coverprofile=coverage.txt ./...
+  - go test -v -covermode=count -coverprofile=coverage.root.txt ./geodelta
+  - go test -v -covermode=count -coverprofile=coverage.encoder.txt ./geodelta/encoder
+  - "echo 'mode: count' > coverage.txt"
+  - "grep -v 'mode: count' < coverage.root.txt >> coverage.txt"
+  - "grep -v 'mode: count' < coverage.encoder.txt >> coverage.txt"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
