@@ -155,14 +155,58 @@ func EncodeSubDelta(ids []byte) string {
 	}
 }
 
-/*
-   def self.decode_sub_delta(codes)
-     raise("sub delta codes is empty") if codes.empty?
-     return codes.chars.inject([]) { |memo, char|
-       memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
-     }
-   end
+func DecodeSubDelta(codes string) []byte {
+	//  raise("sub delta codes is empty") if codes.empty?
+	//  return codes.chars.inject([]) { |memo, char|
+	//    memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
+	//  }
+	switch codes {
+	case "2":
+		return []byte{0, 0}
+	case "3":
+		return []byte{0, 1}
+	case "4":
+		return []byte{0, 2}
+	case "5":
+		return []byte{0, 3}
+	case "6":
+		return []byte{1, 0}
+	case "7":
+		return []byte{1, 1}
+	case "8":
+		return []byte{1, 2}
+	case "A":
+		return []byte{1, 3}
+	case "B":
+		return []byte{2, 0}
+	case "C":
+		return []byte{2, 1}
+	case "D":
+		return []byte{2, 2}
+	case "E":
+		return []byte{2, 3}
+	case "F":
+		return []byte{3, 0}
+	case "G":
+		return []byte{3, 1}
+	case "H":
+		return []byte{3, 2}
+	case "J":
+		return []byte{3, 3}
+	case "K":
+		return []byte{0}
+	case "M":
+		return []byte{1}
+	case "N":
+		return []byte{2}
+	case "P":
+		return []byte{3}
+	default:
+		return []byte{}
+	}
+}
 
+/*
    def self.encode(ids)
      raise("delta ids is empty") if ids.empty?
      result  = self.encode_world_delta(ids[0])

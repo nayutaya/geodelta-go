@@ -82,52 +82,59 @@ func TestEncodeSubDelta3(t *testing.T) {
 }
 
 /*
-  func test_encode_sub_delta__4
+  func test_encode_sub_delta__4(t *testing.T) {
     assert_raises(RuntimeError) { EncodeSubDelta([]) }
     assert_raises(RuntimeError) { EncodeSubDelta([-1]) }
     assert_raises(RuntimeError) { EncodeSubDelta([4]) }
   end
+*/
 
-  func test_decode_sub_delta__1
-    assert.Equal([0, 0], @mod.decode_sub_delta("2"))
-    assert.Equal([0, 1], @mod.decode_sub_delta("3"))
-    assert.Equal([0, 2], @mod.decode_sub_delta("4"))
-    assert.Equal([0, 3], @mod.decode_sub_delta("5"))
-    assert.Equal([1, 0], @mod.decode_sub_delta("6"))
-    assert.Equal([1, 1], @mod.decode_sub_delta("7"))
-    assert.Equal([1, 2], @mod.decode_sub_delta("8"))
-    assert.Equal([1, 3], @mod.decode_sub_delta("A"))
-    assert.Equal([2, 0], @mod.decode_sub_delta("B"))
-    assert.Equal([2, 1], @mod.decode_sub_delta("C"))
-    assert.Equal([2, 2], @mod.decode_sub_delta("D"))
-    assert.Equal([2, 3], @mod.decode_sub_delta("E"))
-    assert.Equal([3, 0], @mod.decode_sub_delta("F"))
-    assert.Equal([3, 1], @mod.decode_sub_delta("G"))
-    assert.Equal([3, 2], @mod.decode_sub_delta("H"))
-    assert.Equal([3, 3], @mod.decode_sub_delta("J"))
-  end
+func TestDecodeSubDelta1(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0, 0}, DecodeSubDelta("2"))
+	assert.Equal([]byte{0, 1}, DecodeSubDelta("3"))
+	assert.Equal([]byte{0, 2}, DecodeSubDelta("4"))
+	assert.Equal([]byte{0, 3}, DecodeSubDelta("5"))
+	assert.Equal([]byte{1, 0}, DecodeSubDelta("6"))
+	assert.Equal([]byte{1, 1}, DecodeSubDelta("7"))
+	assert.Equal([]byte{1, 2}, DecodeSubDelta("8"))
+	assert.Equal([]byte{1, 3}, DecodeSubDelta("A"))
+	assert.Equal([]byte{2, 0}, DecodeSubDelta("B"))
+	assert.Equal([]byte{2, 1}, DecodeSubDelta("C"))
+	assert.Equal([]byte{2, 2}, DecodeSubDelta("D"))
+	assert.Equal([]byte{2, 3}, DecodeSubDelta("E"))
+	assert.Equal([]byte{3, 0}, DecodeSubDelta("F"))
+	assert.Equal([]byte{3, 1}, DecodeSubDelta("G"))
+	assert.Equal([]byte{3, 2}, DecodeSubDelta("H"))
+	assert.Equal([]byte{3, 3}, DecodeSubDelta("J"))
+}
 
-  func test_decode_sub_delta__2
-    assert.Equal([0], @mod.decode_sub_delta("K"))
-    assert.Equal([1], @mod.decode_sub_delta("M"))
-    assert.Equal([2], @mod.decode_sub_delta("N"))
-    assert.Equal([3], @mod.decode_sub_delta("P"))
-  end
+func TestDecodeSubDelta2(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0}, DecodeSubDelta("K"))
+	assert.Equal([]byte{1}, DecodeSubDelta("M"))
+	assert.Equal([]byte{2}, DecodeSubDelta("N"))
+	assert.Equal([]byte{3}, DecodeSubDelta("P"))
+}
 
-  func test_decode_sub_delta__3
+/*
+  func test_decode_sub_delta__3(t *testing.T) {
+	assert := assert.New(t)
     assert.Equal([0, 0, 0],    @mod.decode_sub_delta("2K"))
     assert.Equal([0, 0, 0, 0], @mod.decode_sub_delta("22"))
     assert.Equal([0, 1, 2],    @mod.decode_sub_delta("3N"))
     assert.Equal([0, 1, 2, 3], @mod.decode_sub_delta("3E"))
-  end
+  }
 
-  func test_decode_sub_delta__4
+  func test_decode_sub_delta__4(t *testing.T) {
+	assert := assert.New(t)
     assert_raises(RuntimeError) { @mod.decode_sub_delta("") }
     assert_raises(RuntimeError) { @mod.decode_sub_delta("a") }
     assert_raises(RuntimeError) { @mod.decode_sub_delta("Z") }
-  end
+  }
 
-  func test_encode_and_decode_sub_delta__1
+  func test_encode_and_decode_sub_delta__1(t *testing.T) {
+	assert := assert.New(t)
     (0..3).each { |id1|
       encoded1 = EncodeSubDelta([id1])
       decoded1 = @mod.decode_sub_delta(encoded1)
@@ -135,9 +142,10 @@ func TestEncodeSubDelta3(t *testing.T) {
       assert.Equal([id1], decoded1)
       assert.Equal(encoded1, encoded2)
     }
-  end
+  }
 
-  func test_encode_and_decode_sub_delta__2
+  func test_encode_and_decode_sub_delta__2(t *testing.T) {
+	assert := assert.New(t)
     (0..3).each { |id1|
       (0..3).each { |id2|
         encoded1 = EncodeSubDelta([id1, id2])
@@ -147,9 +155,10 @@ func TestEncodeSubDelta3(t *testing.T) {
         assert.Equal(encoded1, encoded2)
       }
     }
-  end
+  }
 
-  func test_encode
+  func test_encode(t *testing.T) {
+	assert := assert.New(t)
     assert.Equal("Z",   @mod.encode([0]))
     assert.Equal("ZM",  @mod.encode([0, 1]))
     assert.Equal("Z8",  @mod.encode([0, 1, 2]))
@@ -159,9 +168,10 @@ func TestEncodeSubDelta3(t *testing.T) {
     assert.Equal("RH",  @mod.encode([7, 3, 2]))
     assert.Equal("RHM", @mod.encode([7, 3, 2, 1]))
     assert_raises(RuntimeError) { @mod.encode([]) }
-  end
+  }
 
-  func test_decode
+  func test_decode(t *testing.T) {
+	assert := assert.New(t)
     assert.Equal([0],          @mod.decode("Z"))
     assert.Equal([0, 1],       @mod.decode("ZM"))
     assert.Equal([0, 1, 2],    @mod.decode("Z8"))
@@ -171,9 +181,10 @@ func TestEncodeSubDelta3(t *testing.T) {
     assert.Equal([7, 3, 2],    @mod.decode("RH"))
     assert.Equal([7, 3, 2, 1], @mod.decode("RHM"))
     assert_raises(RuntimeError) { @mod.encode("") }
-  end
+  }
 
-  func test_encode_and_decode__rush
+  func test_encode_and_decode__rush(t *testing.T) {
+	assert := assert.New(t)
     world = (0..7).to_a
     sub   = (0..3).to_a
     1000.times {
@@ -184,5 +195,5 @@ func TestEncodeSubDelta3(t *testing.T) {
       assert.Equal(ids, decoded1)
       assert.Equal(encoded1, encoded2)
     }
-  end
+  }
 */
