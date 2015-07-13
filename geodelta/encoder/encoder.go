@@ -1,5 +1,9 @@
 package encoder
 
+import (
+	"strings"
+)
+
 /*
    WORLD_DELTA_TABLE = [
      [0, "Z"],
@@ -160,7 +164,23 @@ func DecodeSubDelta(codes string) []byte {
 	//  return codes.chars.inject([]) { |memo, char|
 	//    memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
 	//  }
-	switch codes {
+	return DecodeSubDeltaArray(strings.Split(codes, ""))
+}
+
+func DecodeSubDeltaArray(codes []string) []byte {
+	if len(codes) > 1 {
+		head := DecodeSubDeltaOne(codes[0])
+		tail := DecodeSubDeltaArray(codes[1:])
+		return append(head, tail...)
+	} else if len(codes) == 1 {
+		return DecodeSubDeltaOne(codes[0])
+	} else {
+		return []byte{}
+	}
+}
+
+func DecodeSubDeltaOne(code string) []byte {
+	switch code {
 	case "2":
 		return []byte{0, 0}
 	case "3":

@@ -117,15 +117,15 @@ func TestDecodeSubDelta2(t *testing.T) {
 	assert.Equal([]byte{3}, DecodeSubDelta("P"))
 }
 
-/*
-  func test_decode_sub_delta__3(t *testing.T) {
+func TestDecodeSubDelta3(t *testing.T) {
 	assert := assert.New(t)
-    assert.Equal([0, 0, 0],    @mod.decode_sub_delta("2K"))
-    assert.Equal([0, 0, 0, 0], @mod.decode_sub_delta("22"))
-    assert.Equal([0, 1, 2],    @mod.decode_sub_delta("3N"))
-    assert.Equal([0, 1, 2, 3], @mod.decode_sub_delta("3E"))
-  }
+	assert.Equal([]byte{0, 0, 0}, DecodeSubDelta("2K"))
+	assert.Equal([]byte{0, 0, 0, 0}, DecodeSubDelta("22"))
+	assert.Equal([]byte{0, 1, 2}, DecodeSubDelta("3N"))
+	assert.Equal([]byte{0, 1, 2, 3}, DecodeSubDelta("3E"))
+}
 
+/*
   func test_decode_sub_delta__4(t *testing.T) {
 	assert := assert.New(t)
     assert_raises(RuntimeError) { @mod.decode_sub_delta("") }
