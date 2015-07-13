@@ -65,7 +65,7 @@ func DecodeWorldDelta(code string) byte {
 	case "R":
 		return 7
 	default:
-		return 8
+		panic("invalid world delta code")
 	}
 }
 

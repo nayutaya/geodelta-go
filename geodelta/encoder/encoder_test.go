@@ -31,8 +31,12 @@ func TestDecodeWorldDelta(t *testing.T) {
 	assert.Equal(byte(5), DecodeWorldDelta("T"))
 	assert.Equal(byte(6), DecodeWorldDelta("S"))
 	assert.Equal(byte(7), DecodeWorldDelta("R"))
-	// assert_raises(RuntimeError) { @mod.decode_world_delta("z") }
-	// assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
+	assert.Panics(func() {
+		DecodeWorldDelta("z")
+	})
+	assert.Panics(func() {
+		DecodeWorldDelta("A")
+	})
 }
 
 func TestEncodeAndDecodeWorldDelta(t *testing.T) {
