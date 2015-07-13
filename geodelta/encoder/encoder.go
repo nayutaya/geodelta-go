@@ -4,67 +4,40 @@ import (
 	"strings"
 )
 
-/*
-   WORLD_DELTA_TABLE = [
-     [0, "Z"],
-     [1, "Y"],
-     [2, "X"],
-     [3, "W"],
-     [4, "V"],
-     [5, "T"],
-     [6, "S"],
-     [7, "R"],
-   ].each(&:freeze).freeze
-   WORLD_ID_TO_CHAR = WORLD_DELTA_TABLE.inject({}) { |memo, (num, char)| memo[num] = char; memo }.freeze
-   WORLD_CHAR_TO_ID = WORLD_DELTA_TABLE.inject({}) { |memo, (num, char)| memo[char] = num; memo }.freeze
-*/
+var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
+	0: "Z",
+	1: "Y",
+	2: "X",
+	3: "W",
+	4: "V",
+	5: "T",
+	6: "S",
+	7: "R",
+}
+
+var WORLD_CHAR_TO_ID map[string]byte = map[string]byte{
+	"Z": 0,
+	"Y": 1,
+	"X": 2,
+	"W": 3,
+	"V": 4,
+	"T": 5,
+	"S": 6,
+	"R": 7,
+}
 
 func EncodeWorldDelta(id byte) string {
-	// return WORLD_ID_TO_CHAR[id] || raise("invalid world delta id -- #{id}")
-	// TODO: mapに変更する。
-	switch id {
-	case 0:
-		return "Z"
-	case 1:
-		return "Y"
-	case 2:
-		return "X"
-	case 3:
-		return "W"
-	case 4:
-		return "V"
-	case 5:
-		return "T"
-	case 6:
-		return "S"
-	case 7:
-		return "R"
-	default:
+	if code, ok := WORLD_ID_TO_CODE[id]; ok {
+		return code
+	} else {
 		panic("invalid world delta id")
 	}
 }
 
 func DecodeWorldDelta(code string) byte {
-	// TODO: mapにする
-	//    return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
-	switch code {
-	case "Z":
-		return 0
-	case "Y":
-		return 1
-	case "X":
-		return 2
-	case "W":
-		return 3
-	case "V":
-		return 4
-	case "T":
-		return 5
-	case "S":
-		return 6
-	case "R":
-		return 7
-	default:
+	if id, ok := WORLD_CHAR_TO_ID[code]; ok {
+		return id
+	} else {
 		panic("invalid world delta code")
 	}
 }
