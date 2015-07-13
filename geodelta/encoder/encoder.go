@@ -180,6 +180,7 @@ func DecodeSubDeltaArray(codes []string) []byte {
 }
 
 func DecodeSubDeltaOne(code string) []byte {
+	// TODO: mapを使う
 	switch code {
 	case "2":
 		return []byte{0, 0}
