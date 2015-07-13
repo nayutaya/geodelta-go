@@ -16,9 +16,9 @@ func TestEncodeWorldDelta(t *testing.T) {
 	assert.Equal("T", EncodeWorldDelta(5))
 	assert.Equal("S", EncodeWorldDelta(6))
 	assert.Equal("R", EncodeWorldDelta(7))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode_world_delta(-1) }
-	// assert_raises(RuntimeError) { @mod.encode_world_delta(8) }
+	assert.Panics(func() {
+		EncodeWorldDelta(8)
+	})
 }
 
 func TestDecodeWorldDelta(t *testing.T) {
@@ -31,8 +31,12 @@ func TestDecodeWorldDelta(t *testing.T) {
 	assert.Equal(byte(5), DecodeWorldDelta("T"))
 	assert.Equal(byte(6), DecodeWorldDelta("S"))
 	assert.Equal(byte(7), DecodeWorldDelta("R"))
-	// assert_raises(RuntimeError) { @mod.decode_world_delta("z") }
-	// assert_raises(RuntimeError) { @mod.decode_world_delta("A") }
+	assert.Panics(func() {
+		DecodeWorldDelta("z")
+	})
+	assert.Panics(func() {
+		DecodeWorldDelta("A")
+	})
 }
 
 func TestEncodeAndDecodeWorldDelta(t *testing.T) {
@@ -82,13 +86,18 @@ func TestEncodeSubDelta3(t *testing.T) {
 	assert.Equal("3E", EncodeSubDelta([]byte{0, 1, 2, 3}))
 }
 
-/*
-  func test_encode_sub_delta__4(t *testing.T) {
-    assert_raises(RuntimeError) { EncodeSubDelta([]) }
-    assert_raises(RuntimeError) { EncodeSubDelta([-1]) }
-    assert_raises(RuntimeError) { EncodeSubDelta([4]) }
-  end
-*/
+func TestEncodeSubDelta4(t *testing.T) {
+	assert := assert.New(t)
+	assert.Panics(func() {
+		EncodeSubDelta([]byte{})
+	})
+	assert.Panics(func() {
+		EncodeSubDelta([]byte{4})
+	})
+	assert.Panics(func() {
+		EncodeSubDelta([]byte{4, 4})
+	})
+}
 
 func TestDecodeSubDelta1(t *testing.T) {
 	assert := assert.New(t)
@@ -126,14 +135,18 @@ func TestDecodeSubDelta3(t *testing.T) {
 	assert.Equal([]byte{0, 1, 2, 3}, DecodeSubDelta("3E"))
 }
 
-/*
-  func test_decode_sub_delta__4(t *testing.T) {
+func TestDecodeSubDelta4(t *testing.T) {
 	assert := assert.New(t)
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("") }
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("a") }
-    assert_raises(RuntimeError) { @mod.decode_sub_delta("Z") }
-  }
-*/
+	assert.Panics(func() {
+		DecodeSubDelta("")
+	})
+	assert.Panics(func() {
+		DecodeSubDelta("a")
+	})
+	assert.Panics(func() {
+		DecodeSubDelta("Z")
+	})
+}
 
 func TestEncodeAndDecodeSubDelta1(t *testing.T) {
 	assert := assert.New(t)
@@ -169,8 +182,9 @@ func TestEncode(t *testing.T) {
 	assert.Equal("RP", Encode([]byte{7, 3}))
 	assert.Equal("RH", Encode([]byte{7, 3, 2}))
 	assert.Equal("RHM", Encode([]byte{7, 3, 2, 1}))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode([]) }
+	assert.Panics(func() {
+		Encode([]byte{})
+	})
 }
 
 func TestDecode(t *testing.T) {
@@ -183,8 +197,9 @@ func TestDecode(t *testing.T) {
 	assert.Equal([]byte{7, 3}, Decode("RP"))
 	assert.Equal([]byte{7, 3, 2}, Decode("RH"))
 	assert.Equal([]byte{7, 3, 2, 1}, Decode("RHM"))
-	// TODO:
-	// assert_raises(RuntimeError) { @mod.encode("") }
+	assert.Panics(func() {
+		Decode("")
+	})
 }
 
 func TestEncodeAndDecodeRush(t *testing.T) {
