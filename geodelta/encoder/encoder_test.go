@@ -73,106 +73,107 @@ func TestEncodeSubDelta2(t *testing.T) {
 	assert.Equal("P", EncodeSubDelta([]byte{3}))
 }
 
+func TestEncodeSubDelta3(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal("2K", EncodeSubDelta([]byte{0, 0, 0}))
+	assert.Equal("22", EncodeSubDelta([]byte{0, 0, 0, 0}))
+	assert.Equal("3N", EncodeSubDelta([]byte{0, 1, 2}))
+	assert.Equal("3E", EncodeSubDelta([]byte{0, 1, 2, 3}))
+}
+
 /*
-  def test_encode_sub_delta__3
-    assert_equal("2K", @mod.encode_sub_delta([0, 0, 0]))
-    assert_equal("22", @mod.encode_sub_delta([0, 0, 0, 0]))
-    assert_equal("3N", @mod.encode_sub_delta([0, 1, 2]))
-    assert_equal("3E", @mod.encode_sub_delta([0, 1, 2, 3]))
+  func test_encode_sub_delta__4
+    assert_raises(RuntimeError) { EncodeSubDelta([]) }
+    assert_raises(RuntimeError) { EncodeSubDelta([-1]) }
+    assert_raises(RuntimeError) { EncodeSubDelta([4]) }
   end
 
-  def test_encode_sub_delta__4
-    assert_raises(RuntimeError) { @mod.encode_sub_delta([]) }
-    assert_raises(RuntimeError) { @mod.encode_sub_delta([-1]) }
-    assert_raises(RuntimeError) { @mod.encode_sub_delta([4]) }
+  func test_decode_sub_delta__1
+    assert.Equal([0, 0], @mod.decode_sub_delta("2"))
+    assert.Equal([0, 1], @mod.decode_sub_delta("3"))
+    assert.Equal([0, 2], @mod.decode_sub_delta("4"))
+    assert.Equal([0, 3], @mod.decode_sub_delta("5"))
+    assert.Equal([1, 0], @mod.decode_sub_delta("6"))
+    assert.Equal([1, 1], @mod.decode_sub_delta("7"))
+    assert.Equal([1, 2], @mod.decode_sub_delta("8"))
+    assert.Equal([1, 3], @mod.decode_sub_delta("A"))
+    assert.Equal([2, 0], @mod.decode_sub_delta("B"))
+    assert.Equal([2, 1], @mod.decode_sub_delta("C"))
+    assert.Equal([2, 2], @mod.decode_sub_delta("D"))
+    assert.Equal([2, 3], @mod.decode_sub_delta("E"))
+    assert.Equal([3, 0], @mod.decode_sub_delta("F"))
+    assert.Equal([3, 1], @mod.decode_sub_delta("G"))
+    assert.Equal([3, 2], @mod.decode_sub_delta("H"))
+    assert.Equal([3, 3], @mod.decode_sub_delta("J"))
   end
 
-  def test_decode_sub_delta__1
-    assert_equal([0, 0], @mod.decode_sub_delta("2"))
-    assert_equal([0, 1], @mod.decode_sub_delta("3"))
-    assert_equal([0, 2], @mod.decode_sub_delta("4"))
-    assert_equal([0, 3], @mod.decode_sub_delta("5"))
-    assert_equal([1, 0], @mod.decode_sub_delta("6"))
-    assert_equal([1, 1], @mod.decode_sub_delta("7"))
-    assert_equal([1, 2], @mod.decode_sub_delta("8"))
-    assert_equal([1, 3], @mod.decode_sub_delta("A"))
-    assert_equal([2, 0], @mod.decode_sub_delta("B"))
-    assert_equal([2, 1], @mod.decode_sub_delta("C"))
-    assert_equal([2, 2], @mod.decode_sub_delta("D"))
-    assert_equal([2, 3], @mod.decode_sub_delta("E"))
-    assert_equal([3, 0], @mod.decode_sub_delta("F"))
-    assert_equal([3, 1], @mod.decode_sub_delta("G"))
-    assert_equal([3, 2], @mod.decode_sub_delta("H"))
-    assert_equal([3, 3], @mod.decode_sub_delta("J"))
+  func test_decode_sub_delta__2
+    assert.Equal([0], @mod.decode_sub_delta("K"))
+    assert.Equal([1], @mod.decode_sub_delta("M"))
+    assert.Equal([2], @mod.decode_sub_delta("N"))
+    assert.Equal([3], @mod.decode_sub_delta("P"))
   end
 
-  def test_decode_sub_delta__2
-    assert_equal([0], @mod.decode_sub_delta("K"))
-    assert_equal([1], @mod.decode_sub_delta("M"))
-    assert_equal([2], @mod.decode_sub_delta("N"))
-    assert_equal([3], @mod.decode_sub_delta("P"))
+  func test_decode_sub_delta__3
+    assert.Equal([0, 0, 0],    @mod.decode_sub_delta("2K"))
+    assert.Equal([0, 0, 0, 0], @mod.decode_sub_delta("22"))
+    assert.Equal([0, 1, 2],    @mod.decode_sub_delta("3N"))
+    assert.Equal([0, 1, 2, 3], @mod.decode_sub_delta("3E"))
   end
 
-  def test_decode_sub_delta__3
-    assert_equal([0, 0, 0],    @mod.decode_sub_delta("2K"))
-    assert_equal([0, 0, 0, 0], @mod.decode_sub_delta("22"))
-    assert_equal([0, 1, 2],    @mod.decode_sub_delta("3N"))
-    assert_equal([0, 1, 2, 3], @mod.decode_sub_delta("3E"))
-  end
-
-  def test_decode_sub_delta__4
+  func test_decode_sub_delta__4
     assert_raises(RuntimeError) { @mod.decode_sub_delta("") }
     assert_raises(RuntimeError) { @mod.decode_sub_delta("a") }
     assert_raises(RuntimeError) { @mod.decode_sub_delta("Z") }
   end
 
-  def test_encode_and_decode_sub_delta__1
+  func test_encode_and_decode_sub_delta__1
     (0..3).each { |id1|
-      encoded1 = @mod.encode_sub_delta([id1])
+      encoded1 = EncodeSubDelta([id1])
       decoded1 = @mod.decode_sub_delta(encoded1)
-      encoded2 = @mod.encode_sub_delta(decoded1)
-      assert_equal([id1], decoded1)
-      assert_equal(encoded1, encoded2)
+      encoded2 = EncodeSubDelta(decoded1)
+      assert.Equal([id1], decoded1)
+      assert.Equal(encoded1, encoded2)
     }
   end
 
-  def test_encode_and_decode_sub_delta__2
+  func test_encode_and_decode_sub_delta__2
     (0..3).each { |id1|
       (0..3).each { |id2|
-        encoded1 = @mod.encode_sub_delta([id1, id2])
+        encoded1 = EncodeSubDelta([id1, id2])
         decoded1 = @mod.decode_sub_delta(encoded1)
-        encoded2 = @mod.encode_sub_delta(decoded1)
-        assert_equal([id1, id2], decoded1)
-        assert_equal(encoded1, encoded2)
+        encoded2 = EncodeSubDelta(decoded1)
+        assert.Equal([id1, id2], decoded1)
+        assert.Equal(encoded1, encoded2)
       }
     }
   end
 
-  def test_encode
-    assert_equal("Z",   @mod.encode([0]))
-    assert_equal("ZM",  @mod.encode([0, 1]))
-    assert_equal("Z8",  @mod.encode([0, 1, 2]))
-    assert_equal("Z8P", @mod.encode([0, 1, 2, 3]))
-    assert_equal("R",   @mod.encode([7]))
-    assert_equal("RP",  @mod.encode([7, 3]))
-    assert_equal("RH",  @mod.encode([7, 3, 2]))
-    assert_equal("RHM", @mod.encode([7, 3, 2, 1]))
+  func test_encode
+    assert.Equal("Z",   @mod.encode([0]))
+    assert.Equal("ZM",  @mod.encode([0, 1]))
+    assert.Equal("Z8",  @mod.encode([0, 1, 2]))
+    assert.Equal("Z8P", @mod.encode([0, 1, 2, 3]))
+    assert.Equal("R",   @mod.encode([7]))
+    assert.Equal("RP",  @mod.encode([7, 3]))
+    assert.Equal("RH",  @mod.encode([7, 3, 2]))
+    assert.Equal("RHM", @mod.encode([7, 3, 2, 1]))
     assert_raises(RuntimeError) { @mod.encode([]) }
   end
 
-  def test_decode
-    assert_equal([0],          @mod.decode("Z"))
-    assert_equal([0, 1],       @mod.decode("ZM"))
-    assert_equal([0, 1, 2],    @mod.decode("Z8"))
-    assert_equal([0, 1, 2, 3], @mod.decode("Z8P"))
-    assert_equal([7],          @mod.decode("R"))
-    assert_equal([7, 3],       @mod.decode("RP"))
-    assert_equal([7, 3, 2],    @mod.decode("RH"))
-    assert_equal([7, 3, 2, 1], @mod.decode("RHM"))
+  func test_decode
+    assert.Equal([0],          @mod.decode("Z"))
+    assert.Equal([0, 1],       @mod.decode("ZM"))
+    assert.Equal([0, 1, 2],    @mod.decode("Z8"))
+    assert.Equal([0, 1, 2, 3], @mod.decode("Z8P"))
+    assert.Equal([7],          @mod.decode("R"))
+    assert.Equal([7, 3],       @mod.decode("RP"))
+    assert.Equal([7, 3, 2],    @mod.decode("RH"))
+    assert.Equal([7, 3, 2, 1], @mod.decode("RHM"))
     assert_raises(RuntimeError) { @mod.encode("") }
   end
 
-  def test_encode_and_decode__rush
+  func test_encode_and_decode__rush
     world = (0..7).to_a
     sub   = (0..3).to_a
     1000.times {
@@ -180,8 +181,8 @@ func TestEncodeSubDelta2(t *testing.T) {
       encoded1 = @mod.encode(ids)
       decoded1 = @mod.decode(encoded1)
       encoded2 = @mod.encode(decoded1)
-      assert_equal(ids, decoded1)
-      assert_equal(encoded1, encoded2)
+      assert.Equal(ids, decoded1)
+      assert.Equal(encoded1, encoded2)
     }
   end
 */

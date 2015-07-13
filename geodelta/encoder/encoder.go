@@ -93,12 +93,14 @@ func DecodeWorldDelta(code string) uint8 {
 */
 
 func EncodeSubDelta(ids []byte) string {
-  // TODO: mapを使う
+	// TODO: mapを使う
 	// raise("sub delta ids is empty") if ids.empty?
 	// return ids.each_slice(2).map { |part|
 	//   SUB_IDS_TO_CHAR[part] || raise("invalid sub delta ids -- #{part}")
 	// }.join("")
-	if len(ids) == 2 {
+	if len(ids) > 2 {
+		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
+	} else if len(ids) == 2 {
 		switch {
 		case ids[0] == 0 && ids[1] == 0:
 			return "2"
