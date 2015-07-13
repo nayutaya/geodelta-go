@@ -2,6 +2,7 @@ package encoder
 
 import (
 	"github.com/stretchr/testify/assert"
+	"math/rand"
 	"testing"
 )
 
@@ -186,18 +187,22 @@ func TestDecode(t *testing.T) {
 	// assert_raises(RuntimeError) { @mod.encode("") }
 }
 
-/*
-  func test_encode_and_decode__rush(t *testing.T) {
+func TestEncodeAndDecodeRush(t *testing.T) {
 	assert := assert.New(t)
-    world = (0..7).to_a
-    sub   = (0..3).to_a
-    1000.times {
-      ids = [world[rand(world.size)]] + rand(20).times.map { sub[rand(sub.size)] }
-      encoded1 = @mod.encode(ids)
-      decoded1 = @mod.decode(encoded1)
-      encoded2 = @mod.encode(decoded1)
-      assert.Equal(ids, decoded1)
-      assert.Equal(encoded1, encoded2)
-    }
-  }
-*/
+	world := []byte{0, 1, 2, 3, 4, 5, 6, 7}
+	sub := []byte{0, 1, 2, 3}
+	rand.Seed(1)
+	for i := 0; i < 1000; i++ {
+		ids := []byte{world[rand.Intn(len(world))]}
+		for j, size := 0, rand.Intn(20); j < size; j++ {
+			ids = append(ids, sub[rand.Intn(len(sub))])
+		}
+
+		encoded1 := Encode(ids)
+		decoded1 := Decode(encoded1)
+		encoded2 := Encode(decoded1)
+
+		assert.Equal(ids, decoded1)
+		assert.Equal(encoded1, encoded2)
+	}
+}
