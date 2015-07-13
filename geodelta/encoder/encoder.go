@@ -15,6 +15,17 @@ var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
 	7: "R",
 }
 
+var WORLD_CHAR_TO_ID map[string]byte = map[string]byte{
+	"Z": 0,
+	"Y": 1,
+	"X": 2,
+	"W": 3,
+	"V": 4,
+	"T": 5,
+	"S": 6,
+	"R": 7,
+}
+
 func EncodeWorldDelta(id byte) string {
 	if code, ok := WORLD_ID_TO_CODE[id]; ok {
 		return code
@@ -24,26 +35,9 @@ func EncodeWorldDelta(id byte) string {
 }
 
 func DecodeWorldDelta(code string) byte {
-	// TODO: mapにする
-	//    return WORLD_CHAR_TO_ID[code] || raise("invalid world delta code -- #{code}")
-	switch code {
-	case "Z":
-		return 0
-	case "Y":
-		return 1
-	case "X":
-		return 2
-	case "W":
-		return 3
-	case "V":
-		return 4
-	case "T":
-		return 5
-	case "S":
-		return 6
-	case "R":
-		return 7
-	default:
+	if id, ok := WORLD_CHAR_TO_ID[code]; ok {
+		return id
+	} else {
 		panic("invalid world delta code")
 	}
 }
