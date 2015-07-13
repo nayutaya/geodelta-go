@@ -139,7 +139,7 @@ func EncodeSubDelta(ids []byte) string {
 		case ids[0] == 3 && ids[1] == 3:
 			return "J"
 		default:
-			return ""
+			panic("invalid sub delta ids")
 		}
 	} else if len(ids) == 1 {
 		switch ids[0] {
@@ -152,10 +152,10 @@ func EncodeSubDelta(ids []byte) string {
 		case 3:
 			return "P"
 		default:
-			return ""
+			panic("invalid sub delta ids")
 		}
 	} else {
-		return ""
+		panic("invalid sub delta ids")
 	}
 }
 
