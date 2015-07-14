@@ -142,11 +142,12 @@ func Encode(ids []byte) DeltaCode {
 	}
 }
 
-func Decode(codes DeltaCode) []byte {
-	if length := len(codes); length > 1 {
-		return append([]byte{DecodeWorldDelta(string(codes)[0:1])}, DecodeSubDelta(string(codes)[1:])...)
+func (code DeltaCode) Decode() []byte {
+	code_s := string(code)
+	if length := len(code_s); length > 1 {
+		return append([]byte{DecodeWorldDelta(code_s[0:1])}, DecodeSubDelta(code_s[1:])...)
 	} else if length == 1 {
-		return []byte{DecodeWorldDelta(string(codes)[0:1])}
+		return []byte{DecodeWorldDelta(code_s[0:1])}
 	} else {
 		panic("delta codes is empty")
 	}

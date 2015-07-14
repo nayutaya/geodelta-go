@@ -189,16 +189,16 @@ func TestEncode(t *testing.T) {
 
 func TestDecode(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal([]byte{0}, Decode("Z"))
-	assert.Equal([]byte{0, 1}, Decode("ZM"))
-	assert.Equal([]byte{0, 1, 2}, Decode("Z8"))
-	assert.Equal([]byte{0, 1, 2, 3}, Decode("Z8P"))
-	assert.Equal([]byte{7}, Decode("R"))
-	assert.Equal([]byte{7, 3}, Decode("RP"))
-	assert.Equal([]byte{7, 3, 2}, Decode("RH"))
-	assert.Equal([]byte{7, 3, 2, 1}, Decode("RHM"))
+	assert.Equal([]byte{0}, DeltaCode("Z").Decode())
+	assert.Equal([]byte{0, 1}, DeltaCode("ZM").Decode())
+	assert.Equal([]byte{0, 1, 2}, DeltaCode("Z8").Decode())
+	assert.Equal([]byte{0, 1, 2, 3}, DeltaCode("Z8P").Decode())
+	assert.Equal([]byte{7}, DeltaCode("R").Decode())
+	assert.Equal([]byte{7, 3}, DeltaCode("RP").Decode())
+	assert.Equal([]byte{7, 3, 2}, DeltaCode("RH").Decode())
+	assert.Equal([]byte{7, 3, 2, 1}, DeltaCode("RHM").Decode())
 	assert.Panics(func() {
-		Decode("")
+		DeltaCode("").Decode()
 	})
 }
 
@@ -214,7 +214,7 @@ func TestEncodeAndDecodeRush(t *testing.T) {
 		}
 
 		encoded1 := Encode(ids)
-		decoded1 := Decode(encoded1)
+		decoded1 := encoded1.Decode()
 		encoded2 := Encode(decoded1)
 
 		assert.Equal(ids, decoded1)
