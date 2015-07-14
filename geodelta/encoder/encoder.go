@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+type DeltaIds []byte
 type DeltaCode string
 
 var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
@@ -132,7 +133,7 @@ func DecodeSubDeltaOne(code string) []byte {
 	}
 }
 
-func Encode(ids []byte) DeltaCode {
+func Encode(ids DeltaIds) DeltaCode {
 	if length := len(ids); length > 1 {
 		return DeltaCode(EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:]))
 	} else if length == 1 {
@@ -142,7 +143,7 @@ func Encode(ids []byte) DeltaCode {
 	}
 }
 
-func (code DeltaCode) Decode() []byte {
+func (code DeltaCode) Decode() DeltaIds {
 	code_s := string(code)
 	if length := len(code_s); length > 1 {
 		return append([]byte{DecodeWorldDelta(code_s[0:1])}, DecodeSubDelta(code_s[1:])...)
