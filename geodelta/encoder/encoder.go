@@ -68,12 +68,28 @@ var SUB_IDS1_TO_CODE map[byte]string = map[byte]string{
 	3: "P",
 }
 
-/*
-   SUB_DELTA_TABLE = [
-   ].each(&:freeze).freeze
-   SUB_IDS_TO_CHAR = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[nums] = char; memo }.freeze
-   SUB_CHAR_TO_IDS = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[char] = nums; memo }.freeze
-*/
+var SUB_CODE_TO_IDS map[string][]byte = map[string][]byte{
+	"2": []byte{0, 0},
+	"3": []byte{0, 1},
+	"4": []byte{0, 2},
+	"5": []byte{0, 3},
+	"6": []byte{1, 0},
+	"7": []byte{1, 1},
+	"8": []byte{1, 2},
+	"A": []byte{1, 3},
+	"B": []byte{2, 0},
+	"C": []byte{2, 1},
+	"D": []byte{2, 2},
+	"E": []byte{2, 3},
+	"F": []byte{3, 0},
+	"G": []byte{3, 1},
+	"H": []byte{3, 2},
+	"J": []byte{3, 3},
+	"K": []byte{0},
+	"M": []byte{1},
+	"N": []byte{2},
+	"P": []byte{3},
+}
 
 func EncodeSubDelta(ids []byte) string {
 	if length := len(ids); length > 2 {
@@ -107,49 +123,9 @@ func DecodeSubDeltaArray(codes []string) []byte {
 }
 
 func DecodeSubDeltaOne(code string) []byte {
-	// TODO: mapを使う
-	switch code {
-	case "2":
-		return []byte{0, 0}
-	case "3":
-		return []byte{0, 1}
-	case "4":
-		return []byte{0, 2}
-	case "5":
-		return []byte{0, 3}
-	case "6":
-		return []byte{1, 0}
-	case "7":
-		return []byte{1, 1}
-	case "8":
-		return []byte{1, 2}
-	case "A":
-		return []byte{1, 3}
-	case "B":
-		return []byte{2, 0}
-	case "C":
-		return []byte{2, 1}
-	case "D":
-		return []byte{2, 2}
-	case "E":
-		return []byte{2, 3}
-	case "F":
-		return []byte{3, 0}
-	case "G":
-		return []byte{3, 1}
-	case "H":
-		return []byte{3, 2}
-	case "J":
-		return []byte{3, 3}
-	case "K":
-		return []byte{0}
-	case "M":
-		return []byte{1}
-	case "N":
-		return []byte{2}
-	case "P":
-		return []byte{3}
-	default:
+	if ids, ok := SUB_CODE_TO_IDS[code]; ok {
+		return ids
+	} else {
 		panic("invalid sub delta code")
 	}
 }
