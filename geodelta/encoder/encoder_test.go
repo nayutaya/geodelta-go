@@ -174,16 +174,16 @@ func TestEncodeAndDecodeSubDelta2(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal(DeltaCode("Z"), Encode([]byte{0}))
-	assert.Equal(DeltaCode("ZM"), Encode([]byte{0, 1}))
-	assert.Equal(DeltaCode("Z8"), Encode([]byte{0, 1, 2}))
-	assert.Equal(DeltaCode("Z8P"), Encode([]byte{0, 1, 2, 3}))
-	assert.Equal(DeltaCode("R"), Encode([]byte{7}))
-	assert.Equal(DeltaCode("RP"), Encode([]byte{7, 3}))
-	assert.Equal(DeltaCode("RH"), Encode([]byte{7, 3, 2}))
-	assert.Equal(DeltaCode("RHM"), Encode([]byte{7, 3, 2, 1}))
+	assert.Equal(DeltaCode("Z"), DeltaIds{0}.Encode())
+	assert.Equal(DeltaCode("ZM"), DeltaIds{0, 1}.Encode())
+	assert.Equal(DeltaCode("Z8"), DeltaIds{0, 1, 2}.Encode())
+	assert.Equal(DeltaCode("Z8P"), DeltaIds{0, 1, 2, 3}.Encode())
+	assert.Equal(DeltaCode("R"), DeltaIds{7}.Encode())
+	assert.Equal(DeltaCode("RP"), DeltaIds{7, 3}.Encode())
+	assert.Equal(DeltaCode("RH"), DeltaIds{7, 3, 2}.Encode())
+	assert.Equal(DeltaCode("RHM"), DeltaIds{7, 3, 2, 1}.Encode())
 	assert.Panics(func() {
-		Encode([]byte{})
+		DeltaIds{}.Encode()
 	})
 }
 
@@ -204,20 +204,20 @@ func TestDecode(t *testing.T) {
 
 func TestEncodeAndDecodeRush(t *testing.T) {
 	assert := assert.New(t)
-	world := []byte{0, 1, 2, 3, 4, 5, 6, 7}
-	sub := []byte{0, 1, 2, 3}
+	world := DeltaIds{0, 1, 2, 3, 4, 5, 6, 7}
+	sub := DeltaIds{0, 1, 2, 3}
 	rand.Seed(1)
 	for i := 0; i < 1000; i++ {
-		ids := []byte{world[rand.Intn(len(world))]}
+		ids := DeltaIds{world[rand.Intn(len(world))]}
 		for j, size := 0, rand.Intn(20); j < size; j++ {
 			ids = append(ids, sub[rand.Intn(len(sub))])
 		}
 
-		encoded1 := Encode(ids)
+		encoded1 := ids.Encode()
 		decoded1 := encoded1.Decode()
-		encoded2 := Encode(decoded1)
+		encoded2 := decoded1.Encode()
 
-		assert.Equal(DeltaIds(ids), decoded1)
+		assert.Equal(ids, decoded1)
 		assert.Equal(encoded1, encoded2)
 	}
 }

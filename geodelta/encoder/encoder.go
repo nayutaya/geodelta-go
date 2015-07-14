@@ -133,7 +133,7 @@ func DecodeSubDeltaOne(code string) []byte {
 	}
 }
 
-func Encode(ids DeltaIds) DeltaCode {
+func (ids DeltaIds) Encode() DeltaCode {
 	if length := len(ids); length > 1 {
 		return DeltaCode(EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:]))
 	} else if length == 1 {
