@@ -42,109 +42,80 @@ func DecodeWorldDelta(code string) byte {
 	}
 }
 
-/*
-   SUB_DELTA_TABLE = [
-     [[0, 0], "2"],
-     [[0, 1], "3"],
-     [[0, 2], "4"],
-     [[0, 3], "5"],
-     [[1, 0], "6"],
-     [[1, 1], "7"],
-     [[1, 2], "8"],
-     [[1, 3], "A"],
-     [[2, 0], "B"],
-     [[2, 1], "C"],
-     [[2, 2], "D"],
-     [[2, 3], "E"],
-     [[3, 0], "F"],
-     [[3, 1], "G"],
-     [[3, 2], "H"],
-     [[3, 3], "J"],
-     [[0]   , "K"],
-     [[1]   , "M"],
-     [[2]   , "N"],
-     [[3]   , "P"],
-   ].each(&:freeze).freeze
-   SUB_IDS_TO_CHAR = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[nums] = char; memo }.freeze
-   SUB_CHAR_TO_IDS = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[char] = nums; memo }.freeze
-*/
+var SUB_IDS2_TO_CODE map[[2]byte]string = map[[2]byte]string{
+	[2]byte{0, 0}: "2",
+	[2]byte{0, 1}: "3",
+	[2]byte{0, 2}: "4",
+	[2]byte{0, 3}: "5",
+	[2]byte{1, 0}: "6",
+	[2]byte{1, 1}: "7",
+	[2]byte{1, 2}: "8",
+	[2]byte{1, 3}: "A",
+	[2]byte{2, 0}: "B",
+	[2]byte{2, 1}: "C",
+	[2]byte{2, 2}: "D",
+	[2]byte{2, 3}: "E",
+	[2]byte{3, 0}: "F",
+	[2]byte{3, 1}: "G",
+	[2]byte{3, 2}: "H",
+	[2]byte{3, 3}: "J",
+}
+
+var SUB_IDS1_TO_CODE map[byte]string = map[byte]string{
+	0: "K",
+	1: "M",
+	2: "N",
+	3: "P",
+}
+
+var SUB_CODE_TO_IDS map[string][]byte = map[string][]byte{
+	"2": []byte{0, 0},
+	"3": []byte{0, 1},
+	"4": []byte{0, 2},
+	"5": []byte{0, 3},
+	"6": []byte{1, 0},
+	"7": []byte{1, 1},
+	"8": []byte{1, 2},
+	"A": []byte{1, 3},
+	"B": []byte{2, 0},
+	"C": []byte{2, 1},
+	"D": []byte{2, 2},
+	"E": []byte{2, 3},
+	"F": []byte{3, 0},
+	"G": []byte{3, 1},
+	"H": []byte{3, 2},
+	"J": []byte{3, 3},
+	"K": []byte{0},
+	"M": []byte{1},
+	"N": []byte{2},
+	"P": []byte{3},
+}
 
 func EncodeSubDelta(ids []byte) string {
-	// TODO: mapを使う
-	// raise("sub delta ids is empty") if ids.empty?
-	// return ids.each_slice(2).map { |part|
-	//   SUB_IDS_TO_CHAR[part] || raise("invalid sub delta ids -- #{part}")
-	// }.join("")
-	if len(ids) > 2 {
+	if length := len(ids); length > 2 {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
-	} else if len(ids) == 2 {
-		switch {
-		case ids[0] == 0 && ids[1] == 0:
-			return "2"
-		case ids[0] == 0 && ids[1] == 1:
-			return "3"
-		case ids[0] == 0 && ids[1] == 2:
-			return "4"
-		case ids[0] == 0 && ids[1] == 3:
-			return "5"
-		case ids[0] == 1 && ids[1] == 0:
-			return "6"
-		case ids[0] == 1 && ids[1] == 1:
-			return "7"
-		case ids[0] == 1 && ids[1] == 2:
-			return "8"
-		case ids[0] == 1 && ids[1] == 3:
-			return "A"
-		case ids[0] == 2 && ids[1] == 0:
-			return "B"
-		case ids[0] == 2 && ids[1] == 1:
-			return "C"
-		case ids[0] == 2 && ids[1] == 2:
-			return "D"
-		case ids[0] == 2 && ids[1] == 3:
-			return "E"
-		case ids[0] == 3 && ids[1] == 0:
-			return "F"
-		case ids[0] == 3 && ids[1] == 1:
-			return "G"
-		case ids[0] == 3 && ids[1] == 2:
-			return "H"
-		case ids[0] == 3 && ids[1] == 3:
-			return "J"
-		default:
-			panic("invalid sub delta ids")
+	} else if length == 2 {
+		key := [2]byte{ids[0], ids[1]}
+		if code, ok := SUB_IDS2_TO_CODE[key]; ok {
+			return code
 		}
-	} else if len(ids) == 1 {
-		switch ids[0] {
-		case 0:
-			return "K"
-		case 1:
-			return "M"
-		case 2:
-			return "N"
-		case 3:
-			return "P"
-		default:
-			panic("invalid sub delta ids")
+	} else if length == 1 {
+		key := ids[0]
+		if code, ok := SUB_IDS1_TO_CODE[key]; ok {
+			return code
 		}
-	} else {
-		panic("invalid sub delta ids")
 	}
+	panic("invalid sub delta ids")
 }
 
 func DecodeSubDelta(codes string) []byte {
-	//  return codes.chars.inject([]) { |memo, char|
-	//    memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
-	//  }
 	return DecodeSubDeltaArray(strings.Split(codes, ""))
 }
 
 func DecodeSubDeltaArray(codes []string) []byte {
-	if len(codes) > 1 {
-		head := DecodeSubDeltaOne(codes[0])
-		tail := DecodeSubDeltaArray(codes[1:])
-		return append(head, tail...)
-	} else if len(codes) == 1 {
+	if length := len(codes); length > 1 {
+		return append(DecodeSubDeltaOne(codes[0]), DecodeSubDeltaArray(codes[1:])...)
+	} else if length == 1 {
 		return DecodeSubDeltaOne(codes[0])
 	} else {
 		panic("sub delta codes is empty")
@@ -152,69 +123,29 @@ func DecodeSubDeltaArray(codes []string) []byte {
 }
 
 func DecodeSubDeltaOne(code string) []byte {
-	// TODO: mapを使う
-	switch code {
-	case "2":
-		return []byte{0, 0}
-	case "3":
-		return []byte{0, 1}
-	case "4":
-		return []byte{0, 2}
-	case "5":
-		return []byte{0, 3}
-	case "6":
-		return []byte{1, 0}
-	case "7":
-		return []byte{1, 1}
-	case "8":
-		return []byte{1, 2}
-	case "A":
-		return []byte{1, 3}
-	case "B":
-		return []byte{2, 0}
-	case "C":
-		return []byte{2, 1}
-	case "D":
-		return []byte{2, 2}
-	case "E":
-		return []byte{2, 3}
-	case "F":
-		return []byte{3, 0}
-	case "G":
-		return []byte{3, 1}
-	case "H":
-		return []byte{3, 2}
-	case "J":
-		return []byte{3, 3}
-	case "K":
-		return []byte{0}
-	case "M":
-		return []byte{1}
-	case "N":
-		return []byte{2}
-	case "P":
-		return []byte{3}
-	default:
+	if ids, ok := SUB_CODE_TO_IDS[code]; ok {
+		return ids
+	} else {
 		panic("invalid sub delta code")
 	}
 }
 
 func Encode(ids []byte) string {
-	if len(ids) == 0 {
-		panic("delta ids is empty")
-	} else if len(ids) == 1 {
+	if length := len(ids); length > 1 {
+		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+	} else if length == 1 {
 		return EncodeWorldDelta(ids[0])
 	} else {
-		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+		panic("delta ids is empty")
 	}
 }
 
 func Decode(codes string) []byte {
-	if len(codes) == 0 {
-		panic("delta codes is empty")
-	} else if len(codes) == 1 {
+	if length := len(codes); length > 1 {
+		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+	} else if length == 1 {
 		return []byte{DecodeWorldDelta(codes[0:1])}
 	} else {
-		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+		panic("delta codes is empty")
 	}
 }
