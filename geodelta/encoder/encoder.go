@@ -42,7 +42,7 @@ func DecodeWorldDelta(code string) byte {
 	}
 }
 
-var SUB_IDS2_TO_CHAR map[[2]byte]string = map[[2]byte]string{
+var SUB_IDS2_TO_CODE map[[2]byte]string = map[[2]byte]string{
 	[2]byte{0, 0}: "2",
 	[2]byte{0, 1}: "3",
 	[2]byte{0, 2}: "4",
@@ -61,7 +61,7 @@ var SUB_IDS2_TO_CHAR map[[2]byte]string = map[[2]byte]string{
 	[2]byte{3, 3}: "J",
 }
 
-var SUB_IDS1_TO_CHAR map[byte]string = map[byte]string{
+var SUB_IDS1_TO_CODE map[byte]string = map[byte]string{
 	0: "K",
 	1: "M",
 	2: "N",
@@ -76,35 +76,30 @@ var SUB_IDS1_TO_CHAR map[byte]string = map[byte]string{
 */
 
 func EncodeSubDelta(ids []byte) string {
-	if len(ids) > 2 {
+	if length := len(ids); length > 2 {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
-	} else if len(ids) == 2 {
+	} else if length == 2 {
 		key := [2]byte{ids[0], ids[1]}
-		if value, ok := SUB_IDS2_TO_CHAR[key]; ok {
-			return value
+		if code, ok := SUB_IDS2_TO_CODE[key]; ok {
+			return code
 		}
-	} else if len(ids) == 1 {
+	} else if length == 1 {
 		key := ids[0]
-		if value, ok := SUB_IDS1_TO_CHAR[key]; ok {
-			return value
+		if code, ok := SUB_IDS1_TO_CODE[key]; ok {
+			return code
 		}
 	}
 	panic("invalid sub delta ids")
 }
 
 func DecodeSubDelta(codes string) []byte {
-	//  return codes.chars.inject([]) { |memo, char|
-	//    memo + (SUB_CHAR_TO_IDS[char] || raise("invalid sub delta code -- #{char}"))
-	//  }
 	return DecodeSubDeltaArray(strings.Split(codes, ""))
 }
 
 func DecodeSubDeltaArray(codes []string) []byte {
-	if len(codes) > 1 {
-		head := DecodeSubDeltaOne(codes[0])
-		tail := DecodeSubDeltaArray(codes[1:])
-		return append(head, tail...)
-	} else if len(codes) == 1 {
+	if length := len(codes); length > 1 {
+		return append(DecodeSubDeltaOne(codes[0]), DecodeSubDeltaArray(codes[1:])...)
+	} else if length == 1 {
 		return DecodeSubDeltaOne(codes[0])
 	} else {
 		panic("sub delta codes is empty")
@@ -160,21 +155,21 @@ func DecodeSubDeltaOne(code string) []byte {
 }
 
 func Encode(ids []byte) string {
-	if len(ids) == 0 {
-		panic("delta ids is empty")
-	} else if len(ids) == 1 {
+	if length := len(ids); length > 1 {
+		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+	} else if length == 1 {
 		return EncodeWorldDelta(ids[0])
 	} else {
-		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+		panic("delta ids is empty")
 	}
 }
 
 func Decode(codes string) []byte {
-	if len(codes) == 0 {
-		panic("delta codes is empty")
-	} else if len(codes) == 1 {
+	if length := len(codes); length > 1 {
+		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+	} else if length == 1 {
 		return []byte{DecodeWorldDelta(codes[0:1])}
 	} else {
-		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+		panic("delta codes is empty")
 	}
 }
