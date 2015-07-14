@@ -42,24 +42,27 @@ func DecodeWorldDelta(code string) byte {
 	}
 }
 
+var SUB_IDS2_TO_CHAR map[[2]byte]string = map[[2]byte]string{
+	[2]byte{0, 0}: "2",
+	[2]byte{0, 1}: "3",
+	[2]byte{0, 2}: "4",
+	[2]byte{0, 3}: "5",
+	[2]byte{1, 0}: "6",
+	[2]byte{1, 1}: "7",
+	[2]byte{1, 2}: "8",
+	[2]byte{1, 3}: "A",
+	[2]byte{2, 0}: "B",
+	[2]byte{2, 1}: "C",
+	[2]byte{2, 2}: "D",
+	[2]byte{2, 3}: "E",
+	[2]byte{3, 0}: "F",
+	[2]byte{3, 1}: "G",
+	[2]byte{3, 2}: "H",
+	[2]byte{3, 3}: "J",
+}
+
 /*
    SUB_DELTA_TABLE = [
-     [[0, 0], "2"],
-     [[0, 1], "3"],
-     [[0, 2], "4"],
-     [[0, 3], "5"],
-     [[1, 0], "6"],
-     [[1, 1], "7"],
-     [[1, 2], "8"],
-     [[1, 3], "A"],
-     [[2, 0], "B"],
-     [[2, 1], "C"],
-     [[2, 2], "D"],
-     [[2, 3], "E"],
-     [[3, 0], "F"],
-     [[3, 1], "G"],
-     [[3, 2], "H"],
-     [[3, 3], "J"],
      [[0]   , "K"],
      [[1]   , "M"],
      [[2]   , "N"],
@@ -78,40 +81,10 @@ func EncodeSubDelta(ids []byte) string {
 	if len(ids) > 2 {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
 	} else if len(ids) == 2 {
-		switch {
-		case ids[0] == 0 && ids[1] == 0:
-			return "2"
-		case ids[0] == 0 && ids[1] == 1:
-			return "3"
-		case ids[0] == 0 && ids[1] == 2:
-			return "4"
-		case ids[0] == 0 && ids[1] == 3:
-			return "5"
-		case ids[0] == 1 && ids[1] == 0:
-			return "6"
-		case ids[0] == 1 && ids[1] == 1:
-			return "7"
-		case ids[0] == 1 && ids[1] == 2:
-			return "8"
-		case ids[0] == 1 && ids[1] == 3:
-			return "A"
-		case ids[0] == 2 && ids[1] == 0:
-			return "B"
-		case ids[0] == 2 && ids[1] == 1:
-			return "C"
-		case ids[0] == 2 && ids[1] == 2:
-			return "D"
-		case ids[0] == 2 && ids[1] == 3:
-			return "E"
-		case ids[0] == 3 && ids[1] == 0:
-			return "F"
-		case ids[0] == 3 && ids[1] == 1:
-			return "G"
-		case ids[0] == 3 && ids[1] == 2:
-			return "H"
-		case ids[0] == 3 && ids[1] == 3:
-			return "J"
-		default:
+		var key [2]byte = [2]byte{ids[0], ids[1]}
+		if value, ok := SUB_IDS2_TO_CHAR[key]; ok {
+			return value
+		} else {
 			panic("invalid sub delta ids")
 		}
 	} else if len(ids) == 1 {
