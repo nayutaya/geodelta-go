@@ -79,22 +79,17 @@ func EncodeSubDelta(ids []byte) string {
 	if len(ids) > 2 {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
 	} else if len(ids) == 2 {
-		var key [2]byte = [2]byte{ids[0], ids[1]}
+		key := [2]byte{ids[0], ids[1]}
 		if value, ok := SUB_IDS2_TO_CHAR[key]; ok {
 			return value
-		} else {
-			panic("invalid sub delta ids")
 		}
 	} else if len(ids) == 1 {
 		key := ids[0]
 		if value, ok := SUB_IDS1_TO_CHAR[key]; ok {
 			return value
-		} else {
-			panic("invalid sub delta ids")
 		}
-	} else {
-		panic("invalid sub delta ids")
 	}
+	panic("invalid sub delta ids")
 }
 
 func DecodeSubDelta(codes string) []byte {
