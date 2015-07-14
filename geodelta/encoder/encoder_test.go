@@ -174,48 +174,48 @@ func TestEncodeAndDecodeSubDelta2(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal("Z", Encode([]byte{0}))
-	assert.Equal("ZM", Encode([]byte{0, 1}))
-	assert.Equal("Z8", Encode([]byte{0, 1, 2}))
-	assert.Equal("Z8P", Encode([]byte{0, 1, 2, 3}))
-	assert.Equal("R", Encode([]byte{7}))
-	assert.Equal("RP", Encode([]byte{7, 3}))
-	assert.Equal("RH", Encode([]byte{7, 3, 2}))
-	assert.Equal("RHM", Encode([]byte{7, 3, 2, 1}))
+	assert.Equal(DeltaCode("Z"), DeltaIds{0}.Encode())
+	assert.Equal(DeltaCode("ZM"), DeltaIds{0, 1}.Encode())
+	assert.Equal(DeltaCode("Z8"), DeltaIds{0, 1, 2}.Encode())
+	assert.Equal(DeltaCode("Z8P"), DeltaIds{0, 1, 2, 3}.Encode())
+	assert.Equal(DeltaCode("R"), DeltaIds{7}.Encode())
+	assert.Equal(DeltaCode("RP"), DeltaIds{7, 3}.Encode())
+	assert.Equal(DeltaCode("RH"), DeltaIds{7, 3, 2}.Encode())
+	assert.Equal(DeltaCode("RHM"), DeltaIds{7, 3, 2, 1}.Encode())
 	assert.Panics(func() {
-		Encode([]byte{})
+		DeltaIds{}.Encode()
 	})
 }
 
 func TestDecode(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal([]byte{0}, Decode("Z"))
-	assert.Equal([]byte{0, 1}, Decode("ZM"))
-	assert.Equal([]byte{0, 1, 2}, Decode("Z8"))
-	assert.Equal([]byte{0, 1, 2, 3}, Decode("Z8P"))
-	assert.Equal([]byte{7}, Decode("R"))
-	assert.Equal([]byte{7, 3}, Decode("RP"))
-	assert.Equal([]byte{7, 3, 2}, Decode("RH"))
-	assert.Equal([]byte{7, 3, 2, 1}, Decode("RHM"))
+	assert.Equal(DeltaIds{0}, DeltaCode("Z").Decode())
+	assert.Equal(DeltaIds{0, 1}, DeltaCode("ZM").Decode())
+	assert.Equal(DeltaIds{0, 1, 2}, DeltaCode("Z8").Decode())
+	assert.Equal(DeltaIds{0, 1, 2, 3}, DeltaCode("Z8P").Decode())
+	assert.Equal(DeltaIds{7}, DeltaCode("R").Decode())
+	assert.Equal(DeltaIds{7, 3}, DeltaCode("RP").Decode())
+	assert.Equal(DeltaIds{7, 3, 2}, DeltaCode("RH").Decode())
+	assert.Equal(DeltaIds{7, 3, 2, 1}, DeltaCode("RHM").Decode())
 	assert.Panics(func() {
-		Decode("")
+		DeltaCode("").Decode()
 	})
 }
 
 func TestEncodeAndDecodeRush(t *testing.T) {
 	assert := assert.New(t)
-	world := []byte{0, 1, 2, 3, 4, 5, 6, 7}
-	sub := []byte{0, 1, 2, 3}
+	world := DeltaIds{0, 1, 2, 3, 4, 5, 6, 7}
+	sub := DeltaIds{0, 1, 2, 3}
 	rand.Seed(1)
 	for i := 0; i < 1000; i++ {
-		ids := []byte{world[rand.Intn(len(world))]}
+		ids := DeltaIds{world[rand.Intn(len(world))]}
 		for j, size := 0, rand.Intn(20); j < size; j++ {
 			ids = append(ids, sub[rand.Intn(len(sub))])
 		}
 
-		encoded1 := Encode(ids)
-		decoded1 := Decode(encoded1)
-		encoded2 := Encode(decoded1)
+		encoded1 := ids.Encode()
+		decoded1 := encoded1.Decode()
+		encoded2 := decoded1.Encode()
 
 		assert.Equal(ids, decoded1)
 		assert.Equal(encoded1, encoded2)
