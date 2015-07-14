@@ -61,23 +61,21 @@ var SUB_IDS2_TO_CHAR map[[2]byte]string = map[[2]byte]string{
 	[2]byte{3, 3}: "J",
 }
 
+var SUB_IDS1_TO_CHAR map[byte]string = map[byte]string{
+	0: "K",
+	1: "M",
+	2: "N",
+	3: "P",
+}
+
 /*
    SUB_DELTA_TABLE = [
-     [[0]   , "K"],
-     [[1]   , "M"],
-     [[2]   , "N"],
-     [[3]   , "P"],
    ].each(&:freeze).freeze
    SUB_IDS_TO_CHAR = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[nums] = char; memo }.freeze
    SUB_CHAR_TO_IDS = SUB_DELTA_TABLE.inject({}) { |memo, (nums, char)| memo[char] = nums; memo }.freeze
 */
 
 func EncodeSubDelta(ids []byte) string {
-	// TODO: mapを使う
-	// raise("sub delta ids is empty") if ids.empty?
-	// return ids.each_slice(2).map { |part|
-	//   SUB_IDS_TO_CHAR[part] || raise("invalid sub delta ids -- #{part}")
-	// }.join("")
 	if len(ids) > 2 {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
 	} else if len(ids) == 2 {
@@ -88,16 +86,10 @@ func EncodeSubDelta(ids []byte) string {
 			panic("invalid sub delta ids")
 		}
 	} else if len(ids) == 1 {
-		switch ids[0] {
-		case 0:
-			return "K"
-		case 1:
-			return "M"
-		case 2:
-			return "N"
-		case 3:
-			return "P"
-		default:
+		key := ids[0]
+		if value, ok := SUB_IDS1_TO_CHAR[key]; ok {
+			return value
+		} else {
 			panic("invalid sub delta ids")
 		}
 	} else {
