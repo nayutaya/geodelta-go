@@ -174,14 +174,14 @@ func TestEncodeAndDecodeSubDelta2(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert := assert.New(t)
-	assert.Equal("Z", Encode([]byte{0}))
-	assert.Equal("ZM", Encode([]byte{0, 1}))
-	assert.Equal("Z8", Encode([]byte{0, 1, 2}))
-	assert.Equal("Z8P", Encode([]byte{0, 1, 2, 3}))
-	assert.Equal("R", Encode([]byte{7}))
-	assert.Equal("RP", Encode([]byte{7, 3}))
-	assert.Equal("RH", Encode([]byte{7, 3, 2}))
-	assert.Equal("RHM", Encode([]byte{7, 3, 2, 1}))
+	assert.Equal(DeltaCode("Z"), Encode([]byte{0}))
+	assert.Equal(DeltaCode("ZM"), Encode([]byte{0, 1}))
+	assert.Equal(DeltaCode("Z8"), Encode([]byte{0, 1, 2}))
+	assert.Equal(DeltaCode("Z8P"), Encode([]byte{0, 1, 2, 3}))
+	assert.Equal(DeltaCode("R"), Encode([]byte{7}))
+	assert.Equal(DeltaCode("RP"), Encode([]byte{7, 3}))
+	assert.Equal(DeltaCode("RH"), Encode([]byte{7, 3, 2}))
+	assert.Equal(DeltaCode("RHM"), Encode([]byte{7, 3, 2, 1}))
 	assert.Panics(func() {
 		Encode([]byte{})
 	})

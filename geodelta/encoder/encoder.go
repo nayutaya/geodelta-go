@@ -4,6 +4,8 @@ import (
 	"strings"
 )
 
+type DeltaCode string
+
 var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
 	0: "Z",
 	1: "Y",
@@ -130,21 +132,21 @@ func DecodeSubDeltaOne(code string) []byte {
 	}
 }
 
-func Encode(ids []byte) string {
+func Encode(ids []byte) DeltaCode {
 	if length := len(ids); length > 1 {
-		return EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:])
+		return DeltaCode(EncodeWorldDelta(ids[0]) + EncodeSubDelta(ids[1:]))
 	} else if length == 1 {
-		return EncodeWorldDelta(ids[0])
+		return DeltaCode(EncodeWorldDelta(ids[0]))
 	} else {
 		panic("delta ids is empty")
 	}
 }
 
-func Decode(codes string) []byte {
+func Decode(codes DeltaCode) []byte {
 	if length := len(codes); length > 1 {
-		return append([]byte{DecodeWorldDelta(codes[0:1])}, DecodeSubDelta(codes[1:])...)
+		return append([]byte{DecodeWorldDelta(string(codes)[0:1])}, DecodeSubDelta(string(codes)[1:])...)
 	} else if length == 1 {
-		return []byte{DecodeWorldDelta(codes[0:1])}
+		return []byte{DecodeWorldDelta(string(codes)[0:1])}
 	} else {
 		panic("delta codes is empty")
 	}
