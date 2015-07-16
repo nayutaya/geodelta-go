@@ -37,34 +37,44 @@ func GetWorldDeltaId(x float64, y float64) byte {
 }
 
 /*
+def self.get_sub_delta_id(upper, x, y)
+  return (upper ? self.get_upper_delta_id(x, y) : self.get_lower_delta_id(x, y))
+end
+*/
+
+// 指定された座標(x,y)に該当する上向きのサブデルタの番号を返す
+// ただし、0.0 <= x <= +12.0、0.0 <= y <= +12.0
+func GetUpperDeltaId(x float64, y float64) byte {
+	switch {
+	case y < -2.0*(x-6.0):
+		return 3
+	case y < +2.0*(x-6.0):
+		return 2
+	case y > 6.0:
+		return 1
+	default:
+		return 0
+	}
+}
+
+// 指定された座標(x,y)に該当する下向きのサブデルタの番号を返す
+// ただし、0.0 <= x <= +12.0、0.0 <= y <= +12.0
+func GetLowerDeltaId(x float64, y float64) byte {
+	switch {
+	case y > -2.0*(x-12.0):
+		return 3
+	case y > +2.0*x:
+		return 2
+	case y < 6.0:
+		return 1
+	default:
+		return 0
+	}
+}
+
+/*
 module GeoDelta
   module DeltaGeometry
-    def self.get_sub_delta_id(upper, x, y)
-      return (upper ? self.get_upper_delta_id(x, y) : self.get_lower_delta_id(x, y))
-    end
-
-    # 指定された座標(x,y)に該当する上向きのサブデルタの番号を返す
-    # ただし、0.0 <= x <= +12.0、0.0 <= y <= +12.0
-    def self.get_upper_delta_id(x, y)
-      case
-      when y < -2.0 * (x - 6.0) then 3
-      when y < +2.0 * (x - 6.0) then 2
-      when y > 6.0              then 1
-      else                           0
-      end
-    end
-
-    # 指定された座標(x,y)に該当する下向きのサブデルタの番号を返す
-    # ただし、0.0 <= x <= +12.0、0.0 <= y <= +12.0
-    def self.get_lower_delta_id(x, y)
-      case
-      when y > -2.0 * (x - 12.0) then 3
-      when y > +2.0 * x          then 2
-      when y < 6.0               then 1
-      else                            0
-      end
-    end
-
     # 指定されたワールドデルタが上向きかどうかを返す
     def self.upper_world_delta?(id)
       return (id % 2 == (id < 4 ? 1 : 0))
