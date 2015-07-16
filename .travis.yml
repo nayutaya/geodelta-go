@@ -5,6 +5,7 @@ before_install:
 script:
   - go test -v -covermode=count -coverprofile=coverage.root.txt ./geodelta
   - go test -v -covermode=count -coverprofile=coverage.encoder.txt ./geodelta/encoder
+  - go test -v -covermode=count -coverprofile=coverage.delta_geometry.txt ./geodelta/delta_geometry
   - "echo 'mode: count' > coverage.txt"
   - "grep -h -v 'mode: count' coverage.*.txt >> coverage.txt"
 after_success:
