@@ -8,13 +8,11 @@ import (
 // ただし、-12.0 <= x <= +12.0、-12.0 <= y <= +12.0
 func GetWorldDeltaId(x float64, y float64) byte {
 	mod := func(a float64, b float64) float64 {
-		if a > +b {
-			return a - b
-		} else if a < -b {
-			return a + b
-		} else {
-			return a
+		for ; a >= +b; a -= b {
 		}
+		for ; a < 0.0; a += b {
+		}
+		return a
 	}
 	xx := mod(x, 24.0)
 	yy := math.Abs(y)
@@ -41,7 +39,6 @@ func GetWorldDeltaId(x float64, y float64) byte {
 /*
 module GeoDelta
   module DeltaGeometry
-
     def self.get_sub_delta_id(upper, x, y)
       return (upper ? self.get_upper_delta_id(x, y) : self.get_lower_delta_id(x, y))
     end
