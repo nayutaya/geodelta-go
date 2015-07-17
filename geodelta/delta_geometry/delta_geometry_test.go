@@ -120,29 +120,30 @@ func TestIsUpperSubDelta(t *testing.T) {
 	assert.Equal(false, IsUpperSubDelta(false, 3))
 }
 
+func TestIsUpperDelta(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(false, IsUpperDelta([]byte{0}))
+	assert.Equal(true, IsUpperDelta([]byte{1}))
+	assert.Equal(true, IsUpperDelta([]byte{4}))
+	assert.Equal(false, IsUpperDelta([]byte{5}))
+
+	assert.Equal(true, IsUpperDelta([]byte{0, 0}))
+	assert.Equal(false, IsUpperDelta([]byte{0, 1}))
+	assert.Equal(false, IsUpperDelta([]byte{0, 2}))
+	assert.Equal(false, IsUpperDelta([]byte{0, 3}))
+
+	assert.Equal(false, IsUpperDelta([]byte{4, 0}))
+	assert.Equal(true, IsUpperDelta([]byte{4, 1}))
+	assert.Equal(true, IsUpperDelta([]byte{4, 2}))
+	assert.Equal(true, IsUpperDelta([]byte{4, 3}))
+
+	assert.Equal(false, IsUpperDelta([]byte{0, 0, 0}))
+	assert.Equal(true, IsUpperDelta([]byte{0, 0, 0, 0}))
+	assert.Equal(false, IsUpperDelta([]byte{0, 0, 0, 0, 0}))
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_upper_delta?
-    assert.Equal(false, @mod.upper_delta?([0]))
-    assert.Equal(true,  @mod.upper_delta?([1]))
-    assert.Equal(true,  @mod.upper_delta?([4]))
-    assert.Equal(false, @mod.upper_delta?([5]))
-
-    assert.Equal(true,  @mod.upper_delta?([0, 0]))
-    assert.Equal(false, @mod.upper_delta?([0, 1]))
-    assert.Equal(false, @mod.upper_delta?([0, 2]))
-    assert.Equal(false, @mod.upper_delta?([0, 3]))
-
-    assert.Equal(false, @mod.upper_delta?([4, 0]))
-    assert.Equal(true,  @mod.upper_delta?([4, 1]))
-    assert.Equal(true,  @mod.upper_delta?([4, 2]))
-    assert.Equal(true,  @mod.upper_delta?([4, 3]))
-
-    assert.Equal(false, @mod.upper_delta?([0, 0, 0]))
-    assert.Equal(true,  @mod.upper_delta?([0, 0, 0, 0]))
-    assert.Equal(false, @mod.upper_delta?([0, 0, 0, 0, 0]))
-  end
-
   def test_transform_world_delta
     assert.Equal([+6.0, +4.0], @mod.transform_world_delta(0,  +0.0, +4.0))
     assert.Equal([+6.0, +4.0], @mod.transform_world_delta(1,  +6.0, +4.0))

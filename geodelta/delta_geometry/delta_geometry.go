@@ -90,19 +90,17 @@ func IsUpperSubDelta(parent_is_upper bool, id byte) bool {
 	}
 }
 
+func IsUpperDelta(ids []byte) bool {
+	upper := IsUpperWorldDelta(ids[0])
+	for i, length := 1, len(ids); i < length; i++ {
+		upper = IsUpperSubDelta(upper, ids[i])
+	}
+	return upper
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    def self.upper_delta?(ids)
-      return ids.inject(nil) { |upper, id|
-        if upper.nil?
-          self.upper_world_delta?(id)
-        else
-          self.upper_sub_delta?(upper, id)
-        end
-      }
-    end
-
     TRANSFORM_WORLD_DELTA_X = [+6.0, +0.0, -6.0, -12.0,  +6.0,  +0.0,  -6.0, -12.0].freeze
     TRANSFORM_WORLD_DELTA_Y = [+0.0, +0.0, +0.0,  +0.0, +12.0, +12.0, +12.0, +12.0].freeze
 
