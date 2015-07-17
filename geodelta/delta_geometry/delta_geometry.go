@@ -72,14 +72,18 @@ func GetLowerDeltaId(x float64, y float64) byte {
 	}
 }
 
+// 指定されたワールドデルタが上向きかどうかを返す
+func IsUpperWorldDelta(id byte) bool {
+	if id < 4 {
+		return id%2 == 1
+	} else {
+		return id%2 == 0
+	}
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    # 指定されたワールドデルタが上向きかどうかを返す
-    def self.upper_world_delta?(id)
-      return (id % 2 == (id < 4 ? 1 : 0))
-    end
-
     # 指定されたサブデルタが上向きかどうか返す
     def self.upper_sub_delta?(parent_is_upper, id)
       return (parent_is_upper ? (id != 0) : (id == 0))

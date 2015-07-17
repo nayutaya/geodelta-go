@@ -96,19 +96,20 @@ func TestGetLowerDeltaId(t *testing.T) {
 	assert.Equal(byte(0), GetLowerDeltaId(9.0, 6.0))
 }
 
+func TestIsUpperWorldDelta(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(false, IsUpperWorldDelta(0))
+	assert.Equal(true, IsUpperWorldDelta(1))
+	assert.Equal(false, IsUpperWorldDelta(2))
+	assert.Equal(true, IsUpperWorldDelta(3))
+	assert.Equal(true, IsUpperWorldDelta(4))
+	assert.Equal(false, IsUpperWorldDelta(5))
+	assert.Equal(true, IsUpperWorldDelta(6))
+	assert.Equal(false, IsUpperWorldDelta(7))
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_upper_world_delta?
-    assert.Equal(false, @mod.upper_world_delta?(0))
-    assert.Equal(true , @mod.upper_world_delta?(1))
-    assert.Equal(false, @mod.upper_world_delta?(2))
-    assert.Equal(true , @mod.upper_world_delta?(3))
-    assert.Equal(true , @mod.upper_world_delta?(4))
-    assert.Equal(false, @mod.upper_world_delta?(5))
-    assert.Equal(true , @mod.upper_world_delta?(6))
-    assert.Equal(false, @mod.upper_world_delta?(7))
-  end
-
   def test_upper_sub_delta?
     assert.Equal(false, @mod.upper_sub_delta?(true,  0))
     assert.Equal(true,  @mod.upper_sub_delta?(true,  1))
