@@ -124,18 +124,18 @@ func TransformUpperDelta(id byte, x float64, y float64) (float64, float64) {
 	return xx, yy
 }
 
+var TRANSFORM_LOWER_DELTA_X []float64 = []float64{-3.0, -3.0, -0.0, -6.0}
+var TRANSFORM_LOWER_DELTA_Y []float64 = []float64{-6.0, -0.0, -6.0, -6.0}
+
+func TransformLowerDelta(id byte, x float64, y float64) (float64, float64) {
+	xx := (x + TRANSFORM_LOWER_DELTA_X[id]) * 2
+	yy := (y + TRANSFORM_LOWER_DELTA_Y[id]) * 2
+	return xx, yy
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    TRANSFORM_LOWER_DELTA_X = [-3.0, -3.0, -0.0, -6.0].freeze
-    TRANSFORM_LOWER_DELTA_Y = [-6.0, -0.0, -6.0, -6.0].freeze
-
-    def self.transform_lower_delta(id, x, y)
-      xx = (x + TRANSFORM_LOWER_DELTA_X[id]) * 2
-      yy = (y + TRANSFORM_LOWER_DELTA_Y[id]) * 2
-      return [xx, yy]
-    end
-
     def self.get_delta_ids(x, y, level)
       ids    = [self.get_world_delta_id(x, y)]
       xx, yy = self.transform_world_delta(ids.last, x, y)
