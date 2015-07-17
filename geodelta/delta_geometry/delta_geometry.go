@@ -81,14 +81,18 @@ func IsUpperWorldDelta(id byte) bool {
 	}
 }
 
+// 指定されたサブデルタが上向きかどうか返す
+func IsUpperSubDelta(parent_is_upper bool, id byte) bool {
+	if parent_is_upper {
+		return id != 0
+	} else {
+		return id == 0
+	}
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    # 指定されたサブデルタが上向きかどうか返す
-    def self.upper_sub_delta?(parent_is_upper, id)
-      return (parent_is_upper ? (id != 0) : (id == 0))
-    end
-
     def self.upper_delta?(ids)
       return ids.inject(nil) { |upper, id|
         if upper.nil?
