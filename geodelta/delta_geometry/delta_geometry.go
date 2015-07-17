@@ -113,9 +113,11 @@ func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
 }
 
 func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64, float64) {
-	return 0.0, 0.0
-	// TODO:
-	//  return (upper ? self.transform_upper_delta(id, x, y) : self.transform_lower_delta(id, x, y))
+	if upper {
+		return TransformUpperDelta(id, x, y)
+	}else {
+		return TransformLowerDelta(id, x, y)
+	}
 }
 
 var TRANSFORM_UPPER_DELTA_X []float64 = []float64{-3.0, -3.0, -6.0, -0.0}
@@ -141,17 +143,13 @@ func GetDeltaIds(x float64, y float64, level byte) []byte {
 	xx, yy := TransformWorldDelta(ids[0], x, y)
 	upper := IsUpperWorldDelta(ids[0])
 
-	if level == 2 {
+	for i := byte(2); i <= level; i++ {
 		ids = append(ids, GetSubDeltaId(upper, xx, yy))
 		xx, yy = TransformSubDelta(upper, ids[len(ids)-1], xx, yy)
 		upper = IsUpperSubDelta(upper, ids[len(ids)-1])
 	}
 
 	return ids
-	// (level - 1).times {
-	// }
-	//
-	// return ids
 }
 
 /*

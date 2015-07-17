@@ -226,18 +226,20 @@ func TestGetDeltaIdsLevel2(t *testing.T) {
 	assert.Equal([]byte{7, 3}, GetDeltaIds(+21.0, -2.0, 2))
 }
 
+func TestGetDeltaIdsLevel3(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0, 0, 0}, GetDeltaIds(+0.0, +8.0, 3))
+	assert.Equal([]byte{1, 0, 0}, GetDeltaIds(+6.0, +4.0, 3))
+}
+
+func TestGetDeltaIdsLevel4(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0, 0, 0, 0}, GetDeltaIds(+0.0, +8.0, 4))
+	assert.Equal([]byte{1, 0, 0, 0}, GetDeltaIds(+6.0, +4.0, 4))
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_delta_ids__level3
-    assert.Equal([0, 0, 0], @mod.get_delta_ids(+0.0, +8.0, 3))
-    assert.Equal([1, 0, 0], @mod.get_delta_ids(+6.0, +4.0, 3))
-  end
-
-  def test_get_delta_ids__level4
-    assert.Equal([0, 0, 0, 0], @mod.get_delta_ids(+0.0, +8.0, 4))
-    assert.Equal([1, 0, 0, 0], @mod.get_delta_ids(+6.0, +4.0, 4))
-  end
-
   def test_get_world_delta_center
     assert.Equal([ +0.0, +8.0], @mod.get_world_delta_center(0))
     assert.Equal([ +6.0, +4.0], @mod.get_world_delta_center(1))
