@@ -163,15 +163,21 @@ func TestTransformWorldDelta(t *testing.T) {
 	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
 }
 
+func TestTransformUpperDelta(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = TransformUpperDelta(0, +6.0, +4.0)
+	assert.Equal([]float64{+6.0, +8.0}, []float64{x, y})
+	x, y = TransformUpperDelta(1, +6.0, +8.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformUpperDelta(2, +9.0, +2.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformUpperDelta(3, +3.0, +2.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_transform_upper_delta
-    assert.Equal([+6.0, +8.0], @mod.transform_upper_delta(0, +6.0, +4.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_upper_delta(1, +6.0, +8.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_upper_delta(2, +9.0, +2.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_upper_delta(3, +3.0, +2.0))
-  end
-
   def test_transform_lower_delta
     assert.Equal([+6.0, +4.0], @mod.transform_lower_delta(0, +6.0,  +8.0))
     assert.Equal([+6.0, +8.0], @mod.transform_lower_delta(1, +6.0,  +4.0))
