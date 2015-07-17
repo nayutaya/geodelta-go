@@ -189,43 +189,45 @@ func TestTransformLowerDelta(t *testing.T) {
 	assert.Equal([]float64{+6.0, +8.0}, []float64{x, y})
 }
 
+func TestGetDeltaIdsLevel1(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0}, GetDeltaIds(0.0, +6.0, 1))
+	assert.Equal([]byte{1}, GetDeltaIds(6.0, +6.0, 1))
+	assert.Equal([]byte{2}, GetDeltaIds(12.0, +6.0, 1))
+	assert.Equal([]byte{3}, GetDeltaIds(18.0, +6.0, 1))
+	assert.Equal([]byte{4}, GetDeltaIds(0.0, -6.0, 1))
+	assert.Equal([]byte{5}, GetDeltaIds(6.0, -6.0, 1))
+	assert.Equal([]byte{6}, GetDeltaIds(12.0, -6.0, 1))
+	assert.Equal([]byte{7}, GetDeltaIds(18.0, -6.0, 1))
+}
+
+func TestGetDeltaIdsLevel2(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal([]byte{0, 0}, GetDeltaIds(+0.0, +8.0, 2))
+	assert.Equal([]byte{0, 1}, GetDeltaIds(+0.0, +4.0, 2))
+	assert.Equal([]byte{0, 2}, GetDeltaIds(-3.0, +10.0, 2))
+	assert.Equal([]byte{0, 3}, GetDeltaIds(+3.0, +10.0, 2))
+	assert.Equal([]byte{1, 0}, GetDeltaIds(+6.0, +4.0, 2))
+	assert.Equal([]byte{1, 1}, GetDeltaIds(+6.0, +8.0, 2))
+	assert.Equal([]byte{1, 2}, GetDeltaIds(+9.0, +2.0, 2))
+	assert.Equal([]byte{1, 3}, GetDeltaIds(+3.0, +2.0, 2))
+	assert.Equal([]byte{2, 2}, GetDeltaIds(+9.0, +10.0, 2))
+	assert.Equal([]byte{3, 3}, GetDeltaIds(+15.0, +2.0, 2))
+
+	assert.Equal([]byte{4, 0}, GetDeltaIds(+0.0, -8.0, 2))
+	assert.Equal([]byte{4, 1}, GetDeltaIds(+0.0, -4.0, 2))
+	assert.Equal([]byte{4, 2}, GetDeltaIds(+3.0, -10.0, 2))
+	assert.Equal([]byte{4, 3}, GetDeltaIds(-3.0, -10.0, 2))
+	assert.Equal([]byte{5, 0}, GetDeltaIds(+6.0, -4.0, 2))
+	assert.Equal([]byte{5, 1}, GetDeltaIds(+6.0, -8.0, 2))
+	assert.Equal([]byte{5, 2}, GetDeltaIds(+3.0, -2.0, 2))
+	assert.Equal([]byte{5, 3}, GetDeltaIds(+9.0, -2.0, 2))
+	assert.Equal([]byte{6, 2}, GetDeltaIds(+15.0, -10.0, 2))
+	assert.Equal([]byte{7, 3}, GetDeltaIds(+21.0, -2.0, 2))
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_delta_ids__level1
-    assert.Equal([0], @mod.get_delta_ids( 0.0, +6.0, 1))
-    assert.Equal([1], @mod.get_delta_ids( 6.0, +6.0, 1))
-    assert.Equal([2], @mod.get_delta_ids(12.0, +6.0, 1))
-    assert.Equal([3], @mod.get_delta_ids(18.0, +6.0, 1))
-    assert.Equal([4], @mod.get_delta_ids( 0.0, -6.0, 1))
-    assert.Equal([5], @mod.get_delta_ids( 6.0, -6.0, 1))
-    assert.Equal([6], @mod.get_delta_ids(12.0, -6.0, 1))
-    assert.Equal([7], @mod.get_delta_ids(18.0, -6.0, 1))
-  end
-
-  def test_get_delta_ids__level2
-    assert.Equal([0, 0], @mod.get_delta_ids( +0.0,  +8.0, 2))
-    assert.Equal([0, 1], @mod.get_delta_ids( +0.0,  +4.0, 2))
-    assert.Equal([0, 2], @mod.get_delta_ids( -3.0, +10.0, 2))
-    assert.Equal([0, 3], @mod.get_delta_ids( +3.0, +10.0, 2))
-    assert.Equal([1, 0], @mod.get_delta_ids( +6.0,  +4.0, 2))
-    assert.Equal([1, 1], @mod.get_delta_ids( +6.0,  +8.0, 2))
-    assert.Equal([1, 2], @mod.get_delta_ids( +9.0,  +2.0, 2))
-    assert.Equal([1, 3], @mod.get_delta_ids( +3.0,  +2.0, 2))
-    assert.Equal([2, 2], @mod.get_delta_ids( +9.0, +10.0, 2))
-    assert.Equal([3, 3], @mod.get_delta_ids(+15.0,  +2.0, 2))
-
-    assert.Equal([4, 0], @mod.get_delta_ids( +0.0,  -8.0, 2))
-    assert.Equal([4, 1], @mod.get_delta_ids( +0.0,  -4.0, 2))
-    assert.Equal([4, 2], @mod.get_delta_ids( +3.0, -10.0, 2))
-    assert.Equal([4, 3], @mod.get_delta_ids( -3.0, -10.0, 2))
-    assert.Equal([5, 0], @mod.get_delta_ids( +6.0,  -4.0, 2))
-    assert.Equal([5, 1], @mod.get_delta_ids( +6.0,  -8.0, 2))
-    assert.Equal([5, 2], @mod.get_delta_ids( +3.0,  -2.0, 2))
-    assert.Equal([5, 3], @mod.get_delta_ids( +9.0,  -2.0, 2))
-    assert.Equal([6, 2], @mod.get_delta_ids(+15.0, -10.0, 2))
-    assert.Equal([7, 3], @mod.get_delta_ids(+21.0,  -2.0, 2))
-  end
-
   def test_get_delta_ids__level3
     assert.Equal([0, 0, 0], @mod.get_delta_ids(+0.0, +8.0, 3))
     assert.Equal([1, 0, 0], @mod.get_delta_ids(+6.0, +4.0, 3))

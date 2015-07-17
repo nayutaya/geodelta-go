@@ -36,11 +36,13 @@ func GetWorldDeltaId(x float64, y float64) byte {
 	}
 }
 
-/*
-def self.get_sub_delta_id(upper, x, y)
-  return (upper ? self.get_upper_delta_id(x, y) : self.get_lower_delta_id(x, y))
-end
-*/
+func GetSubDeltaId(upper bool, x float64, y float64) byte {
+	if upper {
+		return GetUpperDeltaId(x, y)
+	} else {
+		return GetLowerDeltaId(x, y)
+	}
+}
 
 // 指定された座標(x,y)に該当する上向きのサブデルタの番号を返す
 // ただし、0.0 <= x <= +12.0、0.0 <= y <= +12.0
@@ -110,10 +112,11 @@ func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
 	// yy = (y + TRANSFORM_WORLD_DELTA_Y[id]) % 12
 }
 
-// func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64,float64) {
-// 	return 0.0,0.0
-//  return (upper ? self.transform_upper_delta(id, x, y) : self.transform_lower_delta(id, x, y))
-// }
+func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64, float64) {
+	return 0.0, 0.0
+	// TODO:
+	//  return (upper ? self.transform_upper_delta(id, x, y) : self.transform_lower_delta(id, x, y))
+}
 
 var TRANSFORM_UPPER_DELTA_X []float64 = []float64{-3.0, -3.0, -6.0, -0.0}
 var TRANSFORM_UPPER_DELTA_Y []float64 = []float64{-0.0, -6.0, -0.0, -0.0}
@@ -133,23 +136,27 @@ func TransformLowerDelta(id byte, x float64, y float64) (float64, float64) {
 	return xx, yy
 }
 
+func GetDeltaIds(x float64, y float64, level byte) []byte {
+	ids := []byte{GetWorldDeltaId(x, y)}
+	xx, yy := TransformWorldDelta(ids[0], x, y)
+	upper := IsUpperWorldDelta(ids[0])
+
+	if level == 2 {
+		ids = append(ids, GetSubDeltaId(upper, xx, yy))
+		xx, yy = TransformSubDelta(upper, ids[len(ids)-1], xx, yy)
+		upper = IsUpperSubDelta(upper, ids[len(ids)-1])
+	}
+
+	return ids
+	// (level - 1).times {
+	// }
+	//
+	// return ids
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    def self.get_delta_ids(x, y, level)
-      ids    = [self.get_world_delta_id(x, y)]
-      xx, yy = self.transform_world_delta(ids.last, x, y)
-      upper  = self.upper_world_delta?(ids.last)
-
-      (level - 1).times {
-        ids << self.get_sub_delta_id(upper, xx, yy)
-        xx, yy = self.transform_sub_delta(upper, ids.last, xx, yy)
-        upper  = self.upper_sub_delta?(upper, ids.last)
-      }
-
-      return ids
-    end
-
     WORLD_DELTA_CENTER = {
       0 => [ +0.0, +8.0],
       1 => [ +6.0, +4.0],
