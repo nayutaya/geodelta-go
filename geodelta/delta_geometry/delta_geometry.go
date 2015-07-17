@@ -98,18 +98,21 @@ func IsUpperDelta(ids []byte) bool {
 	return upper
 }
 
+var TRANSFORM_WORLD_DELTA_X []float64 = []float64{+6.0, +0.0, -6.0, -12.0, +6.0, +0.0, -6.0, -12.0}
+var TRANSFORM_WORLD_DELTA_Y []float64 = []float64{+0.0, +0.0, +0.0, +0.0, +12.0, +12.0, +12.0, +12.0}
+
+func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
+	xx := (x + TRANSFORM_WORLD_DELTA_X[id])
+	yy := (y + TRANSFORM_WORLD_DELTA_Y[id])
+	return xx, yy
+	// TODO: mod
+	// xx = (x + TRANSFORM_WORLD_DELTA_X[id]) % 12
+	// yy = (y + TRANSFORM_WORLD_DELTA_Y[id]) % 12
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    TRANSFORM_WORLD_DELTA_X = [+6.0, +0.0, -6.0, -12.0,  +6.0,  +0.0,  -6.0, -12.0].freeze
-    TRANSFORM_WORLD_DELTA_Y = [+0.0, +0.0, +0.0,  +0.0, +12.0, +12.0, +12.0, +12.0].freeze
-
-    def self.transform_world_delta(id, x, y)
-      xx = (x + TRANSFORM_WORLD_DELTA_X[id]) % 12
-      yy = (y + TRANSFORM_WORLD_DELTA_Y[id]) % 12
-      return [xx, yy]
-    end
-
     TRANSFORM_UPPER_DELTA_X = [-3.0, -3.0, -6.0, -0.0].freeze
     TRANSFORM_UPPER_DELTA_Y = [-0.0, -6.0, -0.0, -0.0].freeze
 

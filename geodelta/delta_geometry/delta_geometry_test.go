@@ -142,19 +142,29 @@ func TestIsUpperDelta(t *testing.T) {
 	assert.Equal(false, IsUpperDelta([]byte{0, 0, 0, 0, 0}))
 }
 
+func TestTransformWorldDelta(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = TransformWorldDelta(0, +0.0, +4.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(1, +6.0, +4.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(2, +12.0, +4.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(3, +18.0, +4.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(4, +0.0, -8.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(5, +6.0, -8.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(6, +12.0, -8.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = TransformWorldDelta(7, +18.0, -8.0)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_transform_world_delta
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(0,  +0.0, +4.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(1,  +6.0, +4.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(2, +12.0, +4.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(3, +18.0, +4.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(4,  +0.0, -8.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(5,  +6.0, -8.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(6, +12.0, -8.0))
-    assert.Equal([+6.0, +4.0], @mod.transform_world_delta(7, +18.0, -8.0))
-  end
-
   def test_transform_upper_delta
     assert.Equal([+6.0, +8.0], @mod.transform_upper_delta(0, +6.0, +4.0))
     assert.Equal([+6.0, +4.0], @mod.transform_upper_delta(1, +6.0, +8.0))
