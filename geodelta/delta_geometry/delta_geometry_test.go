@@ -238,19 +238,29 @@ func TestGetDeltaIdsLevel4(t *testing.T) {
 	assert.Equal([]byte{1, 0, 0, 0}, GetDeltaIds(+6.0, +4.0, 4))
 }
 
+func TestGetWorldDeltaCenter(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = GetWorldDeltaCenter(0)
+	assert.Equal([]float64{+0.0, +8.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(1)
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(2)
+	assert.Equal([]float64{+12.0, +8.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(3)
+	assert.Equal([]float64{+18.0, +4.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(4)
+	assert.Equal([]float64{+0.0, -8.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(5)
+	assert.Equal([]float64{+6.0, -4.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(6)
+	assert.Equal([]float64{+12.0, -8.0}, []float64{x, y})
+	x, y = GetWorldDeltaCenter(7)
+	assert.Equal([]float64{+18.0, -4.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_world_delta_center
-    assert.Equal([ +0.0, +8.0], @mod.get_world_delta_center(0))
-    assert.Equal([ +6.0, +4.0], @mod.get_world_delta_center(1))
-    assert.Equal([+12.0, +8.0], @mod.get_world_delta_center(2))
-    assert.Equal([+18.0, +4.0], @mod.get_world_delta_center(3))
-    assert.Equal([ +0.0, -8.0], @mod.get_world_delta_center(4))
-    assert.Equal([ +6.0, -4.0], @mod.get_world_delta_center(5))
-    assert.Equal([+12.0, -8.0], @mod.get_world_delta_center(6))
-    assert.Equal([+18.0, -4.0], @mod.get_world_delta_center(7))
-  end
-
   def test_get_upper_sub_delta_distance
     assert.Equal([+0.0, +0.0], @mod.get_upper_sub_delta_distance(0))
     assert.Equal([+0.0, +4.0], @mod.get_upper_sub_delta_distance(1))

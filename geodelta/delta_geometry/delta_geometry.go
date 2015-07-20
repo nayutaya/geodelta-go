@@ -115,7 +115,7 @@ func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
 func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64, float64) {
 	if upper {
 		return TransformUpperDelta(id, x, y)
-	}else {
+	} else {
 		return TransformLowerDelta(id, x, y)
 	}
 }
@@ -152,24 +152,25 @@ func GetDeltaIds(x float64, y float64, level byte) []byte {
 	return ids
 }
 
+var WORLD_DELTA_CENTER map[byte][]float64 = map[byte][]float64{
+	0: []float64{+0.0, +8.0},
+	1: []float64{+6.0, +4.0},
+	2: []float64{+12.0, +8.0},
+	3: []float64{+18.0, +4.0},
+	4: []float64{+0.0, -8.0},
+	5: []float64{+6.0, -4.0},
+	6: []float64{+12.0, -8.0},
+	7: []float64{+18.0, -4.0},
+}
+
+func GetWorldDeltaCenter(id byte) (float64, float64) {
+	xy := WORLD_DELTA_CENTER[id]
+	return xy[0], xy[1]
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    WORLD_DELTA_CENTER = {
-      0 => [ +0.0, +8.0],
-      1 => [ +6.0, +4.0],
-      2 => [+12.0, +8.0],
-      3 => [+18.0, +4.0],
-      4 => [ +0.0, -8.0],
-      5 => [ +6.0, -4.0],
-      6 => [+12.0, -8.0],
-      7 => [+18.0, -4.0],
-    }.freeze.tap { |h| h.values.map(&:freeze) }
-
-    def self.get_world_delta_center(id)
-      return WORLD_DELTA_CENTER[id]
-    end
-
     UPPER_SUB_DELTA_DISTANCE = {
       0 => [+0.0, +0.0],
       1 => [+0.0, +4.0],
