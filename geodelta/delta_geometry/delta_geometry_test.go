@@ -259,15 +259,21 @@ func TestGetWorldDeltaCenter(t *testing.T) {
 	assert.Equal([]float64{+18.0, -4.0}, []float64{x, y})
 }
 
+func TestGetUpperSubDeltaDistance(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = GetUpperSubDeltaDistance(0)
+	assert.Equal([]float64{+0.0, +0.0}, []float64{x, y})
+	x, y = GetUpperSubDeltaDistance(1)
+	assert.Equal([]float64{+0.0, +4.0}, []float64{x, y})
+	x, y = GetUpperSubDeltaDistance(2)
+	assert.Equal([]float64{+3.0, -2.0}, []float64{x, y})
+	x, y = GetUpperSubDeltaDistance(3)
+	assert.Equal([]float64{-3.0, -2.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_upper_sub_delta_distance
-    assert.Equal([+0.0, +0.0], @mod.get_upper_sub_delta_distance(0))
-    assert.Equal([+0.0, +4.0], @mod.get_upper_sub_delta_distance(1))
-    assert.Equal([+3.0, -2.0], @mod.get_upper_sub_delta_distance(2))
-    assert.Equal([-3.0, -2.0], @mod.get_upper_sub_delta_distance(3))
-  end
-
   def test_get_lower_sub_delta_distance
     assert.Equal([+0.0, +0.0], @mod.get_lower_sub_delta_distance(0))
     assert.Equal([+0.0, -4.0], @mod.get_lower_sub_delta_distance(1))
