@@ -311,32 +311,54 @@ func TestGetCenterLevel1(t *testing.T) {
 	assert.Equal([]float64{+6.0, -4.0}, []float64{x, y})
 }
 
+func TestGetCenterLevel2(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = GetCenter([]byte{0, 0})
+	assert.Equal([]float64{+0.0, +8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 1})
+	assert.Equal([]float64{+0.0, +4.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 2})
+	assert.Equal([]float64{-3.0, +10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 3})
+	assert.Equal([]float64{+3.0, +10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{1, 0})
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = GetCenter([]byte{1, 1})
+	assert.Equal([]float64{+6.0, +8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{1, 2})
+	assert.Equal([]float64{+9.0, +2.0}, []float64{x, y})
+	x, y = GetCenter([]byte{1, 3})
+	assert.Equal([]float64{+3.0, +2.0}, []float64{x, y})
+	x, y = GetCenter([]byte{2, 2})
+	assert.Equal([]float64{+9.0, +10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{3, 3})
+	assert.Equal([]float64{-9.0, +2.0}, []float64{x, y})
+
+	x, y = GetCenter([]byte{4, 0})
+	assert.Equal([]float64{+0.0, -8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{4, 1})
+	assert.Equal([]float64{+0.0, -4.0}, []float64{x, y})
+	x, y = GetCenter([]byte{4, 2})
+	assert.Equal([]float64{+3.0, -10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{4, 3})
+	assert.Equal([]float64{-3.0, -10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{5, 0})
+	assert.Equal([]float64{+6.0, -4.0}, []float64{x, y})
+	x, y = GetCenter([]byte{5, 1})
+	assert.Equal([]float64{+6.0, -8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{5, 2})
+	assert.Equal([]float64{+3.0, -2.0}, []float64{x, y})
+	x, y = GetCenter([]byte{5, 3})
+	assert.Equal([]float64{+9.0, -2.0}, []float64{x, y})
+	x, y = GetCenter([]byte{6, 2})
+	assert.Equal([]float64{-9.0, -10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{7, 3})
+	assert.Equal([]float64{-3.0, -2.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_center__level2
-    assert.Equal([ +0.0,  +8.0], @mod.get_center([0, 0]))
-    assert.Equal([ +0.0,  +4.0], @mod.get_center([0, 1]))
-    assert.Equal([ -3.0, +10.0], @mod.get_center([0, 2]))
-    assert.Equal([ +3.0, +10.0], @mod.get_center([0, 3]))
-    assert.Equal([ +6.0,  +4.0], @mod.get_center([1, 0]))
-    assert.Equal([ +6.0,  +8.0], @mod.get_center([1, 1]))
-    assert.Equal([ +9.0,  +2.0], @mod.get_center([1, 2]))
-    assert.Equal([ +3.0,  +2.0], @mod.get_center([1, 3]))
-    assert.Equal([ +9.0, +10.0], @mod.get_center([2, 2]))
-    assert.Equal([ -9.0,  +2.0], @mod.get_center([3, 3]))
-
-    assert.Equal([ +0.0,  -8.0], @mod.get_center([4, 0]))
-    assert.Equal([ +0.0,  -4.0], @mod.get_center([4, 1]))
-    assert.Equal([ +3.0, -10.0], @mod.get_center([4, 2]))
-    assert.Equal([ -3.0, -10.0], @mod.get_center([4, 3]))
-    assert.Equal([ +6.0,  -4.0], @mod.get_center([5, 0]))
-    assert.Equal([ +6.0,  -8.0], @mod.get_center([5, 1]))
-    assert.Equal([ +3.0,  -2.0], @mod.get_center([5, 2]))
-    assert.Equal([ +9.0,  -2.0], @mod.get_center([5, 3]))
-    assert.Equal([ -9.0, -10.0], @mod.get_center([6, 2]))
-    assert.Equal([ -3.0,  -2.0], @mod.get_center([7, 3]))
-  end
-
   def test_get_center__level3
     assert.Equal([ +0.0,  +8.0], @mod.get_center([0, 0, 0]))
     assert.Equal([ +0.0, +10.0], @mod.get_center([0, 0, 1]))

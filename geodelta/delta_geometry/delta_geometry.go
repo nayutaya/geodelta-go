@@ -201,14 +201,22 @@ func GetSubDeltaDistance(parent_is_upper bool, id byte) (float64, float64) {
 }
 
 func GetCenter(ids []byte) (float64, float64) {
-	w_id /*s_ids*/, _ := ids[0], ids[1:]
+	w_id, s_ids := ids[0], ids[1:]
 
 	x, y := GetWorldDeltaCenter(w_id)
+	upper := IsUpperWorldDelta(w_id)
 
-	return x, y
-	//
-	// x, y  = self.get_world_delta_center(w_id)
-	// upper = self.upper_world_delta?(w_id)
+	if len(s_ids) == 1 {
+		xx, yy := GetSubDeltaDistance(upper, s_ids[0])
+		x += xx
+		y += yy
+	}
+
+	// x -= 24.0 if x > 12.0
+	if x > 12.0 {
+		x -= 24.0
+	}
+
 	// xs = [x]
 	// ys = [y]
 	//
@@ -222,9 +230,9 @@ func GetCenter(ids []byte) (float64, float64) {
 	// x = xs.sort.inject(0.0, &:+)
 	// y = ys.sort.inject(0.0, &:+)
 	//
-	// x -= 24.0 if x > 12.0
 	//
 	// return [x, y]
+	return x, y
 }
 
 /*
