@@ -115,7 +115,7 @@ func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
 func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64, float64) {
 	if upper {
 		return TransformUpperDelta(id, x, y)
-	}else {
+	} else {
 		return TransformLowerDelta(id, x, y)
 	}
 }
@@ -152,95 +152,94 @@ func GetDeltaIds(x float64, y float64, level byte) []byte {
 	return ids
 }
 
-/*
-module GeoDelta
-  module DeltaGeometry
-    WORLD_DELTA_CENTER = {
-      0 => [ +0.0, +8.0],
-      1 => [ +6.0, +4.0],
-      2 => [+12.0, +8.0],
-      3 => [+18.0, +4.0],
-      4 => [ +0.0, -8.0],
-      5 => [ +6.0, -4.0],
-      6 => [+12.0, -8.0],
-      7 => [+18.0, -4.0],
-    }.freeze.tap { |h| h.values.map(&:freeze) }
+var WORLD_DELTA_CENTER map[byte][]float64 = map[byte][]float64{
+	0: []float64{+0.0, +8.0},
+	1: []float64{+6.0, +4.0},
+	2: []float64{+12.0, +8.0},
+	3: []float64{+18.0, +4.0},
+	4: []float64{+0.0, -8.0},
+	5: []float64{+6.0, -4.0},
+	6: []float64{+12.0, -8.0},
+	7: []float64{+18.0, -4.0},
+}
 
-    def self.get_world_delta_center(id)
-      return WORLD_DELTA_CENTER[id]
-    end
+func GetWorldDeltaCenter(id byte) (float64, float64) {
+	xy := WORLD_DELTA_CENTER[id]
+	return xy[0], xy[1]
+}
 
-    UPPER_SUB_DELTA_DISTANCE = {
-      0 => [+0.0, +0.0],
-      1 => [+0.0, +4.0],
-      2 => [+3.0, -2.0],
-      3 => [-3.0, -2.0],
-    }.freeze.tap { |h| h.values.map(&:freeze) }
+var UPPER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
+	0: []float64{+0.0, +0.0},
+	1: []float64{+0.0, +4.0},
+	2: []float64{+3.0, -2.0},
+	3: []float64{-3.0, -2.0},
+}
 
-    def self.get_upper_sub_delta_distance(id)
-      return UPPER_SUB_DELTA_DISTANCE[id]
-    end
+func GetUpperSubDeltaDistance(id byte) (float64, float64) {
+	xy := UPPER_SUB_DELTA_DISTANCE[id]
+	return xy[0], xy[1]
+}
 
-    LOWER_SUB_DELTA_DISTANCE = {
-      0 => [+0.0, +0.0],
-      1 => [+0.0, -4.0],
-      2 => [-3.0, +2.0],
-      3 => [+3.0, +2.0],
-    }.freeze.tap { |h| h.values.map(&:freeze) }
+var LOWER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
+	0: []float64{+0.0, +0.0},
+	1: []float64{+0.0, -4.0},
+	2: []float64{-3.0, +2.0},
+	3: []float64{+3.0, +2.0},
+}
 
-    def self.get_lower_sub_delta_distance(id)
-      return LOWER_SUB_DELTA_DISTANCE[id]
-    end
+func GetLowerSubDeltaDistance(id byte) (float64, float64) {
+	xy := LOWER_SUB_DELTA_DISTANCE[id]
+	return xy[0], xy[1]
+}
 
-    def self.get_sub_delta_distance(parent_is_upper, id)
-      if parent_is_upper
-        return self.get_upper_sub_delta_distance(id)
-      else
-        return self.get_lower_sub_delta_distance(id)
-      end
-    end
+func GetSubDeltaDistance(parent_is_upper bool, id byte) (float64, float64) {
+	if parent_is_upper {
+		return GetUpperSubDeltaDistance(id)
+	} else {
+		return GetLowerSubDeltaDistance(id)
+	}
+}
 
-    def self.get_center(ids)
-      w_id, *s_ids = ids
+func GetCenter(ids []byte) (float64, float64) {
+	w_id, s_ids := ids[0], ids[1:]
 
-      x, y  = self.get_world_delta_center(w_id)
-      upper = self.upper_world_delta?(w_id)
-      xs = [x]
-      ys = [y]
+	x, y := GetWorldDeltaCenter(w_id)
+	upper := IsUpperWorldDelta(w_id)
 
-      s_ids.each.with_index { |id, index|
-        x, y  = self.get_sub_delta_distance(upper, id)
-        upper = self.upper_sub_delta?(upper, id)
-        xs << (x / (2 ** index))
-        ys << (y / (2 ** index))
-      }
+	for i, length := 0, len(s_ids); i < length; i++ {
+		xx, yy := GetSubDeltaDistance(upper, s_ids[i])
+		upper = IsUpperSubDelta(upper, s_ids[i])
+		x += xx / math.Pow(2, float64(i))
+		y += yy / math.Pow(2, float64(i))
+	}
 
-      x = xs.sort.inject(0.0, &:+)
-      y = ys.sort.inject(0.0, &:+)
+	if x > 12.0 {
+		x -= 24.0
+	}
 
-      x -= 24.0 if x > 12.0
+	return x, y
+}
 
-      return [x, y]
-    end
+func GetCoordinates(ids []byte) [][]float64 {
+	cx, cy := GetCenter(ids)
+	level := len(ids)
+	var sign float64
+	if IsUpperDelta(ids) {
+		sign = +1
+	} else {
+		sign = -1
+	}
+	scale := 1.0 / math.Pow(2, float64(level-1)) * sign
 
-    def self.get_coordinates(ids)
-      cx, cy = self.get_center(ids)
-      level  = ids.size
-      sign   = (self.upper_delta?(ids) ? +1 : -1)
-      scale  = 1.0 / (2 ** (level - 1)) * sign
+	dx1 := 0.0
+	dy1 := 8.0 * scale
+	dx2 := 6.0 * scale
+	dy2 := 4.0 * scale
 
-      dx1 = 0.0
-      dy1 = 8.0 * scale
-      dx2 = 6.0 * scale
-      dy2 = 4.0 * scale
-
-      return [
-        [cx,       cy      ],
-        [cx + dx1, cy + dy1],
-        [cx + dx2, cy - dy2],
-        [cx - dx2, cy - dy2],
-      ]
-    end
-  end
-end
-*/
+	return [][]float64{
+		[]float64{cx, cy},
+		[]float64{cx + dx1, cy + dy1},
+		[]float64{cx + dx2, cy - dy2},
+		[]float64{cx - dx2, cy - dy2},
+	}
+}
