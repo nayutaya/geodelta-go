@@ -298,15 +298,21 @@ func TestGetSubDeltaDistance(t *testing.T) {
 	assert.Equal([]float64{-3.0, +2.0}, []float64{x, y})
 }
 
+func TestGetCenterLevel1(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = GetCenter([]byte{0})
+	assert.Equal([]float64{+0.0, +8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{1})
+	assert.Equal([]float64{+6.0, +4.0}, []float64{x, y})
+	x, y = GetCenter([]byte{4})
+	assert.Equal([]float64{+0.0, -8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{5})
+	assert.Equal([]float64{+6.0, -4.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_center__level1
-    assert.Equal([+0.0, +8.0], @mod.get_center([0]))
-    assert.Equal([+6.0, +4.0], @mod.get_center([1]))
-    assert.Equal([+0.0, -8.0], @mod.get_center([4]))
-    assert.Equal([+6.0, -4.0], @mod.get_center([5]))
-  end
-
   def test_get_center__level2
     assert.Equal([ +0.0,  +8.0], @mod.get_center([0, 0]))
     assert.Equal([ +0.0,  +4.0], @mod.get_center([0, 1]))

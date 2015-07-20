@@ -200,32 +200,36 @@ func GetSubDeltaDistance(parent_is_upper bool, id byte) (float64, float64) {
 	}
 }
 
+func GetCenter(ids []byte) (float64, float64) {
+	w_id /*s_ids*/, _ := ids[0], ids[1:]
+
+	x, y := GetWorldDeltaCenter(w_id)
+
+	return x, y
+	//
+	// x, y  = self.get_world_delta_center(w_id)
+	// upper = self.upper_world_delta?(w_id)
+	// xs = [x]
+	// ys = [y]
+	//
+	// s_ids.each.with_index { |id, index|
+	//   x, y  = self.get_sub_delta_distance(upper, id)
+	//   upper = self.upper_sub_delta?(upper, id)
+	//   xs << (x / (2 ** index))
+	//   ys << (y / (2 ** index))
+	// }
+	//
+	// x = xs.sort.inject(0.0, &:+)
+	// y = ys.sort.inject(0.0, &:+)
+	//
+	// x -= 24.0 if x > 12.0
+	//
+	// return [x, y]
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    def self.get_center(ids)
-      w_id, *s_ids = ids
-
-      x, y  = self.get_world_delta_center(w_id)
-      upper = self.upper_world_delta?(w_id)
-      xs = [x]
-      ys = [y]
-
-      s_ids.each.with_index { |id, index|
-        x, y  = self.get_sub_delta_distance(upper, id)
-        upper = self.upper_sub_delta?(upper, id)
-        xs << (x / (2 ** index))
-        ys << (y / (2 ** index))
-      }
-
-      x = xs.sort.inject(0.0, &:+)
-      y = ys.sort.inject(0.0, &:+)
-
-      x -= 24.0 if x > 12.0
-
-      return [x, y]
-    end
-
     def self.get_coordinates(ids)
       cx, cy = self.get_center(ids)
       level  = ids.size
