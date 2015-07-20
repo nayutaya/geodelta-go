@@ -180,28 +180,29 @@ func GetUpperSubDeltaDistance(id byte) (float64, float64) {
 	return xy[0], xy[1]
 }
 
+var LOWER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
+	0: []float64{+0.0, +0.0},
+	1: []float64{+0.0, -4.0},
+	2: []float64{-3.0, +2.0},
+	3: []float64{+3.0, +2.0},
+}
+
+func GetLowerSubDeltaDistance(id byte) (float64, float64) {
+	xy := LOWER_SUB_DELTA_DISTANCE[id]
+	return xy[0], xy[1]
+}
+
+func GetSubDeltaDistance(parent_is_upper bool, id byte) (float64, float64) {
+	if parent_is_upper {
+		return GetUpperSubDeltaDistance(id)
+	} else {
+		return GetLowerSubDeltaDistance(id)
+	}
+}
+
 /*
 module GeoDelta
   module DeltaGeometry
-    LOWER_SUB_DELTA_DISTANCE = {
-      0 => [+0.0, +0.0],
-      1 => [+0.0, -4.0],
-      2 => [-3.0, +2.0],
-      3 => [+3.0, +2.0],
-    }.freeze.tap { |h| h.values.map(&:freeze) }
-
-    def self.get_lower_sub_delta_distance(id)
-      return LOWER_SUB_DELTA_DISTANCE[id]
-    end
-
-    def self.get_sub_delta_distance(parent_is_upper, id)
-      if parent_is_upper
-        return self.get_upper_sub_delta_distance(id)
-      else
-        return self.get_lower_sub_delta_distance(id)
-      end
-    end
-
     def self.get_center(ids)
       w_id, *s_ids = ids
 
