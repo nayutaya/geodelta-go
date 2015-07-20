@@ -206,32 +206,17 @@ func GetCenter(ids []byte) (float64, float64) {
 	x, y := GetWorldDeltaCenter(w_id)
 	upper := IsUpperWorldDelta(w_id)
 
-	if len(s_ids) == 1 {
-		xx, yy := GetSubDeltaDistance(upper, s_ids[0])
-		x += xx
-		y += yy
+	for i, length := 0, len(s_ids); i < length; i++ {
+		xx, yy := GetSubDeltaDistance(upper, s_ids[i])
+		upper = IsUpperSubDelta(upper, s_ids[i])
+		x += xx / math.Pow(2, float64(i))
+		y += yy / math.Pow(2, float64(i))
 	}
 
-	// x -= 24.0 if x > 12.0
 	if x > 12.0 {
 		x -= 24.0
 	}
 
-	// xs = [x]
-	// ys = [y]
-	//
-	// s_ids.each.with_index { |id, index|
-	//   x, y  = self.get_sub_delta_distance(upper, id)
-	//   upper = self.upper_sub_delta?(upper, id)
-	//   xs << (x / (2 ** index))
-	//   ys << (y / (2 ** index))
-	// }
-	//
-	// x = xs.sort.inject(0.0, &:+)
-	// y = ys.sort.inject(0.0, &:+)
-	//
-	//
-	// return [x, y]
 	return x, y
 }
 

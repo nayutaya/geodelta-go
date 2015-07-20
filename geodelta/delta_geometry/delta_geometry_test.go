@@ -357,16 +357,23 @@ func TestGetCenterLevel2(t *testing.T) {
 	assert.Equal([]float64{-3.0, -2.0}, []float64{x, y})
 }
 
+func TestGetCenterLevel3(t *testing.T) {
+	assert := assert.New(t)
+	var x, y float64
+	x, y = GetCenter([]byte{0, 0, 0})
+	assert.Equal([]float64{+0.0, +8.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 0, 1})
+	assert.Equal([]float64{+0.0, +10.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 1, 2})
+	assert.Equal([]float64{-1.5, +5.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 2, 3})
+	assert.Equal([]float64{-1.5, +11.0}, []float64{x, y})
+	x, y = GetCenter([]byte{0, 3, 0})
+	assert.Equal([]float64{+3.0, +10.0}, []float64{x, y})
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_center__level3
-    assert.Equal([ +0.0,  +8.0], @mod.get_center([0, 0, 0]))
-    assert.Equal([ +0.0, +10.0], @mod.get_center([0, 0, 1]))
-    assert.Equal([ -1.5,  +5.0], @mod.get_center([0, 1, 2]))
-    assert.Equal([ -1.5, +11.0], @mod.get_center([0, 2, 3]))
-    assert.Equal([ +3.0, +10.0], @mod.get_center([0, 3, 0]))
-  end
-
   def test_get_coordinates__level1
     expected = [
       [+0.0,  +8.0],
