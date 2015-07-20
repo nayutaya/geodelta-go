@@ -222,15 +222,14 @@ func GetCenter(ids []byte) (float64, float64) {
 
 func GetCoordinates(ids []byte) [][]float64 {
 	cx, cy := GetCenter(ids)
-	// level := len(ids)
+	level := len(ids)
 	var sign float64
 	if IsUpperDelta(ids) {
 		sign = +1
 	} else {
 		sign = -1
 	}
-	// scale := 1.0 / math.Pow(2, float64(level-1)) * sign
-	scale := 1.0 * sign
+	scale := 1.0 / math.Pow(2, float64(level-1)) * sign
 
 	dx1 := 0.0
 	dy1 := 8.0 * scale
