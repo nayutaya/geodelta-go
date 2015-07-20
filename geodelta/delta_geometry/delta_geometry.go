@@ -220,27 +220,27 @@ func GetCenter(ids []byte) (float64, float64) {
 	return x, y
 }
 
-/*
-module GeoDelta
-  module DeltaGeometry
-    def self.get_coordinates(ids)
-      cx, cy = self.get_center(ids)
-      level  = ids.size
-      sign   = (self.upper_delta?(ids) ? +1 : -1)
-      scale  = 1.0 / (2 ** (level - 1)) * sign
+func GetCoordinates(ids []byte) [][]float64 {
+	cx, cy := GetCenter(ids)
+	// level := len(ids)
+	var sign float64
+	if IsUpperDelta(ids) {
+		sign = +1
+	} else {
+		sign = -1
+	}
+	// scale := 1.0 / math.Pow(2, float64(level-1)) * sign
+	scale := 1.0 * sign
 
-      dx1 = 0.0
-      dy1 = 8.0 * scale
-      dx2 = 6.0 * scale
-      dy2 = 4.0 * scale
+	dx1 := 0.0
+	dy1 := 8.0 * scale
+	dx2 := 6.0 * scale
+	dy2 := 4.0 * scale
 
-      return [
-        [cx,       cy      ],
-        [cx + dx1, cy + dy1],
-        [cx + dx2, cy - dy2],
-        [cx - dx2, cy - dy2],
-      ]
-    end
-  end
-end
-*/
+	return [][]float64{
+		[]float64{cx, cy},
+		[]float64{cx + dx1, cy + dy1},
+		[]float64{cx + dx2, cy - dy2},
+		[]float64{cx - dx2, cy - dy2},
+	}
+}

@@ -372,42 +372,43 @@ func TestGetCenterLevel3(t *testing.T) {
 	assert.Equal([]float64{+3.0, +10.0}, []float64{x, y})
 }
 
+func TestGetCoordinatesLevel1(t *testing.T) {
+	assert := assert.New(t)
+	expected := [][]float64{
+		[]float64{+0.0, +8.0},  //
+		[]float64{+0.0, +0.0},  // +0.0, -8.0
+		[]float64{-6.0, +12.0}, // -6.0, +4.0
+		[]float64{+6.0, +12.0}, // +6.0, +4.0
+	}
+	assert.Equal(expected, GetCoordinates([]byte{0}))
+
+	expected = [][]float64{
+		[]float64{+6.0, +4.0},
+		[]float64{+6.0, +12.0}, // +0.0, +8.0
+		[]float64{+12.0, +0.0}, // +6.0, -4.0
+		[]float64{+0.0, +0.0},  // -6.0, -4.0
+	}
+	assert.Equal(expected, GetCoordinates([]byte{1}))
+
+	expected = [][]float64{
+		[]float64{+0.0, -8.0},
+		[]float64{+0.0, +0.0},  // +0.0, +8.0
+		[]float64{+6.0, -12.0}, // +6.0, -4.0
+		[]float64{-6.0, -12.0}, // -6.0, -4.0
+	}
+	assert.Equal(expected, GetCoordinates([]byte{4}))
+
+	expected = [][]float64{
+		[]float64{+6.0, -4.0},
+		[]float64{+6.0, -12.0}, // +0.0, -8.0
+		[]float64{+0.0, +0.0},  // -6.0, +4.0
+		[]float64{+12.0, +0.0}, // +6.0, +4.0
+	}
+	assert.Equal(expected, GetCoordinates([]byte{5}))
+}
+
 /*
 class GeoDeltaDeltaGeometryTest < Minitest::Test
-  def test_get_coordinates__level1
-    expected = [
-      [+0.0,  +8.0],
-      [+0.0,  +0.0], # +0.0, -8.0
-      [-6.0, +12.0], # -6.0, +4.0
-      [+6.0, +12.0], # +6.0, +4.0
-    ]
-    assert.Equal(expected, @mod.get_coordinates([0]))
-
-    expected = [
-      [ +6.0,  +4.0],
-      [ +6.0, +12.0], # +0.0, +8.0
-      [+12.0,  +0.0], # +6.0, -4.0
-      [ +0.0,  +0.0], # -6.0, -4.0
-    ]
-    assert.Equal(expected, @mod.get_coordinates([1]))
-
-    expected = [
-      [+0.0,  -8.0],
-      [+0.0,  +0.0], # +0.0, +8.0
-      [+6.0, -12.0], # +6.0, -4.0
-      [-6.0, -12.0], # -6.0, -4.0
-    ]
-    assert.Equal(expected, @mod.get_coordinates([4]))
-
-    expected = [
-      [ +6.0,  -4.0],
-      [ +6.0, -12.0], # +0.0, -8.0
-      [ +0.0,  +0.0], # -6.0, +4.0
-      [+12.0,  +0.0], # +6.0, +4.0
-    ]
-    assert.Equal(expected, @mod.get_coordinates([5]))
-  end
-
   def test_get_coordinates__level2
     expected = [
       [ +0.0,  +8.0],
