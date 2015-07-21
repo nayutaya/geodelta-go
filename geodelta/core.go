@@ -32,7 +32,7 @@ func GetCoordinatesFromDeltaIds(ids []byte) [4][2]float64 {
 	for i := 0; i <= 3; i++ {
 		nx, ny := coordinates[i][0], coordinates[i][1]
 		lat, lng := projector.NxNyToLatLng(projector.Nx(nx), projector.Ny(ny))
-		coordinates[i] = [2]float64{float64(lat), float64(lng)}
+		coordinates[i][0], coordinates[i][1] = float64(lat), float64(lng)
 	}
 	return coordinates
 }
