@@ -37,11 +37,7 @@ func GetCoordinatesFromDeltaIds(ids []byte) [][]float64 {
 	return coordinates
 }
 
-/*
-module GeoDelta
-  def self.get_coordinates_from_code(code)
-    ids = GeoDelta::Encoder.decode(code)
-    return self.get_coordinates_from_ids(ids)
-  end
-end
-*/
+func GetCoordinatesFromDeltaCode(code string) [][]float64 {
+	ids := encoder.DeltaCode(code).Decode()
+	return GetCoordinatesFromDeltaIds(ids)
+}

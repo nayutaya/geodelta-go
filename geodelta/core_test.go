@@ -187,17 +187,18 @@ func TestGetCoordinatesFromDeltaIds3(t *testing.T) {
 	assert.Equal(delta[0][3], delta[2][1])
 }
 
+func TestGetCoordinatesFromDeltaCode(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal(
+		GetCoordinatesFromDeltaIds([]byte{0}),
+		GetCoordinatesFromDeltaCode("Z"))
+	assert.Equal(
+		GetCoordinatesFromDeltaIds([]byte{0, 1, 2}),
+		GetCoordinatesFromDeltaCode("Z8"))
+}
+
 /*
 class GeoDeltaTest < Minitest::Test
-  def test_get_coordinates_from_code
-    assert.Equal(
-      GetCoordinatesFromDeltaIds([0]),
-      @mod.get_coordinates_from_code("Z"))
-    assert.Equal(
-      GetCoordinatesFromDeltaIds([0, 1, 2]),
-      @mod.get_coordinates_from_code("Z8"))
-  end
-
   def test_rush
     1000.times {
       lat1  = rand * 180.0 -  90.0
