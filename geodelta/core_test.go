@@ -119,37 +119,38 @@ func TestGetCenterFromDeltaCode(t *testing.T) {
 	assert.InDelta(+0.000, lng, 1.0e-3)
 }
 
+func TestGetCoordinatesFromDeltaIds1(t *testing.T) {
+	assert := assert.New(t)
+	delta0 := GetCoordinatesFromDeltaIds([]byte{0})
+	assert.Equal(4, len(delta0))
+	assert.Equal(2, len(delta0[0]))
+	assert.Equal(2, len(delta0[1]))
+	assert.Equal(2, len(delta0[2]))
+	assert.Equal(2, len(delta0[3]))
+	assert.InDelta(+71.480, delta0[0][0], 1.0e-3)
+	assert.InDelta(+0.000, delta0[0][1], 1.0e-3)
+	assert.InDelta(+0.000, delta0[1][0], 1.0e-3)
+	assert.InDelta(+0.000, delta0[1][1], 1.0e-3)
+	assert.InDelta(+82.467, delta0[2][0], 1.0e-3)
+	assert.InDelta(-90.000, delta0[2][1], 1.0e-3)
+	assert.InDelta(+82.467, delta0[3][0], 1.0e-3)
+	assert.InDelta(+90.000, delta0[3][1], 1.0e-3)
+
+	delta4 := GetCoordinatesFromDeltaIds([]byte{4})
+	assert.InDelta(-71.480, delta4[0][0], 1.0e-3)
+	assert.InDelta(+0.000, delta4[0][1], 1.0e-3)
+	assert.InDelta(+0.000, delta4[1][0], 1.0e-3)
+	assert.InDelta(+0.000, delta4[1][1], 1.0e-3)
+	assert.InDelta(-82.467, delta4[2][0], 1.0e-3)
+	assert.InDelta(+90.000, delta4[2][1], 1.0e-3)
+	assert.InDelta(-82.467, delta4[3][0], 1.0e-3)
+	assert.InDelta(-90.000, delta4[3][1], 1.0e-3)
+}
+
 /*
 class GeoDeltaTest < Minitest::Test
-  def test_get_coordinates_from_ids__1
-    delta0 = @mod.get_coordinates_from_ids([0])
-    assert.Equal(4, delta0.size)
-    assert.Equal(2, delta0[0].size)
-    assert.Equal(2, delta0[1].size)
-    assert.Equal(2, delta0[2].size)
-    assert.Equal(2, delta0[3].size)
-    assert.InDelta( +71.480, delta0[0][0], 1.0e-3)
-    assert.InDelta(  +0.000, delta0[0][1], 1.0e-3)
-    assert.InDelta(  +0.000, delta0[1][0], 1.0e-3)
-    assert.InDelta(  +0.000, delta0[1][1], 1.0e-3)
-    assert.InDelta( +82.467, delta0[2][0], 1.0e-3)
-    assert.InDelta( -90.000, delta0[2][1], 1.0e-3)
-    assert.InDelta( +82.467, delta0[3][0], 1.0e-3)
-    assert.InDelta( +90.000, delta0[3][1], 1.0e-3)
-
-    delta4 = @mod.get_coordinates_from_ids([4])
-    assert.InDelta( -71.480, delta4[0][0], 1.0e-3)
-    assert.InDelta(  +0.000, delta4[0][1], 1.0e-3)
-    assert.InDelta(  +0.000, delta4[1][0], 1.0e-3)
-    assert.InDelta(  +0.000, delta4[1][1], 1.0e-3)
-    assert.InDelta( -82.467, delta4[2][0], 1.0e-3)
-    assert.InDelta( +90.000, delta4[2][1], 1.0e-3)
-    assert.InDelta( -82.467, delta4[3][0], 1.0e-3)
-    assert.InDelta( -90.000, delta4[3][1], 1.0e-3)
-  end
-
   def test_get_coordinates_from_ids__2
-    delta = (0..7).map { |id| @mod.get_coordinates_from_ids([id]) }
+    delta = (0..7).map { |id| GetCoordinatesFromDeltaIds([id]) }
     assert.Equal(delta[0][1], delta[1][3])
     assert.Equal(delta[0][1], delta[3][2])
     assert.Equal(delta[0][1], delta[4][1])
@@ -171,7 +172,7 @@ class GeoDeltaTest < Minitest::Test
   end
 
   def test_get_coordinates_from_ids__3
-    delta = (0..3).map { |id| @mod.get_coordinates_from_ids([0, id]) }
+    delta = (0..3).map { |id| GetCoordinatesFromDeltaIds([0, id]) }
     assert.Equal(delta[0][1], delta[2][3])
     assert.Equal(delta[0][1], delta[3][2])
     assert.Equal(delta[0][2], delta[1][3])
@@ -182,10 +183,10 @@ class GeoDeltaTest < Minitest::Test
 
   def test_get_coordinates_from_code
     assert.Equal(
-      @mod.get_coordinates_from_ids([0]),
+      GetCoordinatesFromDeltaIds([0]),
       @mod.get_coordinates_from_code("Z"))
     assert.Equal(
-      @mod.get_coordinates_from_ids([0, 1, 2]),
+      GetCoordinatesFromDeltaIds([0, 1, 2]),
       @mod.get_coordinates_from_code("Z8"))
   end
 

@@ -27,13 +27,18 @@ func GetCenterFromDeltaCode(code string) (float64, float64) {
 	return GetCenterFromDeltaIds(ids)
 }
 
+func GetCoordinatesFromDeltaIds(ids []byte) [][]float64 {
+	coordinates := delta_geometry.GetCoordinates(ids)
+	for i := 0; i < 4; i++ {
+		nx, ny := coordinates[i][0], coordinates[i][1]
+		lat, lng := projector.NxNyToLatLng(projector.Nx(nx), projector.Ny(ny))
+		coordinates[i] = []float64{float64(lat), float64(lng)}
+	}
+	return coordinates
+}
+
 /*
 module GeoDelta
-  def self.get_coordinates_from_ids(ids)
-    return GeoDelta::DeltaGeometry.get_coordinates(ids).
-      map { |nx, ny| GeoDelta::Projector.nxy_to_latlng(nx, ny) }
-  end
-
   def self.get_coordinates_from_code(code)
     ids = GeoDelta::Encoder.decode(code)
     return self.get_coordinates_from_ids(ids)
