@@ -16,19 +16,19 @@ func GetDeltaCode(lat float64, lng float64, level byte) string {
 	return string(encoder.DeltaIds(ids).Encode())
 }
 
-func GetCenterFromDeltaIds(ids []byte) (float64,float64){
-  nx, ny := delta_geometry.GetCenter(ids)
-  lat, lng := projector.NxNyToLatLng(projector.Nx(nx), projector.Ny(ny))
-  return float64(lat),float64(lng)
+func GetCenterFromDeltaIds(ids []byte) (float64, float64) {
+	nx, ny := delta_geometry.GetCenter(ids)
+	lat, lng := projector.NxNyToLatLng(projector.Nx(nx), projector.Ny(ny))
+	return float64(lat), float64(lng)
+}
+
+func GetCenterFromDeltaCode(code string) (float64, float64) {
+	ids := encoder.DeltaCode(code).Decode()
+	return GetCenterFromDeltaIds(ids)
 }
 
 /*
 module GeoDelta
-  def self.get_center_from_delta_code(code)
-    ids = GeoDelta::Encoder.decode(code)
-    return self.get_center_from_delta_ids(ids)
-  end
-
   def self.get_coordinates_from_ids(ids)
     return GeoDelta::DeltaGeometry.get_coordinates(ids).
       map { |nx, ny| GeoDelta::Projector.nxy_to_latlng(nx, ny) }

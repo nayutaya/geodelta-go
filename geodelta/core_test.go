@@ -47,78 +47,80 @@ func TestGetDeltaCode(t *testing.T) {
 
 func TestGetCenterFromDeltaIds(t *testing.T) {
 	assert := assert.New(t)
-  var lat, lng float64
-  lat, lng = GetCenterFromDeltaIds([]byte{0})
-  assert.InDelta( +71.480, lat, 1.0e-3)
-  assert.InDelta(  +0.000, lng, 1.0e-3)
-  lat, lng = GetCenterFromDeltaIds([]byte{1})
-  assert.InDelta( +46.024, lat, 1.0e-3)
-  assert.InDelta( +90.000, lng, 1.0e-3)
-  lat, lng = GetCenterFromDeltaIds([]byte{2})
-  assert.InDelta( +71.480, lat, 1.0e-3)
-  assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では-180.0
-  lat, lng = GetCenterFromDeltaIds([]byte{3})
-  assert.InDelta( +46.024, lat, 1.0e-3)
-  assert.InDelta( -90.000, lng, 1.0e-3)
+	var lat, lng float64
+	lat, lng = GetCenterFromDeltaIds([]byte{0})
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{1})
+	assert.InDelta(+46.024, lat, 1.0e-3)
+	assert.InDelta(+90.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{2})
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では-180.0
+	lat, lng = GetCenterFromDeltaIds([]byte{3})
+	assert.InDelta(+46.024, lat, 1.0e-3)
+	assert.InDelta(-90.000, lng, 1.0e-3)
 
-  lat, lng = GetCenterFromDeltaIds([]byte{4})
-  assert.InDelta( -71.480, lat, 1.0e-3)
-  assert.InDelta(  +0.000, lng, 1.0e-3)
-  lat, lng = GetCenterFromDeltaIds([]byte{5})
-  assert.InDelta( -46.024, lat, 1.0e-3)
-  assert.InDelta( +90.000, lng, 1.0e-3)
-  lat, lng = GetCenterFromDeltaIds([]byte{6})
-  assert.InDelta( -71.480, lat, 1.0e-3)
-  assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では+180.0
-  lat, lng = GetCenterFromDeltaIds([]byte{7})
-  assert.InDelta( -46.024, lat, 1.0e-3)
-  assert.InDelta( -90.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{4})
+	assert.InDelta(-71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{5})
+	assert.InDelta(-46.024, lat, 1.0e-3)
+	assert.InDelta(+90.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{6})
+	assert.InDelta(-71.480, lat, 1.0e-3)
+	assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では+180.0
+	lat, lng = GetCenterFromDeltaIds([]byte{7})
+	assert.InDelta(-46.024, lat, 1.0e-3)
+	assert.InDelta(-90.000, lng, 1.0e-3)
 
-  lat, lng = GetCenterFromDeltaIds([]byte{0, 0})
-  assert.InDelta(+71.480, lat, 1.0e-3)
-  assert.InDelta( +0.000, lng, 1.0e-3)
-  lat, lng = GetCenterFromDeltaIds([]byte{0, 0, 0})
-  assert.InDelta(+71.480, lat, 1.0e-3)
-  assert.InDelta( +0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{0, 0})
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaIds([]byte{0, 0, 0})
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+}
+
+func TestGetCenterFromDeltaCode(t *testing.T) {
+	assert := assert.New(t)
+	var lat, lng float64
+	lat, lng = GetCenterFromDeltaCode("Z")
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaCode("Y")
+	assert.InDelta(+46.024, lat, 1.0e-3)
+	assert.InDelta(+90.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaCode("X")
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では-180.0
+	lat, lng = GetCenterFromDeltaCode("W")
+	assert.InDelta(+46.024, lat, 1.0e-3)
+	assert.InDelta(-90.000, lng, 1.0e-3)
+
+	lat, lng = GetCenterFromDeltaCode("V")
+	assert.InDelta(-71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaCode("T")
+	assert.InDelta(-46.024, lat, 1.0e-3)
+	assert.InDelta(+90.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaCode("S")
+	assert.InDelta(-71.480, lat, 1.0e-3)
+	assert.InDelta(+180.000, lng, 1.0e-3) // TODO: Ruby版では-180.0
+	lat, lng = GetCenterFromDeltaCode("R")
+	assert.InDelta(-46.024, lat, 1.0e-3)
+	assert.InDelta(-90.000, lng, 1.0e-3)
+
+	lat, lng = GetCenterFromDeltaCode("ZK")
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
+	lat, lng = GetCenterFromDeltaCode("Z2")
+	assert.InDelta(+71.480, lat, 1.0e-3)
+	assert.InDelta(+0.000, lng, 1.0e-3)
 }
 
 /*
 class GeoDeltaTest < Minitest::Test
-  def test_get_center_from_delta_code
-    lat, lng = @mod.get_center_from_delta_code("Z")
-    assert.InDelta( +71.480, lat, 1.0e-3)
-    assert.InDelta(  +0.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("Y")
-    assert.InDelta( +46.024, lat, 1.0e-3)
-    assert.InDelta( +90.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("X")
-    assert.InDelta( +71.480, lat, 1.0e-3)
-    assert.InDelta(-180.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("W")
-    assert.InDelta( +46.024, lat, 1.0e-3)
-    assert.InDelta( -90.000, lng, 1.0e-3)
-
-    lat, lng = @mod.get_center_from_delta_code("V")
-    assert.InDelta( -71.480, lat, 1.0e-3)
-    assert.InDelta(  +0.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("T")
-    assert.InDelta( -46.024, lat, 1.0e-3)
-    assert.InDelta( +90.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("S")
-    assert.InDelta( -71.480, lat, 1.0e-3)
-    assert.InDelta(-180.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("R")
-    assert.InDelta( -46.024, lat, 1.0e-3)
-    assert.InDelta( -90.000, lng, 1.0e-3)
-
-    lat, lng = @mod.get_center_from_delta_code("ZK")
-    assert.InDelta(+71.480, lat, 1.0e-3)
-    assert.InDelta( +0.000, lng, 1.0e-3)
-    lat, lng = @mod.get_center_from_delta_code("Z2")
-    assert.InDelta(+71.480, lat, 1.0e-3)
-    assert.InDelta( +0.000, lng, 1.0e-3)
-  end
-
   def test_get_coordinates_from_ids__1
     delta0 = @mod.get_coordinates_from_ids([0])
     assert.Equal(4, delta0.size)
@@ -194,10 +196,10 @@ class GeoDeltaTest < Minitest::Test
       level = rand(30) + 1
       code1 = @mod.get_delta_code(lat1, lng1, level)
       lat2,
-      lng2  = @mod.get_center_from_delta_code(code1)
+      lng2  = GetCenterFromDeltaCode(code1)
       code2 = @mod.get_delta_code(lat2, lng2, level)
       lat3,
-      lng3  = @mod.get_center_from_delta_code(code2)
+      lng3  = GetCenterFromDeltaCode(code2)
       assert.Equal(code1, code2)
       assert.Equal([lat2, lng2], [lat3, lng3])
     }
