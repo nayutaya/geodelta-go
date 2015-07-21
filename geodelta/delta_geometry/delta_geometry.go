@@ -220,7 +220,7 @@ func GetCenter(ids []byte) (float64, float64) {
 	return x, y
 }
 
-func GetCoordinates(ids []byte) [][]float64 {
+func GetCoordinates(ids []byte) [4][2]float64 {
 	cx, cy := GetCenter(ids)
 	level := len(ids)
 	var sign float64
@@ -236,10 +236,10 @@ func GetCoordinates(ids []byte) [][]float64 {
 	dx2 := 6.0 * scale
 	dy2 := 4.0 * scale
 
-	return [][]float64{
-		[]float64{cx, cy},
-		[]float64{cx + dx1, cy + dy1},
-		[]float64{cx + dx2, cy - dy2},
-		[]float64{cx - dx2, cy - dy2},
+	return [4][2]float64{
+		[2]float64{cx, cy},
+		[2]float64{cx + dx1, cy + dy1},
+		[2]float64{cx + dx2, cy - dy2},
+		[2]float64{cx - dx2, cy - dy2},
 	}
 }

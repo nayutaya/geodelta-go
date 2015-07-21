@@ -149,9 +149,9 @@ func TestGetCoordinatesFromDeltaIds1(t *testing.T) {
 
 func TestGetCoordinatesFromDeltaIds2(t *testing.T) {
 	assert := assert.New(t)
-	var delta [][][]float64
+	var delta [8][4][2]float64
 	for id := byte(0); id <= 7; id++ {
-		delta = append(delta, GetCoordinatesFromDeltaIds([]byte{id}))
+		delta[id] = GetCoordinatesFromDeltaIds([]byte{id})
 	}
 	assert.Equal(delta[0][1], delta[1][3])
 	assert.Equal(delta[0][1], delta[3][2])
@@ -175,9 +175,9 @@ func TestGetCoordinatesFromDeltaIds2(t *testing.T) {
 
 func TestGetCoordinatesFromDeltaIds3(t *testing.T) {
 	assert := assert.New(t)
-	var delta [][][]float64
+	var delta [4][4][2]float64
 	for id := byte(0); id <= 3; id++ {
-		delta = append(delta, GetCoordinatesFromDeltaIds([]byte{0, id}))
+		delta[id] = GetCoordinatesFromDeltaIds([]byte{0, id})
 	}
 	assert.Equal(delta[0][1], delta[2][3])
 	assert.Equal(delta[0][1], delta[3][2])

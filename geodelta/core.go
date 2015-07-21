@@ -27,17 +27,17 @@ func GetCenterFromDeltaCode(code string) (float64, float64) {
 	return GetCenterFromDeltaIds(ids)
 }
 
-func GetCoordinatesFromDeltaIds(ids []byte) [][]float64 {
+func GetCoordinatesFromDeltaIds(ids []byte) [4][2]float64 {
 	coordinates := delta_geometry.GetCoordinates(ids)
 	for i := 0; i <= 3; i++ {
 		nx, ny := coordinates[i][0], coordinates[i][1]
 		lat, lng := projector.NxNyToLatLng(projector.Nx(nx), projector.Ny(ny))
-		coordinates[i] = []float64{float64(lat), float64(lng)}
+		coordinates[i] = [2]float64{float64(lat), float64(lng)}
 	}
 	return coordinates
 }
 
-func GetCoordinatesFromDeltaCode(code string) [][]float64 {
+func GetCoordinatesFromDeltaCode(code string) [4][2]float64 {
 	ids := encoder.DeltaCode(code).Decode()
 	return GetCoordinatesFromDeltaIds(ids)
 }
