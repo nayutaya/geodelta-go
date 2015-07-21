@@ -1,12 +1,17 @@
 package geodelta
 
+import (
+	"github.com/nayutaya/geodelta-go/geodelta/delta_geometry"
+	"github.com/nayutaya/geodelta-go/geodelta/projector"
+)
+
+func GetDeltaIds(lat float64, lng float64, level byte) []byte {
+	nx, ny := projector.LatLngToNxNy(projector.Lat(lat), projector.Lng(lng))
+	return delta_geometry.GetDeltaIds(float64(nx), float64(ny), level)
+}
+
 /*
 module GeoDelta
-  def self.get_delta_ids(lat, lng, level)
-    nx, ny = GeoDelta::Projector.latlng_to_nxy(lat, lng)
-    return GeoDelta::DeltaGeometry.get_delta_ids(nx, ny, level)
-  end
-
   def self.get_delta_code(lat, lng, level)
     ids = self.get_delta_ids(lat, lng, level)
     return GeoDelta::Encoder.encode(ids)
