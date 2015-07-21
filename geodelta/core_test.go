@@ -173,18 +173,22 @@ func TestGetCoordinatesFromDeltaIds2(t *testing.T) {
 	assert.Equal(delta[4][2], delta[6][3])
 }
 
+func TestGetCoordinatesFromDeltaIds3(t *testing.T) {
+	assert := assert.New(t)
+	var delta [][][]float64
+	for id := byte(0); id <= 3; id++ {
+		delta = append(delta, GetCoordinatesFromDeltaIds([]byte{0, id}))
+	}
+	assert.Equal(delta[0][1], delta[2][3])
+	assert.Equal(delta[0][1], delta[3][2])
+	assert.Equal(delta[0][2], delta[1][3])
+	assert.Equal(delta[0][2], delta[3][1])
+	assert.Equal(delta[0][3], delta[1][2])
+	assert.Equal(delta[0][3], delta[2][1])
+}
+
 /*
 class GeoDeltaTest < Minitest::Test
-  def test_get_coordinates_from_ids__3
-    delta = (0..3).map { |id| GetCoordinatesFromDeltaIds([0, id]) }
-    assert.Equal(delta[0][1], delta[2][3])
-    assert.Equal(delta[0][1], delta[3][2])
-    assert.Equal(delta[0][2], delta[1][3])
-    assert.Equal(delta[0][2], delta[3][1])
-    assert.Equal(delta[0][3], delta[1][2])
-    assert.Equal(delta[0][3], delta[2][1])
-  end
-
   def test_get_coordinates_from_code
     assert.Equal(
       GetCoordinatesFromDeltaIds([0]),
