@@ -7,7 +7,7 @@ import (
 type DeltaIds []byte
 type DeltaCode string
 
-var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
+var world_id_to_code map[byte]string = map[byte]string{
 	0: "Z",
 	1: "Y",
 	2: "X",
@@ -18,7 +18,7 @@ var WORLD_ID_TO_CODE map[byte]string = map[byte]string{
 	7: "R",
 }
 
-var WORLD_CHAR_TO_ID map[string]byte = map[string]byte{
+var world_char_to_id map[string]byte = map[string]byte{
 	"Z": 0,
 	"Y": 1,
 	"X": 2,
@@ -30,7 +30,7 @@ var WORLD_CHAR_TO_ID map[string]byte = map[string]byte{
 }
 
 func EncodeWorldDelta(id byte) string {
-	if code, ok := WORLD_ID_TO_CODE[id]; ok {
+	if code, ok := world_id_to_code[id]; ok {
 		return code
 	} else {
 		panic("invalid world delta id")
@@ -38,14 +38,14 @@ func EncodeWorldDelta(id byte) string {
 }
 
 func DecodeWorldDelta(code string) byte {
-	if id, ok := WORLD_CHAR_TO_ID[code]; ok {
+	if id, ok := world_char_to_id[code]; ok {
 		return id
 	} else {
 		panic("invalid world delta code")
 	}
 }
 
-var SUB_IDS2_TO_CODE map[[2]byte]string = map[[2]byte]string{
+var sub_ids2_to_code map[[2]byte]string = map[[2]byte]string{
 	[2]byte{0, 0}: "2",
 	[2]byte{0, 1}: "3",
 	[2]byte{0, 2}: "4",
@@ -64,14 +64,14 @@ var SUB_IDS2_TO_CODE map[[2]byte]string = map[[2]byte]string{
 	[2]byte{3, 3}: "J",
 }
 
-var SUB_IDS1_TO_CODE map[byte]string = map[byte]string{
+var sub_ids1_to_code map[byte]string = map[byte]string{
 	0: "K",
 	1: "M",
 	2: "N",
 	3: "P",
 }
 
-var SUB_CODE_TO_IDS map[string][]byte = map[string][]byte{
+var sub_code_to_ids map[string][]byte = map[string][]byte{
 	"2": []byte{0, 0},
 	"3": []byte{0, 1},
 	"4": []byte{0, 2},
@@ -99,12 +99,12 @@ func EncodeSubDelta(ids []byte) string {
 		return EncodeSubDelta(ids[0:2]) + EncodeSubDelta(ids[2:])
 	} else if length == 2 {
 		key := [2]byte{ids[0], ids[1]}
-		if code, ok := SUB_IDS2_TO_CODE[key]; ok {
+		if code, ok := sub_ids2_to_code[key]; ok {
 			return code
 		}
 	} else if length == 1 {
 		key := ids[0]
-		if code, ok := SUB_IDS1_TO_CODE[key]; ok {
+		if code, ok := sub_ids1_to_code[key]; ok {
 			return code
 		}
 	}
@@ -126,7 +126,7 @@ func DecodeSubDeltaArray(codes []string) []byte {
 }
 
 func DecodeSubDeltaOne(code string) []byte {
-	if ids, ok := SUB_CODE_TO_IDS[code]; ok {
+	if ids, ok := sub_code_to_ids[code]; ok {
 		return ids
 	} else {
 		panic("invalid sub delta code")
