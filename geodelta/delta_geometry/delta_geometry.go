@@ -100,12 +100,12 @@ func IsUpperDelta(ids []byte) bool {
 	return upper
 }
 
-var TRANSFORM_WORLD_DELTA_X []float64 = []float64{+6.0, +0.0, -6.0, -12.0, +6.0, +0.0, -6.0, -12.0}
-var TRANSFORM_WORLD_DELTA_Y []float64 = []float64{+0.0, +0.0, +0.0, +0.0, +12.0, +12.0, +12.0, +12.0}
+var transform_world_delta_x []float64 = []float64{+6.0, +0.0, -6.0, -12.0, +6.0, +0.0, -6.0, -12.0}
+var transform_world_delta_y []float64 = []float64{+0.0, +0.0, +0.0, +0.0, +12.0, +12.0, +12.0, +12.0}
 
 func TransformWorldDelta(id byte, x float64, y float64) (float64, float64) {
-	xx := (x + TRANSFORM_WORLD_DELTA_X[id])
-	yy := (y + TRANSFORM_WORLD_DELTA_Y[id])
+	xx := (x + transform_world_delta_x[id])
+	yy := (y + transform_world_delta_y[id])
 	return xx, yy
 	// TODO: mod
 	// xx = (x + TRANSFORM_WORLD_DELTA_X[id]) % 12
@@ -120,21 +120,21 @@ func TransformSubDelta(upper bool, id byte, x float64, y float64) (float64, floa
 	}
 }
 
-var TRANSFORM_UPPER_DELTA_X []float64 = []float64{-3.0, -3.0, -6.0, -0.0}
-var TRANSFORM_UPPER_DELTA_Y []float64 = []float64{-0.0, -6.0, -0.0, -0.0}
+var transform_upper_delta_x []float64 = []float64{-3.0, -3.0, -6.0, -0.0}
+var transform_upper_delta_y []float64 = []float64{-0.0, -6.0, -0.0, -0.0}
 
 func TransformUpperDelta(id byte, x float64, y float64) (float64, float64) {
-	xx := (x + TRANSFORM_UPPER_DELTA_X[id]) * 2
-	yy := (y + TRANSFORM_UPPER_DELTA_Y[id]) * 2
+	xx := (x + transform_upper_delta_x[id]) * 2
+	yy := (y + transform_upper_delta_y[id]) * 2
 	return xx, yy
 }
 
-var TRANSFORM_LOWER_DELTA_X []float64 = []float64{-3.0, -3.0, -0.0, -6.0}
-var TRANSFORM_LOWER_DELTA_Y []float64 = []float64{-6.0, -0.0, -6.0, -6.0}
+var transform_lower_delta_x []float64 = []float64{-3.0, -3.0, -0.0, -6.0}
+var transform_lower_delta_y []float64 = []float64{-6.0, -0.0, -6.0, -6.0}
 
 func TransformLowerDelta(id byte, x float64, y float64) (float64, float64) {
-	xx := (x + TRANSFORM_LOWER_DELTA_X[id]) * 2
-	yy := (y + TRANSFORM_LOWER_DELTA_Y[id]) * 2
+	xx := (x + transform_lower_delta_x[id]) * 2
+	yy := (y + transform_lower_delta_y[id]) * 2
 	return xx, yy
 }
 
@@ -152,7 +152,7 @@ func GetDeltaIds(x float64, y float64, level byte) []byte {
 	return ids
 }
 
-var WORLD_DELTA_CENTER map[byte][]float64 = map[byte][]float64{
+var world_delta_center map[byte][]float64 = map[byte][]float64{
 	0: []float64{+0.0, +8.0},
 	1: []float64{+6.0, +4.0},
 	2: []float64{+12.0, +8.0},
@@ -164,11 +164,11 @@ var WORLD_DELTA_CENTER map[byte][]float64 = map[byte][]float64{
 }
 
 func GetWorldDeltaCenter(id byte) (float64, float64) {
-	xy := WORLD_DELTA_CENTER[id]
+	xy := world_delta_center[id]
 	return xy[0], xy[1]
 }
 
-var UPPER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
+var upper_sub_delta_distance map[byte][]float64 = map[byte][]float64{
 	0: []float64{+0.0, +0.0},
 	1: []float64{+0.0, +4.0},
 	2: []float64{+3.0, -2.0},
@@ -176,11 +176,11 @@ var UPPER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
 }
 
 func GetUpperSubDeltaDistance(id byte) (float64, float64) {
-	xy := UPPER_SUB_DELTA_DISTANCE[id]
+	xy := upper_sub_delta_distance[id]
 	return xy[0], xy[1]
 }
 
-var LOWER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
+var lower_sub_delta_distance map[byte][]float64 = map[byte][]float64{
 	0: []float64{+0.0, +0.0},
 	1: []float64{+0.0, -4.0},
 	2: []float64{-3.0, +2.0},
@@ -188,7 +188,7 @@ var LOWER_SUB_DELTA_DISTANCE map[byte][]float64 = map[byte][]float64{
 }
 
 func GetLowerSubDeltaDistance(id byte) (float64, float64) {
-	xy := LOWER_SUB_DELTA_DISTANCE[id]
+	xy := lower_sub_delta_distance[id]
 	return xy[0], xy[1]
 }
 
