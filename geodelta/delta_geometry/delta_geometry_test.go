@@ -374,121 +374,121 @@ func TestGetCenterLevel3(t *testing.T) {
 
 func TestGetCoordinatesLevel1(t *testing.T) {
 	assert := assert.New(t)
-	expected := [][]float64{
-		[]float64{+0.0, +8.0},  //
-		[]float64{+0.0, +0.0},  // +0.0, -8.0
-		[]float64{-6.0, +12.0}, // -6.0, +4.0
-		[]float64{+6.0, +12.0}, // +6.0, +4.0
+	expected := [4][2]float64{
+		[2]float64{+0.0, +8.0},  //
+		[2]float64{+0.0, +0.0},  // +0.0, -8.0
+		[2]float64{-6.0, +12.0}, // -6.0, +4.0
+		[2]float64{+6.0, +12.0}, // +6.0, +4.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0}))
 
-	expected = [][]float64{
-		[]float64{+6.0, +4.0},
-		[]float64{+6.0, +12.0}, // +0.0, +8.0
-		[]float64{+12.0, +0.0}, // +6.0, -4.0
-		[]float64{+0.0, +0.0},  // -6.0, -4.0
+	expected = [4][2]float64{
+		[2]float64{+6.0, +4.0},
+		[2]float64{+6.0, +12.0}, // +0.0, +8.0
+		[2]float64{+12.0, +0.0}, // +6.0, -4.0
+		[2]float64{+0.0, +0.0},  // -6.0, -4.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{1}))
 
-	expected = [][]float64{
-		[]float64{+0.0, -8.0},
-		[]float64{+0.0, +0.0},  // +0.0, +8.0
-		[]float64{+6.0, -12.0}, // +6.0, -4.0
-		[]float64{-6.0, -12.0}, // -6.0, -4.0
+	expected = [4][2]float64{
+		[2]float64{+0.0, -8.0},
+		[2]float64{+0.0, +0.0},  // +0.0, +8.0
+		[2]float64{+6.0, -12.0}, // +6.0, -4.0
+		[2]float64{-6.0, -12.0}, // -6.0, -4.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{4}))
 
-	expected = [][]float64{
-		[]float64{+6.0, -4.0},
-		[]float64{+6.0, -12.0}, // +0.0, -8.0
-		[]float64{+0.0, +0.0},  // -6.0, +4.0
-		[]float64{+12.0, +0.0}, // +6.0, +4.0
+	expected = [4][2]float64{
+		[2]float64{+6.0, -4.0},
+		[2]float64{+6.0, -12.0}, // +0.0, -8.0
+		[2]float64{+0.0, +0.0},  // -6.0, +4.0
+		[2]float64{+12.0, +0.0}, // +6.0, +4.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{5}))
 }
 
 func TestGetCoordinatesLevel2(t *testing.T) {
 	assert := assert.New(t)
-	expected := [][]float64{
-		[]float64{+0.0, +8.0},
-		[]float64{+0.0, +12.0}, // +0.0, +4.0
-		[]float64{+3.0, +6.0},  // +3.0, -2.0
-		[]float64{-3.0, +6.0},  // -3.0, -2.0
+	expected := [4][2]float64{
+		[2]float64{+0.0, +8.0},
+		[2]float64{+0.0, +12.0}, // +0.0, +4.0
+		[2]float64{+3.0, +6.0},  // +3.0, -2.0
+		[2]float64{-3.0, +6.0},  // -3.0, -2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 0}))
 
-	expected = [][]float64{
-		[]float64{+0.0, +4.0},
-		[]float64{+0.0, +0.0}, // +0.0, -4.0
-		[]float64{-3.0, +6.0}, // -3.0, +2.0
-		[]float64{+3.0, +6.0}, // +3.0, +2.0
+	expected = [4][2]float64{
+		[2]float64{+0.0, +4.0},
+		[2]float64{+0.0, +0.0}, // +0.0, -4.0
+		[2]float64{-3.0, +6.0}, // -3.0, +2.0
+		[2]float64{+3.0, +6.0}, // +3.0, +2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 1}))
 
-	expected = [][]float64{
-		[]float64{-3.0, +10.0},
-		[]float64{-3.0, +6.0},  // +0.0, -4.0
-		[]float64{-6.0, +12.0}, // -3.0, +2.0
-		[]float64{+0.0, +12.0}, // +3.0, +2.0
+	expected = [4][2]float64{
+		[2]float64{-3.0, +10.0},
+		[2]float64{-3.0, +6.0},  // +0.0, -4.0
+		[2]float64{-6.0, +12.0}, // -3.0, +2.0
+		[2]float64{+0.0, +12.0}, // +3.0, +2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 2}))
 
-	expected = [][]float64{
-		[]float64{+3.0, +10.0},
-		[]float64{+3.0, +6.0},  // +0.0, -4.0
-		[]float64{+0.0, +12.0}, // -3.0, +2.0
-		[]float64{+6.0, +12.0}, // +3.0, +2.0
+	expected = [4][2]float64{
+		[2]float64{+3.0, +10.0},
+		[2]float64{+3.0, +6.0},  // +0.0, -4.0
+		[2]float64{+0.0, +12.0}, // -3.0, +2.0
+		[2]float64{+6.0, +12.0}, // +3.0, +2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 3}))
 
-	expected = [][]float64{
-		[]float64{+0.0, -8.0},
-		[]float64{+0.0, -12.0}, // +0.0, -4.0
-		[]float64{-3.0, -6.0},  // -3.0, +2.0
-		[]float64{+3.0, -6.0},  // +3.0, +2.0
+	expected = [4][2]float64{
+		[2]float64{+0.0, -8.0},
+		[2]float64{+0.0, -12.0}, // +0.0, -4.0
+		[2]float64{-3.0, -6.0},  // -3.0, +2.0
+		[2]float64{+3.0, -6.0},  // +3.0, +2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{4, 0}))
 
-	expected = [][]float64{
-		[]float64{+0.0, -4.0},
-		[]float64{+0.0, +0.0}, // +0.0, +4.0
-		[]float64{+3.0, -6.0}, // +3.0, -2.0
-		[]float64{-3.0, -6.0}, // -3.0, -2.0
+	expected = [4][2]float64{
+		[2]float64{+0.0, -4.0},
+		[2]float64{+0.0, +0.0}, // +0.0, +4.0
+		[2]float64{+3.0, -6.0}, // +3.0, -2.0
+		[2]float64{-3.0, -6.0}, // -3.0, -2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{4, 1}))
 
-	expected = [][]float64{
-		[]float64{+3.0, -10.0},
-		[]float64{+3.0, -6.0},  // +0.0, +4.0
-		[]float64{+6.0, -12.0}, // +3.0, -2.0
-		[]float64{+0.0, -12.0}, // -3.0, -2.0
+	expected = [4][2]float64{
+		[2]float64{+3.0, -10.0},
+		[2]float64{+3.0, -6.0},  // +0.0, +4.0
+		[2]float64{+6.0, -12.0}, // +3.0, -2.0
+		[2]float64{+0.0, -12.0}, // -3.0, -2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{4, 2}))
 
-	expected = [][]float64{
-		[]float64{-3.0, -10.0},
-		[]float64{-3.0, -6.0},  // +0.0, +4.0
-		[]float64{+0.0, -12.0}, // +3.0, -2.0
-		[]float64{-6.0, -12.0}, // -3.0, -2.0
+	expected = [4][2]float64{
+		[2]float64{-3.0, -10.0},
+		[2]float64{-3.0, -6.0},  // +0.0, +4.0
+		[2]float64{+0.0, -12.0}, // +3.0, -2.0
+		[2]float64{-6.0, -12.0}, // -3.0, -2.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{4, 3}))
 }
 
 func TestGetCoordinatesLevel3(t *testing.T) {
 	assert := assert.New(t)
-	expected := [][]float64{
-		[]float64{+0.0, +8.0},
-		[]float64{+0.0, +6.0}, // +0.0, -2.0
-		[]float64{-1.5, +9.0}, // -1.5, +1.0
-		[]float64{+1.5, +9.0}, // +1.5, +1.0
+	expected := [4][2]float64{
+		[2]float64{+0.0, +8.0},
+		[2]float64{+0.0, +6.0}, // +0.0, -2.0
+		[2]float64{-1.5, +9.0}, // -1.5, +1.0
+		[2]float64{+1.5, +9.0}, // +1.5, +1.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 0, 0}))
 
-	expected = [][]float64{
-		[]float64{-1.5, +5.0},
-		[]float64{-1.5, +3.0}, // +0.0, -2.0
-		[]float64{-3.0, +6.0}, // -1.5, +1.0
-		[]float64{+0.0, +6.0}, // +1.5, +1.0
+	expected = [4][2]float64{
+		[2]float64{-1.5, +5.0},
+		[2]float64{-1.5, +3.0}, // +0.0, -2.0
+		[2]float64{-3.0, +6.0}, // -1.5, +1.0
+		[2]float64{+0.0, +6.0}, // +1.5, +1.0
 	}
 	assert.Equal(expected, GetCoordinates([]byte{0, 1, 2}))
 }
