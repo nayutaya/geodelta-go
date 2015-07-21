@@ -3,9 +3,10 @@ before_install:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/stretchr/testify
 script:
-  - go test -v -covermode=count -coverprofile=coverage.root.txt ./geodelta
+  - go test -v -covermode=count -coverprofile=coverage.projector.txt ./geodelta/projector
   - go test -v -covermode=count -coverprofile=coverage.encoder.txt ./geodelta/encoder
   - go test -v -covermode=count -coverprofile=coverage.delta_geometry.txt ./geodelta/delta_geometry
+  - go test -v -covermode=count -coverprofile=coverage.core.txt ./geodelta
   - "echo 'mode: count' > coverage.txt"
   - "grep -h -v 'mode: count' coverage.*.txt >> coverage.txt"
 after_success:
