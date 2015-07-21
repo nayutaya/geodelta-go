@@ -25,27 +25,28 @@ func TestGetDeltaIds(t *testing.T) {
 	assert.Equal([]byte{0, 1, 1, 1}, GetDeltaIds(+0.0, +0.0, 4))
 }
 
+func TestGetDeltaCode(t *testing.T) {
+	assert := assert.New(t)
+	assert.Equal("Z", GetDeltaCode(+45.0, +0.0, 1))
+	assert.Equal("Y", GetDeltaCode(+45.0, +90.0, 1))
+	assert.Equal("X", GetDeltaCode(+45.0, +180.0, 1))
+	assert.Equal("W", GetDeltaCode(+45.0, -90.0, 1))
+	assert.Equal("X", GetDeltaCode(+45.0, -180.0, 1))
+
+	assert.Equal("V", GetDeltaCode(-45.0, +0.0, 1))
+	assert.Equal("T", GetDeltaCode(-45.0, +90.0, 1))
+	assert.Equal("S", GetDeltaCode(-45.0, +180.0, 1))
+	assert.Equal("R", GetDeltaCode(-45.0, -90.0, 1))
+	assert.Equal("S", GetDeltaCode(-45.0, -180.0, 1))
+
+	assert.Equal("Z", GetDeltaCode(+0.0, +0.0, 1))
+	assert.Equal("ZM", GetDeltaCode(+0.0, +0.0, 2))
+	assert.Equal("Z7", GetDeltaCode(+0.0, +0.0, 3))
+	assert.Equal("Z7M", GetDeltaCode(+0.0, +0.0, 4))
+}
+
 /*
 class GeoDeltaTest < Minitest::Test
-  def test_get_delta_code
-    assert.Equal("Z", @mod.get_delta_code(+45.0,   +0.0, 1))
-    assert.Equal("Y", @mod.get_delta_code(+45.0,  +90.0, 1))
-    assert.Equal("X", @mod.get_delta_code(+45.0, +180.0, 1))
-    assert.Equal("W", @mod.get_delta_code(+45.0,  -90.0, 1))
-    assert.Equal("X", @mod.get_delta_code(+45.0, -180.0, 1))
-
-    assert.Equal("V", @mod.get_delta_code(-45.0,   +0.0, 1))
-    assert.Equal("T", @mod.get_delta_code(-45.0,  +90.0, 1))
-    assert.Equal("S", @mod.get_delta_code(-45.0, +180.0, 1))
-    assert.Equal("R", @mod.get_delta_code(-45.0,  -90.0, 1))
-    assert.Equal("S", @mod.get_delta_code(-45.0, -180.0, 1))
-
-    assert.Equal("Z",   @mod.get_delta_code(+0.0, +0.0, 1))
-    assert.Equal("ZM",  @mod.get_delta_code(+0.0, +0.0, 2))
-    assert.Equal("Z7",  @mod.get_delta_code(+0.0, +0.0, 3))
-    assert.Equal("Z7M", @mod.get_delta_code(+0.0, +0.0, 4))
-  end
-
   def test_get_center_from_delta_ids
     lat, lng = @mod.get_center_from_delta_ids([0])
     assert_in_delta( +71.480, lat, 1.0E-3)
